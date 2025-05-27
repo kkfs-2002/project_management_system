@@ -6,6 +6,7 @@ Route::get('/', function () {
    return redirect()->route('login');
 });
 
+<<<<<<< Updated upstream
 use App\Http\Controllers\Auth\LoginController;
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -31,3 +32,12 @@ Route::get('/dashboard', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth')->name('dashboard');
+=======
+//profile for employe
+use App\Http\Controllers\ProfileController;
+
+Route::get('/admin/dashboard', [ProfileController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/admin/profile/create', [ProfileController::class, 'create'])->name('profile.create');
+Route::post('/admin/profile/store', [ProfileController::class, 'store'])->name('profile.store');
+Route::get('/admin/profile/view', [ProfileController::class, 'index'])->name('profile.index');
+>>>>>>> Stashed changes
