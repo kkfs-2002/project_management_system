@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sign Up | Modern Style</title>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Styles: same as login -->
     <style>
-        /* Same CSS as login page (reused) */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -23,13 +24,11 @@
         a:hover {
             text-decoration: underline;
         }
-
         .container {
             display: flex;
             height: 100vh;
             width: 100vw;
         }
-
         .left-panel {
             flex: 1;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -50,7 +49,6 @@
             max-width: 400px;
             opacity: 0.85;
         }
-
         .right-panel {
             flex: 1;
             background: white;
@@ -60,19 +58,16 @@
             padding: 60px 50px;
             box-shadow: -4px 0 20px rgba(102, 126, 234, 0.15);
         }
-
         .login-form {
-            max-width: 400px;
+            max-width: 380px;
             margin: 0 auto;
         }
-
         .login-form h2 {
             font-weight: 700;
             margin-bottom: 30px;
             color: #333;
             text-align: center;
         }
-
         label {
             display: block;
             font-weight: 600;
@@ -80,7 +75,6 @@
             color: #555;
             font-size: 0.9rem;
         }
-
         input[type="text"],
         input[type="email"],
         input[type="password"] {
@@ -92,13 +86,11 @@
             font-size: 1rem;
             transition: border-color 0.3s ease;
         }
-
         input:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
         }
-
         button {
             width: 100%;
             padding: 16px;
@@ -112,17 +104,9 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
             transition: background-color 0.3s ease;
         }
-
         button:hover {
             background: #5a67d8;
         }
-
-        .login-link {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.9rem;
-        }
-
         .error-messages {
             background: #ffe1e1;
             color: #d8000c;
@@ -132,84 +116,66 @@
             margin-bottom: 20px;
             font-weight: 600;
         }
-
         .error-messages ul {
             list-style: inside disc;
         }
-
         @media (max-width: 900px) {
             .container {
                 flex-direction: column;
             }
             .left-panel, .right-panel {
-                flex: none;
                 width: 100%;
-                height: 50vh;
-                box-shadow: none !important;
+                height: auto;
             }
             .left-panel {
-                padding: 40px 20px;
-                height: 40vh;
                 text-align: center;
-            }
-            .right-panel {
-                padding: 40px 20px;
-                height: 60vh;
-            }
-            .login-form {
-                max-width: 100%;
             }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <!-- Left panel -->
+        <div class="left-panel">
+            <h1>Welcome!</h1>
+            <p>Create your account to get started with our amazing platform.</p>
+        </div>
 
-<div class="container">
+        <!-- Right panel -->
+        <div class="right-panel">
+            <div class="login-form">
+                <h2>Create Account</h2>
 
-    <div class="left-panel">
-        <h1>Join Us Today</h1>
-        <p>Create your account and explore the best features we have to offer. It’s quick and easy to get started.</p>
-    </div>
+                @if ($errors->any())
+                    <div class="error-messages">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-    <div class="right-panel">
-        <div class="login-form">
-            <h2>Create Account</h2>
+                <form action="{{ route('register') }}" method="POST">
+                    @csrf
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" value="{{ old('name') }}" required>
 
-            @if ($errors->any())
-                <div class="error-messages">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" required>
 
-            <form method="POST" action="{{ route('register') }}">
-                @csrf
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
 
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" value="{{ old('name') }}" required autofocus placeholder="John Doe" />
+                    <label for="password_confirmation">Confirm Password</label>
+                    <input type="password" id="password_confirmation" name="password_confirmation" required>
 
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}" required placeholder="you@example.com" />
+                    <button type="submit">Register</button>
 
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required placeholder="••••••••" />
-
-                <label for="password_confirmation">Confirm Password</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" required placeholder="••••••••" />
-
-                <button type="submit">Register</button>
-            </form>
-
-            <div class="login-link">
-                Already have an account? <a href="{{ route('login') }}">Sign In</a>
+                    <p style="text-align:center; margin-top: 20px;">Already have an account? <a href="{{ route('login') }}">Login here</a></p>
+                </form>
             </div>
         </div>
     </div>
-
-</div>
-
 </body>
 </html>
