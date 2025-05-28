@@ -12,9 +12,20 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+use App\Http\Controllers\Auth\RegisterController;
 
-Route::get('/register', [RegisterController::class, 'create'])->name('register');
-Route::post('/register', [RegisterController::class, 'store']);
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.form');
+Route::post('/register', [RegisterController::class, 'register'])->name('register');
+
+use App\Http\Controllers\Auth\EmployeeController;
+
+Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employee.create');
+Route::post('/employees/store', [EmployeeController::class, 'store'])->name('employee.store');
+
+
+use App\Http\Controllers\Auth\SuperDashController;
+
+Route::get('/superdash', [SuperDashController::class, 'index'])->name('superdash');
 
 Auth::routes();
 
