@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Admin Dashboard - Create Profile</title>
@@ -9,21 +10,24 @@
     body {
       background-color: #f8f9fa;
     }
+
     .dashboard-header {
       padding: 60px 0;
       background-color: #e9ecef;
       text-align: center;
     }
+
     .form-container {
       background: #ffffff;
       padding: 30px;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       max-width: 600px;
       margin: 40px auto 60px;
     }
   </style>
 </head>
+
 <body>
 
   <!-- Navbar -->
@@ -37,8 +41,7 @@
         data-bs-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown"
         aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+        aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -52,8 +55,7 @@
               id="profileDropdown"
               role="button"
               data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
+              aria-expanded="false">
               Profile
             </a>
             <ul class="dropdown-menu" aria-labelledby="profileDropdown">
@@ -90,6 +92,8 @@
         <label for="category" class="form-label">Category</label>
         <select class="form-select" id="category" name="category" required>
           <option value="" selected disabled>Select category</option>
+          <option value="superadmin">Super Admin</option>
+          <option value="admin">Admin</option>
           <option value="web developer">Web Developer</option>
           <option value="marketing">Marketing</option>
           <option value="pm">Project Manager</option>
@@ -125,4 +129,5 @@
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

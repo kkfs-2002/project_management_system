@@ -31,6 +31,8 @@ class ProfileController extends Controller
 
         // Define username prefixes based on category
         $usernamePrefix = [
+            'superadmin' => 'sadm',
+            'admin' => 'adm',
             'web developer' => 'web',
             'marketing' => 'mkt',
             'pm' => 'pm',

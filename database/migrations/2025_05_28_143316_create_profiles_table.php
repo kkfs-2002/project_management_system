@@ -15,7 +15,7 @@ return new class extends Migration
         $table->id();
         $table->string('full_name');
         $table->string('nic')->unique();
-        $table->enum('category', ['web developer', 'marketing', 'pm', 'qa', 'ba']);
+        $table->enum('category', ['superadmin', 'admin', 'web developer', 'marketing', 'pm', 'qa', 'ba']);
         $table->string('phone');
         $table->string('email')->unique();
         $table->string('password');
