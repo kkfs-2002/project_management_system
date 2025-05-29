@@ -101,8 +101,11 @@ public function update(Request $request, $id)
 
     $validated = $request->validate([
         'full_name' => 'required|string|max:255',
-        'email' => "required|email|unique:profiles,email,$id",
+        'employee_id' => "required|string|max:100|unique:profiles,employee_id,$id",
+        'email' => "required|email|max:255|unique:profiles,email,$id",
         'phone' => 'required|string|max:20',
+        'department' => 'required|string|max:100',
+        'job_title' => 'required|string|max:100',
         
     ]);
 

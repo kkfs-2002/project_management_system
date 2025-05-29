@@ -16,8 +16,8 @@
         text-align: left;
     }
     .employee-table th {
-        background-color: #005a99;
-        color: white;
+        background-color: #e6f2fa;
+        color: rgba(0, 0, 0, 0.75);
         text-transform: uppercase;
         font-weight: 600;
     }
