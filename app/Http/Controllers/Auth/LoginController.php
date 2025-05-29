@@ -23,7 +23,7 @@ class LoginController extends Controller
         $user = Profile::where('email', $request->email)->first();
 
         if (!$user) {
-            return back()->withErrors(['email' => 'Email not found.']);
+            return back()->withErrors(['email' => 'Invalid Username.']);
         }
 
         // Use plain password match if you're not hashing
