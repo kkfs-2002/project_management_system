@@ -22,9 +22,10 @@ Route::get('/developer/dashboard', fn() => view('dashboards.developer'))->name('
 
 //profile for employe
 Route::get('/admin/dashboard', [ProfileController::class, 'dashboard'])->name('admin.dashboard');
-Route::get('/admin/profile/create', [ProfileController::class, 'create'])->name('profile.create');
-Route::post('/admin/profile/store', [ProfileController::class, 'store'])->name('profile.store');
-Route::get('/admin/profile/view', [ProfileController::class, 'index'])->name('profile.index');
+Route::get('/admin/profiles/create', [ProfileController::class, 'create'])->name('profile.create');
+Route::post('/admin/profiles/store', [ProfileController::class, 'store'])->name('profile.store');
+Route::get('/admin/profiles', [ProfileController::class, 'index'])->name('profile.index');
+Route::get('/admin/profiles/{id}', [ProfileController::class, 'show'])->name('profile.show');
 
 //Add employee
 Route::get('/superadmin/employee/create', [EmployeeController::class, 'create'])->name('superadmin.employee.create');
