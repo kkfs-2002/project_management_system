@@ -33,22 +33,22 @@ class LoginController extends Controller
 
         // Store user info in session
         session([
-            'user_id' => $user->id,
-            'category' => $user->category,
+            'employee_id' => $user->employee_id,
+            'role' => $user->role,
             'name' => $user->full_name,
         ]);
 
         // Redirect based on category
-        switch ($user->category) {
-            case 'superadmin':
+        switch ($user->role) {
+            case 'Super Admin':
                 return redirect()->route('superadmin.dashboard');
-            case 'admin':
-                return redirect()->route('admin.dashboard');
-            case 'web developer':
+            case 'Admin':
+                return redirect()->route('layouts.admin');
+            case 'Developer':
                 return redirect()->route('developer.dashboard');
-            case 'marketing':
+            case 'Marketing Manager':
                 return redirect()->route('marketing.dashboard');
-            case 'pm':
+            case 'Project Manager':
                 return redirect()->route('pm.dashboard');
             case 'qa':
                 return redirect()->route('qa.dashboard');

@@ -20,7 +20,7 @@ Route::get('/layouts/admin', fn() => view('layouts.admin'))->name('layouts.admin
 Route::get('/developer/dashboard', fn() => view('dashboards.developer'))->name('developer.dashboard');
 
 
-//profile for employe
+//profile for employee
 Route::get('/layouts/admin', [ProfileController::class, 'dashboard'])->name('layouts.admin');
 Route::get('/admin/profiles/create', [ProfileController::class, 'create'])->name('profile.create');
 Route::post('/admin/profiles/store', [ProfileController::class, 'store'])->name('profile.store');
@@ -32,3 +32,10 @@ Route::get('/admin/profiles/{id}', [ProfileController::class, 'show'])->name('pr
 //Add employee
 Route::get('/superadmin/employee/create', [EmployeeController::class, 'create'])->name('superadmin.employee.create');
 Route::post('/superadmin/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+
+//View employee list/ Delete/Edit
+Route::get('/superadmin/employee', [EmployeeController::class, 'index'])->name('superadmin.employee.index');
+Route::get('/superadmin/employee/{id}', [EmployeeController::class, 'show'])->name('superadmin.employee.show');
+Route::get('/superadmin/employee/{id}/edit', [EmployeeController::class, 'edit'])->name('superadmin.employee.edit');
+Route::put('/superadmin/employee/{id}', [EmployeeController::class, 'update'])->name('superadmin.employee.update');
+Route::delete('/superadmin/employee/{id}', [EmployeeController::class, 'destroy'])->name('superadmin.employee.destroy');
