@@ -176,7 +176,11 @@
 
     <div class="form-group">
       <label>Employment Type</label>
-      <input type="text" name="employment_type" class="form-control" required>
+      <select name="employment_type" class="form-control" required>
+        <option value="">Select Type</option>
+        <option>Full Time</option>
+        <option>Part Time</option>
+  </select>
     </div>
 
     <div class="form-group">
@@ -186,7 +190,12 @@
 
     <div class="form-group">
       <label>Employee Status</label>
-      <input type="text" name="employee_status" class="form-control" required>
+       <select name="employee_status" class="form-control" required>
+        <option value="">Select Status</option>
+        <option>Senior</option>
+        <option>Junior</option>
+        <option>Trainee</option>
+  </select>
     </div>
 
     <div class="form-group">
