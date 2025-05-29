@@ -16,12 +16,12 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
 //Redirect based on roles
 Route::get('/superadmin/dashboard', fn() => view('superadmin.superdash'))->name('superadmin.dashboard');
-Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+Route::get('/layouts/admin', fn() => view('layouts.admin'))->name('layouts.admin');
 Route::get('/developer/dashboard', fn() => view('dashboards.developer'))->name('developer.dashboard');
 
 
 //profile for employe
-Route::get('/admin/dashboard', [ProfileController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/layouts/admin', [ProfileController::class, 'dashboard'])->name('layouts.admin');
 Route::get('/admin/profiles/create', [ProfileController::class, 'create'])->name('profile.create');
 Route::post('/admin/profiles/store', [ProfileController::class, 'store'])->name('profile.store');
 Route::get('/admin/profiles', [ProfileController::class, 'index'])->name('profile.index');

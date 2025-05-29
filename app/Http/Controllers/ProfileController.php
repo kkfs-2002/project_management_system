@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
+    public function dashboard(){
+        return view('layouts.admin');
+    }
 public function create()
 {
     return view('admin.profile.create');
