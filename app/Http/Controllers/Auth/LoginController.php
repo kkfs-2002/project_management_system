@@ -2,60 +2,48 @@
 
 namespace App\Http\Controllers\Auth;
 
-use app\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Profile;
+use App\Http\Controllers\Controller;
 
 class LoginController extends Controller
 {
     /**
      * Create a new controller instance and apply middleware.
      */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
-
-    /**
-     * Show the login form.
-     */
     public function showLoginForm()
     {
-        return view('auth.login'); // Make sure this view exists
+        return view('auth.login');
     }
 
-    /**
-     * Handle login request.
-     */
     public function login(Request $request)
     {
-        $request->validate([
-        'username' => 'required|string',
-        'password' => 'required|string',
-    ]);
+        $credentials = $request->only('email', 'password');
 
-    $credentials = $request->only('username', 'password');
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
 
-    if (Auth::attempt($credentials, $request->filled('remember'))) {
-        $request->session()->regenerate();
-        return redirect()->intended('/dashboard');
-    }
+            switch ($user->category) {
+                case 'superadmin':
+                    return redirect('/superadmin/dashboard');
+                case 'admin':
+                    return redirect('/admin/dashboard');
+                case 'web developer':
+                    return redirect('/developer/dashboard');
+                case 'marketing':
+                    return redirect('/marketing/dashboard');
+                case 'pm':
+                    return redirect('/pm/dashboard');
+                case 'qa':
+                    return redirect('/qa/dashboard');
+                case 'ba':
+                    return redirect('/ba/dashboard');
+                default:
+                    return redirect('/login')->with('error', 'Invalid role.');
+            }
+        }
 
-    return back()->withErrors([
-        'username' => 'The provided credentials do not match our records.',
-    ])->withInput();
-    }
-
-    /**
-     * Handle logout request.
-     */
-    public function logout(Request $request)
-    {
-        Auth::logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/');
+        return redirect()->back()->with('error', 'Invalid credentials');
     }
 }

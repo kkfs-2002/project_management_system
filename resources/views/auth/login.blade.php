@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Login | Modern Style</title>
+    <title>Login | NetIT Technology</title>
     <style>
-        /* Reset & base */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -183,13 +182,19 @@
 <div class="container">
 
     <div class="left-panel">
-        <h1>Welcome Back!</h1>
+        <h1>Welcome!!</h1>
         <p>Login to access your personalized dashboard and manage your projects with ease. Stay productive, organized, and connected.</p>
     </div>
 
     <div class="right-panel">
         <div class="login-form">
             <h2>Sign In</h2>
+
+            @if (session('error'))
+                <div class="error-messages">
+                    {{ session('error') }}
+                </div>
+            @endif
 
             @if ($errors->any())
                 <div class="error-messages">
@@ -201,10 +206,10 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ url('login') }}">
+            <form method="POST" action="{{ route('login.submit') }}">
                 @csrf
 
-                <label for="username">User Name</label>
+                <label for="email">Email</label>
                 <input
                     type="email"
                     id="email"
@@ -212,7 +217,7 @@
                     value="{{ old('email') }}"
                     required
                     autofocus
-                    placeholder="AdminName"
+                    placeholder="you@example.com"
                 />
 
                 <label for="password">Password</label>
@@ -225,16 +230,15 @@
                 />
 
                 <div class="remember-forgot">
-
-                    <a href="{{ route('password.request') }}">Forgot Password?</a>
+                    <label><input type="checkbox" name="remember"> Remember me</label>
+                    
                 </div>
 
                 <button type="submit">Login</button>
 
                 <div style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
-    Don't have an account? <a href="{{ route('register') }}">Sign Up</a>
-</div>
-
+                    Need access? Contact your Admin.
+                </div>
             </form>
 
         </div>
@@ -244,3 +248,4 @@
 
 </body>
 </html>
+
