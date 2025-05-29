@@ -24,7 +24,9 @@ Route::get('/developer/dashboard', fn() => view('dashboards.developer'))->name('
 Route::get('/layouts/admin', [ProfileController::class, 'dashboard'])->name('layouts.admin');
 Route::get('/admin/profiles/create', [ProfileController::class, 'create'])->name('profile.create');
 Route::post('/admin/profiles/store', [ProfileController::class, 'store'])->name('profile.store');
+Route::get('/admin/profile', [ProfileController::class, 'index'])->name('profiles.index');
 Route::get('/admin/profiles', [ProfileController::class, 'index'])->name('profile.index');
+
 Route::get('/admin/profiles/{id}', [ProfileController::class, 'show'])->name('profile.show');
 
 //Add employee

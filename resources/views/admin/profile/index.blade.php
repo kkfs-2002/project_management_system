@@ -74,9 +74,28 @@
         margin-top: 10px;
         display: block;
     }
+
+    
+
+
 </style>
 
 <h2>Profile List</h2>
+
+<!-- Filter Form -->
+<form method="GET" action="{{ route('profiles.index') }}" 
+      style="max-width: 1300px; margin: 0 auto 30px auto; background-color: #ffffff; border-radius: 10px; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+    <label for="role">Filter by Role:</label>
+    <select name="role" id="role" onchange="this.form.submit()">
+        <option value="">-- All Roles --</option>
+        @foreach($roles as $role)
+            <option value="{{ $role }}" {{ request('role') == $role ? 'selected' : '' }}>{{ ucfirst($role) }}</option>
+        @endforeach
+    </select>
+</form>
+
+
+
 <table class="table table-bordered">
     <thead>
         <tr>

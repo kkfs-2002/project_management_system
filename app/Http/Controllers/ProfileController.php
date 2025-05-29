@@ -32,8 +32,20 @@ public function store(Request $request)
     return redirect()->back()->with('success', 'Profile created successfully!');
 }
 
-public function index()
+public function index(Request $request)
 {
+  
+    $role = $request->get('role');
+
+    $profiles = Profile::when($role, function($query, $role) {
+        return $query->where('role', $role);
+    })->get();
+
+    $roles = Profile::select('role')->distinct()->pluck('role');
+
+    return view('admin.profile.index', compact('profiles', 'roles'));
+
+
     $profiles = Profile::all();
     return view('admin.profile.index', compact('profiles'));
 }
