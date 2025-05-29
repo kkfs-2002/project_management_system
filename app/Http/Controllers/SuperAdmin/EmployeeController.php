@@ -5,12 +5,13 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 
 class EmployeeController extends Controller
 {
     public function create()
     {
-        return view('employee.create');
+        return view('superadmin.employee.create');
     }
 
     public function store(Request $request)

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\SuperAdmin\EmployeeController;
 
 Route::get('/', function () {
    return redirect()->route('login');
@@ -24,3 +25,7 @@ Route::get('/admin/dashboard', [ProfileController::class, 'dashboard'])->name('a
 Route::get('/admin/profile/create', [ProfileController::class, 'create'])->name('profile.create');
 Route::post('/admin/profile/store', [ProfileController::class, 'store'])->name('profile.store');
 Route::get('/admin/profile/view', [ProfileController::class, 'index'])->name('profile.index');
+
+//Add employee
+Route::get('/superadmin/employee/create', [EmployeeController::class, 'create'])->name('superadmin.employee.create');
+Route::post('/superadmin/employee/store', [EmployeeController::class, 'store'])->name('employee.store');

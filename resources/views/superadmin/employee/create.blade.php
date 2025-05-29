@@ -6,7 +6,7 @@
 <style>
     body {
         font-family: 'Segoe UI', sans-serif;
-        background-color: #f2f9ff;
+        background-color: #F5F5F5;
     }
 
     form {
@@ -22,7 +22,7 @@
     h2 {
         text-align: center;
         margin-bottom: 20px;
-        color: #007acc;
+        color: #383838;
     }
 
     h4 {
@@ -51,7 +51,7 @@
         margin-top: 30px;
         width: 100%;
         padding: 12px;
-        background-color: #007acc;
+        background-color:#d4af37;
         color: white;
         border: none;
         border-radius: 6px;
