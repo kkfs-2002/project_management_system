@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
-      background-color: #f8f9fa;
+      background-color: #f4f6f9;
     }
 
     .dashboard-header {
@@ -17,18 +17,51 @@
       text-align: center;
     }
 
+    .filter-form {
+      margin-top: 20px;
+    }
+
     .table-container {
-      background: #ffffff;
+      background-color: #ffffff;
       padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      max-width: 1000px;
-      margin: 40px auto 60px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+      max-width: 95%;
+      margin: 30px auto;
       overflow-x: auto;
     }
 
-    table img {
-      border-radius: 5px;
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+    }
+
+    thead {
+      background-color: #d4af37; 
+      color: white;
+    }
+
+    th, td {
+      text-align: center;
+      vertical-align: middle;
+      padding: 12px;
+    }
+
+    tbody tr {
+      transition: background 0.2s ease-in-out;
+    }
+
+    tbody tr:hover {
+      background-color: #f1f3f5;
+    }
+
+    .profile-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
   </style>
 </head>
@@ -64,11 +97,10 @@
   </header>
 
   <!-- Filter Form -->
-  <div class="container mb-4">
+  <div class="container filter-form mb-4">
     <form action="{{ route('profile.index') }}" method="GET" class="row g-3 justify-content-center">
       <div class="col-auto">
         <select name="category" class="form-select">
-          <option value=""> </option>
           <option value="">All Categories</option>
           <option value="superadmin" {{ request('category') == 'superadmin' ? 'selected' : '' }}>Super Admin</option>
           <option value="admin" {{ request('category') == 'admin' ? 'selected' : '' }}>Admin</option>
@@ -80,15 +112,15 @@
         </select>
       </div>
       <div class="col-auto">
-        <button type="submit" class="btn btn-secondary">Filter</button>
+        <button type="submit" class="btn btn-primary">Filter</button>
       </div>
     </form>
   </div>
 
   <!-- Table Container -->
   <div class="table-container">
-    <table class="table table-bordered table-striped">
-      <thead class="table-dark">
+    <table class="table table-bordered">
+      <thead>
         <tr>
           <th>Full Name</th>
           <th>NIC</th>
@@ -112,15 +144,15 @@
           <td>{{ $profile->username }}</td>
           <td>
             @if($profile->profile_picture)
-            <img src="{{ asset('uploads/' . $profile->profile_picture) }}" width="50" height="50" alt="Profile Pic">
+              <img src="{{ asset('uploads/' . $profile->profile_picture) }}" class="profile-img" alt="Profile Picture">
             @else
-            <span class="text-muted">No Image</span>
+              <span class="text-muted">No Image</span>
             @endif
           </td>
         </tr>
         @empty
         <tr>
-          <td colspan="8" class="text-center">No profiles found for this category.</td>
+          <td colspan="8" class="text-center text-muted">No profiles found for this category.</td>
         </tr>
         @endforelse
       </tbody>

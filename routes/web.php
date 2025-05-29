@@ -13,6 +13,10 @@ Route::get('/', function () {
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
+//Redirect based on roles
+Route::get('/superadmin/dashboard', fn() => view('superadmin.superdash'))->name('superadmin.dashboard');
+Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
+Route::get('/developer/dashboard', fn() => view('dashboards.developer'))->name('developer.dashboard');
 
 
 //profile for employe
