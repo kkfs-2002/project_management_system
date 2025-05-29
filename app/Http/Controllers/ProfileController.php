@@ -22,8 +22,11 @@ public function store(Request $request)
 
     // Handle file uploads
     foreach (['profile_photo', 'resume', 'offer_letter', 'id_copy', 'signed_contract', 'certificates'] as $field) {
-        if ($request->hasFile($field)) {
-            $data[$field] = $request->file($field)->store('uploads', 'public');
+       if ($request->hasFile($field)) {
+            $file = $request->file($field);
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('uploads', $filename, 'public');
+            $data[$field] = $path;
         }
     }
 

@@ -30,3 +30,9 @@ Route::get('/admin/profiles/{id}', [ProfileController::class, 'show'])->name('pr
 //Add employee
 Route::get('/superadmin/employee/create', [EmployeeController::class, 'create'])->name('superadmin.employee.create');
 Route::post('/superadmin/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+
+//View employee list/ Delete/Edit
+Route::get('/superadmin/employee', [EmployeeController::class, 'index'])->name('superadmin.employee.index');
+Route::get('/superadmin/employee/{id}', [EmployeeController::class, 'show'])->name('superadmin.employee.show');
+Route::get('/superadmin/employee/{id}/edit', [EmployeeController::class, 'edit'])->name('superadmin.employee.edit');
+Route::delete('/superadmin/employee/{id}', [EmployeeController::class, 'destroy'])->name('superadmin.employee.destroy');

@@ -105,8 +105,8 @@
             <i class="fas fa-users me-1"></i> Employees
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="employeesDropdown">
-            <li><a class="dropdown-item" href="#">Add Employee</a></li>
-            <li><a class="dropdown-item" href="#">Employee List</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.employee.create') }}">Add Employee</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.employee.index') }}">Employee List</a></li>
             <li><a class="dropdown-item" href="#">Attendance Tracker</a></li>
             <li><a class="dropdown-item" href="#">Leave & Presence Report</a></li>
             <li><a class="dropdown-item" href="#">Monthly Working Hour Summary</a></li>
