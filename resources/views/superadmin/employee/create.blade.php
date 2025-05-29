@@ -51,7 +51,7 @@
         margin-top: 30px;
         width: 100%;
         padding: 12px;
-        background-color:#d4af37;
+        background-color:#6082B6;
         color: white;
         border: none;
         border-radius: 6px;
@@ -60,7 +60,7 @@
     }
 
     button:hover {
-        background-color: #005f9e;
+        background-color:#4169E1;
     }
 
     .alert-success {
