@@ -15,6 +15,7 @@
             height: 100%;
             background: #f0f4f8;
         }
+
         a {
             color: #667eea;
             text-decoration: none;
@@ -23,28 +24,28 @@
             text-decoration: underline;
         }
 
-        /* Container split */
         .container {
             display: flex;
             height: 100vh;
             width: 100vw;
         }
 
-        /* Left panel with gradient and text */
         .left-panel {
             flex: 1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #F5F5F5;
+            color: #383838;
             display: flex;
             flex-direction: column;
             justify-content: center;
             padding: 60px 40px;
         }
+
         .left-panel h1 {
             font-size: 3.5rem;
             margin-bottom: 20px;
             font-weight: 700;
         }
+
         .left-panel p {
             font-size: 1.25rem;
             line-height: 1.6;
@@ -52,34 +53,40 @@
             opacity: 0.85;
         }
 
-        /* Right panel with form */
         .right-panel {
             flex: 1;
-            background: white;
+            background: url('/NetIT Logo.png') no-repeat center center / cover;
             display: flex;
-            flex-direction: column;
             justify-content: center;
+            align-items: center;
             padding: 60px 50px;
-            box-shadow: -4px 0 20px rgba(102, 126, 234, 0.15);
+            position: relative;
         }
 
         .login-form {
-            max-width: 380px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            padding: 30px 25px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            color: #fff;
         }
+
         .login-form h2 {
             font-weight: 700;
             margin-bottom: 30px;
-            color: #333;
             text-align: center;
+            color: #fff;
         }
 
         label {
             display: block;
             font-weight: 600;
             margin-bottom: 8px;
-            color: #555;
             font-size: 0.9rem;
+            color: #f1f1f1;
         }
 
         input[type="email"],
@@ -88,15 +95,12 @@
             padding: 14px 16px;
             margin-bottom: 20px;
             border-radius: 8px;
-            border: 1.5px solid #ddd;
+            border: none;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
         }
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+
+        input::placeholder {
+            color: #ccc;
         }
 
         .remember-forgot {
@@ -105,19 +109,19 @@
             align-items: center;
             margin-bottom: 30px;
             font-size: 0.9rem;
-            color: #666;
+            color: #eee;
         }
+
         .remember-forgot label {
             font-weight: 500;
             display: flex;
             align-items: center;
             gap: 8px;
-            cursor: pointer;
         }
+
         .remember-forgot input[type="checkbox"] {
             width: 16px;
             height: 16px;
-            cursor: pointer;
         }
 
         button {
@@ -133,46 +137,41 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
             transition: background-color 0.3s ease;
         }
+
         button:hover {
             background: #5a67d8;
         }
 
-        /* Error messages styling */
         .error-messages {
-            background: #ffe1e1;
-            color: #d8000c;
-            border: 1px solid #d8000c;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffe1e1;
+            border: 1px solid #ffb3b3;
             border-radius: 8px;
             padding: 10px 15px;
             margin-bottom: 20px;
             font-weight: 600;
         }
+
         .error-messages ul {
             list-style: inside disc;
         }
 
-        /* Responsive for small screens */
         @media (max-width: 900px) {
             .container {
                 flex-direction: column;
             }
-            .left-panel, .right-panel {
+
+            .left-panel,
+            .right-panel {
                 flex: none;
                 width: 100%;
-                height: 50vh;
-                box-shadow: none !important;
-            }
-            .left-panel {
+                height: auto;
                 padding: 40px 20px;
-                height: 40vh;
-                text-align: center;
             }
-            .right-panel {
-                padding: 40px 20px;
-                height: 60vh;
-            }
+
             .login-form {
                 max-width: 100%;
+                padding: 25px 20px;
             }
         }
     </style>
@@ -231,7 +230,6 @@
 
                 <div class="remember-forgot">
                     <label><input type="checkbox" name="remember"> Remember me</label>
-                    
                 </div>
 
                 <button type="submit">Login</button>
@@ -240,7 +238,6 @@
                     Need access? Contact your Admin.
                 </div>
             </form>
-
         </div>
     </div>
 
@@ -248,4 +245,3 @@
 
 </body>
 </html>
-
