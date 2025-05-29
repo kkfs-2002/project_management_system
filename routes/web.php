@@ -20,7 +20,7 @@ Route::get('/layouts/admin', fn() => view('layouts.admin'))->name('layouts.admin
 Route::get('/developer/dashboard', fn() => view('dashboards.developer'))->name('developer.dashboard');
 
 
-//profile for employe
+//profile for employee
 Route::get('/layouts/admin', [ProfileController::class, 'dashboard'])->name('layouts.admin');
 Route::get('/admin/profiles/create', [ProfileController::class, 'create'])->name('profile.create');
 Route::post('/admin/profiles/store', [ProfileController::class, 'store'])->name('profile.store');
