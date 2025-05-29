@@ -95,6 +95,22 @@ public function edit($id)
     return view('superadmin.employee.edit', compact('employee'));
 }
 
+public function update(Request $request, $id)
+{
+    $employee = Profile::findOrFail($id);
+
+    $validated = $request->validate([
+        'full_name' => 'required|string|max:255',
+        'email' => "required|email|unique:profiles,email,$id",
+        'phone' => 'required|string|max:20',
+        
+    ]);
+
+    $employee->update($validated);
+
+    return redirect()->route('superadmin.employee.index')->with('success', 'Employee updated successfully!');
+}
+
 public function destroy($id)
 {
     $employee = Profile::findOrFail($id);

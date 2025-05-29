@@ -35,4 +35,5 @@ Route::post('/superadmin/employee/store', [EmployeeController::class, 'store'])-
 Route::get('/superadmin/employee', [EmployeeController::class, 'index'])->name('superadmin.employee.index');
 Route::get('/superadmin/employee/{id}', [EmployeeController::class, 'show'])->name('superadmin.employee.show');
 Route::get('/superadmin/employee/{id}/edit', [EmployeeController::class, 'edit'])->name('superadmin.employee.edit');
+Route::put('/superadmin/employee/{id}', [EmployeeController::class, 'update'])->name('superadmin.employee.update');
 Route::delete('/superadmin/employee/{id}', [EmployeeController::class, 'destroy'])->name('superadmin.employee.destroy');
