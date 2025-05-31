@@ -81,6 +81,8 @@ class EmployeeController extends Controller
 {
     $employees = Profile::orderBy('full_name')->paginate(10);
     return view('superadmin.employee.index', compact('employees'));
+
+    
 }
 
 public function show($id)

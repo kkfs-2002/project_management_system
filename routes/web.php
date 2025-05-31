@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SuperAdmin\EmployeeController;
+use App\Http\Controllers\Admin\AttendanceController;
 
 Route::get('/', function () {
    return redirect()->route('login');
@@ -39,3 +40,7 @@ Route::get('/superadmin/employee/{id}', [EmployeeController::class, 'show'])->na
 Route::get('/superadmin/employee/{id}/edit', [EmployeeController::class, 'edit'])->name('superadmin.employee.edit');
 Route::put('/superadmin/employee/{id}', [EmployeeController::class, 'update'])->name('superadmin.employee.update');
 Route::delete('/superadmin/employee/{id}', [EmployeeController::class, 'destroy'])->name('superadmin.employee.destroy');
+
+//Attendance employee- Admin
+Route::get('/admin/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+Route::post('/admin/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
