@@ -48,6 +48,23 @@ class AttendanceController extends Controller
         }
     }
 
-    return redirect()->back()->with('success', 'Attendance saved successfully.');
+    return redirect()->back()->with('success', 'Attendance marked successfully.');
+}
+
+    public function showSheet(Request $request)
+{
+    $query = Attendance::with('profile');
+
+    if ($request->filled('date')) {
+        $query->whereDate('date', $request->date);
+    }
+
+    if ($request->filled('month')) {
+        $query->whereMonth('date', $request->month);
+    }
+
+    $attendances = $query->get();
+
+    return view('admin.attendance.sheet', compact('attendances'));
 }
 }

@@ -41,6 +41,9 @@ Route::get('/superadmin/employee/{id}/edit', [EmployeeController::class, 'edit']
 Route::put('/superadmin/employee/{id}', [EmployeeController::class, 'update'])->name('superadmin.employee.update');
 Route::delete('/superadmin/employee/{id}', [EmployeeController::class, 'destroy'])->name('superadmin.employee.destroy');
 
-//Attendance employee- Admin
+//Mark Attendance employee- Admin
 Route::get('/admin/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
 Route::post('/admin/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+
+//View attendance filtered by date and month
+Route::get('/admin/attendance/sheet', [AttendanceController::class, 'showSheet'])->name('attendance.sheet');
