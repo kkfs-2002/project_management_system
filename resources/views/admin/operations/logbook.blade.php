@@ -72,7 +72,10 @@
         @csrf
 
         <h4>1. Logbook Entry</h4>
-
+         @if(session('success'))
+  <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
+  
         <div class="form-group">
             <label>Project Manager</label>
             <select name="project_manager_id" class="form-control" required>
