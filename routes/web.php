@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SuperAdmin\EmployeeController;
 use App\Http\Controllers\Admin\AttendanceController;
+use App\Http\Controllers\Admin\PMOperationsController;
 
 Route::get('/', function () {
    return redirect()->route('login');
@@ -47,3 +48,13 @@ Route::post('/admin/attendance', [AttendanceController::class, 'store'])->name('
 
 //View attendance filtered by date and month
 Route::get('/admin/attendance/sheet', [AttendanceController::class, 'showSheet'])->name('attendance.sheet');
+
+// Admin Dashboard Operations
+    Route::get('/admin/operations/logbook', [PMOperationsController::class, 'showLogForm'])->name('admin.operations.logbook');
+    Route::post('/admin/operations/logbook', [PMOperationsController::class, 'storeLog'])->name('admin.operations.logbook');
+
+    Route::get('/admin/operations/assign_task', [PMOperationsController::class, 'showAssignForm'])->name('admin.operations.assign_task');
+    Route::post('/admin/operations/assign_task', [PMOperationsController::class, 'assignTask'])->name('admin.operations.assign_task');
+
+
+
