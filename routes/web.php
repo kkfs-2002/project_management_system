@@ -7,6 +7,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SuperAdmin\EmployeeController;
 use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\PMOperationsController;
+use App\Http\Controllers\SuperAdmin\SuperAdminAttendanceController;
+
 
 Route::get('/', function () {
    return redirect()->route('login');
@@ -56,5 +58,10 @@ Route::get('/admin/attendance/sheet', [AttendanceController::class, 'showSheet']
     Route::get('/admin/operations/assign_task', [PMOperationsController::class, 'showAssignForm'])->name('admin.operations.assign_task');
     Route::post('/admin/operations/assign_task', [PMOperationsController::class, 'assignTask'])->name('admin.operations.assign_task');
 
+//Summary and charts of Attendance - Super admin
+Route::prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/attendance', [SuperAdminAttendanceController::class, 'index'])->name('employee.attendance.index');
+    Route::get('/attendance/download', [SuperAdminAttendanceController::class, 'downloadPdf'])->name('employee.attendance.pdf');
+});
 
 
