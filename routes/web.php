@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\PMOperationsController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAttendanceController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\SuperAdmin\ProjectController;
 
 
 Route::get('/', function () {
@@ -73,3 +74,11 @@ Route::get('/clients/{client}/edit', [ClientController::class, 'edit'])->name('c
 Route::put('/clients/{client}', [ClientController::class, 'update'])->name('clients.update');
 Route::delete('/clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
 Route::get('/dashboard', fn() => view('marketing.dashboard'))->name('marketing.dashboard');
+
+//Project Finance
+Route::prefix('superadmin/project')->name('superadmin.project.')->group(function () {
+    Route::get('/', [ProjectController::class, 'index'])->name('index');
+    Route::get('/create', [ProjectController::class, 'create'])->name('create');
+    Route::post('/store', [ProjectController::class, 'store'])->name('store');
+});
+

@@ -122,8 +122,6 @@
             <li><a class="dropdown-item" href="#">Add Project</a></li>
             <li><a class="dropdown-item" href="#">Project List</a></li>
             <li><a class="dropdown-item" href="#">Project Status Update</a></li>
-            <li><a class="dropdown-item" href="#">Assigned Employees</a></li>
-            <li><a class="dropdown-item" href="#">Hosting & Domain Details</a></li>
             <li><a class="dropdown-item" href="#">Upcoming Deadlines</a></li>
           </ul>
         </li>
@@ -131,10 +129,10 @@
         <!-- Finance -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="financeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-money-bill-wave me-1"></i> Finance
+            <i class="fas fa-money-bill-wave me-1"></i> Accounts
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="financeDropdown">
-            <li><a class="dropdown-item" href="#">Add Financial Entry</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.project.index') }}">Add Financial Entry</a></li>
             <li><a class="dropdown-item" href="#">View All Transactions</a></li>
             <li><a class="dropdown-item" href="#">Monthly Sheets</a></li>
             <li><a class="dropdown-item" href="#">Expense Tracker</a></li>
