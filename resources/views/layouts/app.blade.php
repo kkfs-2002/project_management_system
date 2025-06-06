@@ -133,7 +133,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="financeDropdown">
             <li><a class="dropdown-item" href="{{ route('superadmin.project.index') }}">Add Financial Entry</a></li>
-            <li><a class="dropdown-item" href="#">View All Transactions</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.project.transactions') }}">View All Transactions</a></li>
             <li><a class="dropdown-item" href="#">Monthly Sheets</a></li>
             <li><a class="dropdown-item" href="#">Expense Tracker</a></li>
             <li><a class="dropdown-item" href="#">Developer Salary View</a></li>

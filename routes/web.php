@@ -83,7 +83,14 @@ Route::prefix('superadmin/project')->name('superadmin.project.')->group(function
     // Financials
     Route::get('/{project}/financials/create', [ProjectController::class, 'createFinancials'])->name('financials.create');
     Route::post('/financials/store', [ProjectController::class, 'storeFinancials'])->name('financials.store');
-
+    
+    //View transactions
     Route::get('/transactions', [ProjectController::class, 'transactions'])->name('transactions');
+    Route::get('/transactions/download-pdf', [ProjectController::class, 'downloadPdf'])->name('transactions.downloadPdf');
+
+    Route::get('/financials/{account}/edit', [ProjectController::class, 'editFinancials'])->name('financials.edit');
+    Route::put('/financials/{account}', [ProjectController::class, 'updateFinancials'])->name('financials.update');
+    Route::delete('/financials/{account}', [ProjectController::class, 'destroyFinancials'])->name('financials.destroy');
+
 });
 
