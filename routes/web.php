@@ -75,10 +75,15 @@ Route::put('/clients/{client}', [ClientController::class, 'update'])->name('clie
 Route::delete('/clients/{client}', [ClientController::class, 'destroy'])->name('clients.destroy');
 Route::get('/dashboard', fn() => view('marketing.dashboard'))->name('marketing.dashboard');
 
-//Project Finance
 Route::prefix('superadmin/project')->name('superadmin.project.')->group(function () {
     Route::get('/', [ProjectController::class, 'index'])->name('index');
     Route::get('/create', [ProjectController::class, 'create'])->name('create');
     Route::post('/store', [ProjectController::class, 'store'])->name('store');
+
+    // Financials
+    Route::get('/{project}/financials/create', [ProjectController::class, 'createFinancials'])->name('financials.create');
+    Route::post('/financials/store', [ProjectController::class, 'storeFinancials'])->name('financials.store');
+
+    Route::get('/transactions', [ProjectController::class, 'transactions'])->name('transactions');
 });
 
