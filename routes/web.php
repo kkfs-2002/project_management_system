@@ -10,6 +10,11 @@ use App\Http\Controllers\Admin\PMOperationsController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAttendanceController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\SuperAdmin\ProjectController;
+use App\Http\Controllers\Developer\DeveloperTasksController;
+use App\Http\Controllers\ProjectManager\ProjectManagerTasksController;
+use App\Http\Controllers\SuperAdmin\SuperAdminAssignTaskController;
+use App\Http\Controllers\ProjectManager\ProjectManagerDashboardController;
+
 
 
 Route::get('/', function () {
@@ -93,4 +98,18 @@ Route::prefix('superadmin/project')->name('superadmin.project.')->group(function
     Route::delete('/financials/{account}', [ProjectController::class, 'destroyFinancials'])->name('financials.destroy');
 
 });
+
+// Task
+// Superadmin
+Route::get('/superadmin/assign-task/create', [SuperAdminAssignTaskController::class, 'create'])->name('superadmin.assign_task.create');
+Route::post('/superadmin/assign-task/store', [SuperAdminAssignTaskController::class, 'store'])->name('superadmin.assign_task.store');
+
+// Project Manager
+Route::get('/projectmanager/tasks', [ProjectManagerTasksController::class, 'index'])->name('projectmanager.tasks.index');
+Route::post('/projectmanager/tasks/forward/{id}', [ProjectManagerTasksController::class, 'forward'])->name('projectmanager.tasks.forward');
+Route::get('/layouts/projectmanager', [ProjectManagerDashboardController::class, 'index'])->name('layouts.projectmanager');
+
+
+// Developer
+Route::get('/developer/tasks', [DeveloperTasksController::class, 'index'])->name('developer.tasks.index');
 

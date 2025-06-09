@@ -16,4 +16,14 @@ class AssignedTask extends Model
         'priority',
         'status',
     ];
+
+    public function projectManager()
+    {
+        return $this->belongsTo(Profile::class, 'project_manager_id');
+    }
+
+    public function developer()
+    {
+        return $this->belongsTo(Profile::class, 'developer_id');
+    }
 }
