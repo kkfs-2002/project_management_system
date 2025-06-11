@@ -49,7 +49,7 @@ class LoginController extends Controller
             case 'Marketing Manager':
                 return redirect()->route('marketing.dashboard');
             case 'Project Manager':
-                return redirect()->route('pm.dashboard');
+                return redirect()->route('layouts.projectmanager');
             case 'qa':
                 return redirect()->route('qa.dashboard');
             case 'ba':
