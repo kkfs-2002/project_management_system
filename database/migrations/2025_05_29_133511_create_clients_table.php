@@ -13,18 +13,24 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string('client_name');
-            $table->string('contact_number');
-            $table->string('project_name');
-            $table->enum('project_type', ['web', 'mobile']);
-            $table->string('technology');
+            $table->string('name');
+            $table->string('contact_number')->nullable();
+            $table->string('project_name')->nullable();
+            $table->enum('project_type', ['Web', 'Mobile'])->nullable();
+            $table->string('technology')->nullable();
             $table->date('reminder_date')->nullable();
             $table->text('note')->nullable();
-            $table->decimal('cost', 10, 2)->nullable();
-            $table->string('status')->default('pending');
+    
+            // ✅ Remove 'after(...)' from here:
+            $table->decimal('amount', 10, 2)->nullable();
+            $table->enum('payment_status', ['No Payment', 'Advance', 'Full'])->default('No Payment');
+            $table->string('status')->default('inactive');
+    
             $table->timestamps();
         });
     }
+    
+    
 
     /**
      * Reverse the migrations.
