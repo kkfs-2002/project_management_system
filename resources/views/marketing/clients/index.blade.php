@@ -1,141 +1,62 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Client List</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f0f8ff;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #007acc;
-        }
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .top-bar a {
-            padding: 10px 20px;
-            background: #007acc;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #e6f2ff;
-            color: #007acc;
-        }
-        .btn-edit, .btn-delete {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .btn-edit {
-            background-color: #00aaff;
-            color: white;
-        }
-        .btn-delete {
-            background-color: #ff4d4d;
-            color: white;
-        }
-        .btn-delete:hover {
-            background-color: #e60000;
-        }
-        .btn-edit:hover {
-            background-color: #008ecc;
-        }
-        .actions {
-            display: flex;
-            gap: 8px;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <h2>Client List</h2>
-    <a href="{{ route('marketing.dashboard') }}" class="text-blue-600 font-medium hover:underline">← Dashboard</a>
-    <div class="top-bar">
-        <div></div>
-        <a href="{{ route('clients.create') }}">+ Add New Client</a>
-    </div>
+@extends('layouts.marketing')
 
-    @if(session('success'))
-        <div style="color: green; font-weight: bold; margin-bottom: 10px;">{{ session('success') }}</div>
+@section('title', 'All Clients')
+
+@section('content')
+<div class="container mt-4">
+    <h2>All Clients</h2>
+
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Contact</th>
-                <th>Project</th>
-                <th>Type</th>
-                <th>Technology</th>
-                <th>Reminder Date</th>
-                <th>Cost (LKR)</th>
-                <th>Status</th>
-                <th>note</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($clients as $client)
-                <tr class="hover:bg-blue-50">
-                    <td>{{ $client->client_name }}</td>
-                    <td>{{ $client->contact_number }}</td>
-                    <td>{{ $client->project_name }}</td>
-                    <td>{{ $client->project_type }}</td>
-                    <td>{{ $client->technology }}</td>
-                    <td>{{ $client->reminder_date }}</td>
-                    <td>{{ $client->cost ? number_format($client->cost, 2) : '-' }}</td>
-                    <td>
-                        @if($client->status === 'success')
-                            <span style="color: green; font-weight: bold;">Success</span>
-                        @else
-                            <span style="color: #e6ac00; font-weight: bold;">Pending</span>
-                        @endif
-                    </td>
-                    <td>{{ $client->note }}</td>
-                    <td>
-                        <div class="actions">
-                            <a href="{{ route('clients.edit', $client->id) }}" class="btn-edit">Edit</a>
-                            <form action="{{ route('clients.destroy', $client->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this client?');">
+    <a href="{{ route('marketing.clients.create') }}" class="btn btn-primary mb-3">+ Create New Client</a>
+
+    @if ($clients->isEmpty())
+        <p>No clients found.</p>
+    @else
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Contact Number</th>
+                    <th>Project Name</th>
+                    <th>Project Type</th>
+                    <th>Technology</th>
+                    <th>Payment Status</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Reminder Date</th>
+                    <th>Note</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($clients as $client)
+                    <tr>
+                        <td>{{ $client->name }}</td>
+                        <td>{{ $client->contact_number }}</td>
+                        <td>{{ $client->project_name }}</td>
+                        <td>{{ $client->project_type }}</td>
+                        <td>{{ $client->technology }}</td>
+                        <td>{{ $client->payment_status }}</td>
+                        <td>{{ number_format($client->amount, 2) }}</td>
+                        <td>{{ ucfirst($client->status) }}</td>
+                        <td>{{ $client->reminder_date }}</td>
+                        <td>{{ $client->note }}</td>
+                        <td>
+                            <a href="{{ route('marketing.clients.edit', $client->id) }}" class="btn btn-sm btn-warning">Edit</a>
+
+                            <form action="{{ route('marketing.clients.destroy', $client->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn-delete">Delete</button>
+                                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
                             </form>
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
 </div>
-</body>
-</html>
+@endsection
