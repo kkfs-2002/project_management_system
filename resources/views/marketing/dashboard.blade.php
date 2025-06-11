@@ -1,67 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Marketing Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.marketing')
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-r from-blue-50 to-blue-100 min-h-screen">
+@section('title', 'Marketing Dashboard')
 
-    <div class="max-w-7xl mx-auto px-4 py-10">
-        <h1 class="text-4xl font-bold text-blue-900 mb-8">Marketing Manager Dashboard</h1>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-            <!-- Registered Clients Tile -->
-            <a href="{{ route('clients.index') }}" class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-blue-300 transition hover:scale-105">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-2xl font-semibold text-blue-800">Registered Clients</h2>
-                        <p class="text-sm text-gray-500 mt-2">View and manage your clients</p>
-                    </div>
-                    <svg class="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
-                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M5 13l4 4L19 7"/>
-                    </svg>
-                </div>
-            </a>
-
-            <!-- Add New Client Tile -->
-            <a href="{{ route('clients.create') }}" class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-blue-300 transition hover:scale-105">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-2xl font-semibold text-green-700">+ New Client</h2>
-                        <p class="text-sm text-gray-500 mt-2">Register a new client</p>
-                    </div>
-                    <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
-                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              d="M12 4v16m8-8H4"/>
-                    </svg>
-                </div>
-            </a>
-
-            <!-- Reminder Tile -->
-            <a  class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-blue-300 transition hover:scale-105">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-2xl font-semibold text-blue-700">Reminders</h2>
-                        <p class="text-sm text-gray-500 mt-2">View upcoming client reminders</p>
-                    </div>
-                    <svg class="w-12 h-12 text-blue-500" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                    </svg>
-                </div>
-            </a>
-
+@section('content')
+<div class="container">
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-users fa-2x text-primary mb-3"></i>
+          <h5 class="card-title">View All Clients</h5>
+          <p class="card-text">Browse and manage all existing clients.</p>
+          <a href="{{ route('marketing.clients.index') }}" class="btn btn-primary w-100">Go</a>
         </div>
+      </div>
     </div>
 
-</body>
-</html>
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-user-plus fa-2x text-success mb-3"></i>
+          <h5 class="card-title">Add New Client</h5>
+          <p class="card-text">Create a new client entry quickly.</p>
+          <a href="{{ route('marketing.clients.create') }}" class="btn btn-success w-100">Add</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-bell fa-2x text-warning mb-3"></i>
+          <h5 class="card-title">View Reminders</h5>
+          <p class="card-text">Check client follow-up reminders.</p>
+          <a href="{{ route('marketing.clients.reminders') }}" class="btn btn-warning w-100 text-white">Reminders</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection
