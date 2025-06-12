@@ -126,6 +126,17 @@
           </ul>
         </li>
 
+
+                <!-- Tasks -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-folder-open me-1"></i> Tasks
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="projectsDropdown">
+            <li><a class="dropdown-item" href="{{ route('superadmin.assign_task.create') }}">Create Task</a></li>
+          </ul>
+        </li>
+
         <!-- Finance -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="financeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
