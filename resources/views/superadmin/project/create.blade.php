@@ -27,7 +27,7 @@
         </div>
 
         <div class="mb-3">
-            <label>Project deadling</label>
+            <label>Project deadline</label>
             <input type="date" name="deadline" class="form-control" required>
         </div>
 

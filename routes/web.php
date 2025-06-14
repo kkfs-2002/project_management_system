@@ -14,6 +14,7 @@ use App\Http\Controllers\Developer\DeveloperTasksController;
 use App\Http\Controllers\ProjectManager\ProjectManagerTasksController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAssignTaskController;
 use App\Http\Controllers\ProjectManager\ProjectManagerDashboardController;
+use App\Http\Controllers\SuperAdmin\SuperDashController;
 
 
 
@@ -26,7 +27,7 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 
 //Redirect based on roles
-Route::get('/superadmin/dashboard', fn() => view('superadmin.superdash'))->name('superadmin.dashboard');
+Route::get('/superadmin/dashboard', [SuperDashController::class,'dashboard'])->name('superadmin.dashboard');
 Route::get('/layouts/admin', fn() => view('layouts.admin'))->name('layouts.admin');
 Route::get('/developer/dashboard', fn() => view('dashboards.developer'))->name('developer.dashboard');
 
