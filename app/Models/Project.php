@@ -14,6 +14,7 @@ class Project extends Model
         'name',
         'type',
         'start_date',
+        'deadline',
     ];
 
     // One project has one account detail

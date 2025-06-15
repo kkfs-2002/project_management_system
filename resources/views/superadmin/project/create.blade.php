@@ -26,6 +26,11 @@
             <input type="date" name="start_date" class="form-control" required>
         </div>
 
+        <div class="mb-3">
+            <label>Project deadline</label>
+            <input type="date" name="deadline" class="form-control" required>
+        </div>
+
         <button class="btn btn-success">Save Project</button>
     </form>
 </div>

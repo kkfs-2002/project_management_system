@@ -37,10 +37,11 @@ public function store(Request $request)
     $request->validate([
         'name' => 'required|string|max:255',
         'type' => 'required|string',
-        'start_date' => 'required|date'
+        'start_date' => 'required|date',
+        'deadline' => 'required|date|after_or_equal:start_date',
     ]);
 
-    Project::create($request->only('name', 'type', 'start_date'));
+    Project::create($request->only('name', 'type', 'start_date','deadline'));
 
     return redirect()->route('superadmin.project.index')->with('success', 'Project added.');
 }

@@ -94,7 +94,7 @@
 
         <!-- Dashboard -->
         <li class="nav-item">
-          <a class="nav-link" href="{{ url('/superdash') }}">
+          <a class="nav-link" href="{{ route('superadmin.dashboard') }}">
             <i class="fas fa-home me-1"></i> Dashboard
           </a>
         </li>
@@ -126,6 +126,17 @@
           </ul>
         </li>
 
+
+                <!-- Tasks -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-folder-open me-1"></i> Tasks
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="projectsDropdown">
+            <li><a class="dropdown-item" href="{{ route('superadmin.assign_task.create') }}">Create Task</a></li>
+          </ul>
+        </li>
+
         <!-- Finance -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="financeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -141,20 +152,6 @@
           </ul>
         </li>
 
-        <!-- Payments & Documents -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="paymentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-file-invoice-dollar me-1"></i> Payments & Docs
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="paymentsDropdown">
-            <li><a class="dropdown-item" href="#">Generate Invoice</a></li>
-            <li><a class="dropdown-item" href="#">Client Payment Status</a></li>
-            <li><a class="dropdown-item" href="#">Expense List</a></li>
-            <li><a class="dropdown-item" href="#">Upload Documents</a></li>
-            <li><a class="dropdown-item" href="#">View Contracts</a></li>
-            <li><a class="dropdown-item" href="#">Hosting & Domain Credentials</a></li>
-          </ul>
-        </li>
 
  <!-- Marketing -->
 <li class="nav-item dropdown">
