@@ -156,6 +156,17 @@
           </ul>
         </li>
 
+ <!-- Marketing -->
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="marketingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fas fa-bullhorn me-1"></i> Marketing
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="marketingDropdown">
+    <li><a class="dropdown-item" href="{{ route('superadmin.clients.index') }}">Client List</a></li>
+  </ul>
+</li>
+
+
         <!-- Admin Tools -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="adminToolsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

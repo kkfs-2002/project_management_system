@@ -14,6 +14,7 @@ use App\Http\Controllers\Developer\DeveloperTasksController;
 use App\Http\Controllers\ProjectManager\ProjectManagerTasksController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAssignTaskController;
 use App\Http\Controllers\ProjectManager\ProjectManagerDashboardController;
+use App\Http\Controllers\SuperAdmin\ClientController;
 
 
 
@@ -134,4 +135,16 @@ Route::get('/layouts/projectmanager', [ProjectManagerDashboardController::class,
 
 // Developer
 Route::get('/developer/tasks', [DeveloperTasksController::class, 'index'])->name('developer.tasks.index');
+
+
+
+//superadmin client details
+Route::prefix('superadmin/marketing/clients')->group(function () {
+    Route::get('/', [ClientController::class, 'index'])->name('superadmin.clients.index');
+    
+    Route::post('/{client}/approve-permission', [ClientController::class, 'approvePermission'])->name('superadmin.clients.approve-permission');
+    Route::post('/{client}/reject-permission', [ClientController::class, 'rejectPermission'])->name('superadmin.clients.reject-permission');
+
+});
+
 

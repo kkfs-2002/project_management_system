@@ -25,6 +25,8 @@ return new class extends Migration
             $table->decimal('amount', 10, 2)->nullable();
             $table->enum('payment_status', ['No Payment', 'Advance', 'Full'])->default('No Payment');
             $table->string('status')->default('inactive');
+            $table->enum('edit_permission', ['pending', 'approved', 'rejected'])->default('pending');
+          
     
             $table->timestamps();
         });

@@ -16,7 +16,8 @@ class Client extends Model
         'note',
         'amount',
         'payment_status',
-        'status'
+        'status',
+        'edit_permission'
     ];
     
 

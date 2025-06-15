@@ -16,10 +16,22 @@ class MarketingClientController extends Controller
 
     // View all clients
     public function index()
-    {
-        $clients = Client::orderBy('created_at', 'desc')->get();
-        return view('marketing.clients.index', compact('clients'));
-    }
+{
+    // Get all clients ordered by created_at descending (newest first)
+    $clients = Client::orderBy('created_at', 'desc')->get();
+    
+    // Group clients by month and year
+    $clientsByMonth = $clients->groupBy(function($client) {
+        return $client->created_at->format('F Y'); // e.g., "January 2024"
+    });
+    
+    // Sort the groups by date (newest months first)
+    $clientsByMonth = $clientsByMonth->sortByDesc(function($clients, $monthYear) {
+        return \Carbon\Carbon::createFromFormat('F Y', $monthYear);
+    });
+
+    return view('marketing.clients.index', compact('clientsByMonth'));
+}
 
     // Show create client form
     public function create()
@@ -103,4 +115,14 @@ class MarketingClientController extends Controller
 
         return view('marketing.clients.reminders', compact('clients'));
     }
+
+    public function requestPermission(Client $client)
+    {
+        $client->edit_permission = 'pending';
+        $client->save();
+    
+        return back()->with('success', 'Edit/Delete permission request sent to Super Admin.');
+    }
+    
+
 }

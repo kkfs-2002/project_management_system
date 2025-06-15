@@ -20,4 +20,6 @@ class SuperDashController extends Controller
 
         return view('auth.superdash', compact('usersCount', 'ordersCount', 'revenue'));
     }
+
+    
 }
