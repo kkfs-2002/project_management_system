@@ -16,6 +16,8 @@ use App\Http\Controllers\SuperAdmin\SuperAdminAssignTaskController;
 use App\Http\Controllers\ProjectManager\ProjectManagerDashboardController;
 use App\Http\Controllers\SuperAdmin\ClientController;
 use App\Http\Controllers\SuperAdmin\SuperDashController;
+use Illuminate\Http\Request;
+
 
 
 
@@ -26,6 +28,16 @@ Route::get('/', function () {
 //Login
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+
+//Logout
+Route::post('/logout', function (Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/login');
+});
+
 
 //Redirect based on roles
 Route::get('/superadmin/dashboard', [SuperDashController::class,'dashboard'])->name('superadmin.dashboard');
