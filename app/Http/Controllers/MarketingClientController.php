@@ -108,10 +108,19 @@ class MarketingClientController extends Controller
 
     // Filter by status
     public function status($type)
-    {
-        $clients = Client::where('status', $type)->get();
-        return view('marketing.clients.index', compact('clients'));
-    }
+{
+    $clients = Client::where('status', $type)
+                     ->orderBy('created_at', 'desc')
+                     ->get();
+
+    // Group clients by month-year
+    $clientsByMonth = $clients->groupBy(function ($client) {
+        return \Carbon\Carbon::parse($client->created_at)->format('F Y');
+    });
+
+    return view('marketing.clients.index', compact('clientsByMonth'));
+}
+
 
     // Clients with reminder dates
     public function reminders(Request $request)
