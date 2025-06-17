@@ -114,22 +114,26 @@ class MarketingClientController extends Controller
     }
 
     // Clients with reminder dates
-    public function reminders()
+    public function reminders(Request $request)
     {
-        $clients = Client::whereNotNull('reminder_date')
-                         ->orderBy('reminder_date', 'asc')
-                         ->get();
-
+        $query = Client::whereNotNull('reminder_date');
+    
+        // Apply month filter if provided
+        if ($request->has('month') && $request->month) {
+            try {
+                $month = \Carbon\Carbon::parse($request->month);
+                $query->whereYear('reminder_date', $month->year)
+                      ->whereMonth('reminder_date', $month->month);
+            } catch (\Exception $e) {
+                // Optional: handle invalid format
+            }
+        }
+    
+        $clients = $query->orderBy('reminder_date', 'asc')->get();
+    
         return view('marketing.clients.reminders', compact('clients'));
     }
-
-    public function requestPermission(Client $client)
-    {
-        $client->edit_permission = 'pending';
-        $client->save();
     
-        return back()->with('success', 'Edit/Delete permission request sent to Super Admin.');
-    }
     
 
 }

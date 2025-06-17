@@ -124,7 +124,7 @@
                 </div>
             </div>
         @endforeach
-    @endif
+    @endif  
 
     {{-- Optional: Summary section for pending requests --}}
     @if($pendingRequests->count() > 0)
