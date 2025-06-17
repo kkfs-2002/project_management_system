@@ -12,6 +12,22 @@
 
     <a href="{{ route('marketing.clients.create') }}" class="btn btn-primary mb-3">+ Create New Client</a>
 
+    {{-- Compact Month Filter --}}
+    <div class="d-flex justify-content-end mb-3">
+        <form method="GET" action="{{ route('marketing.clients.index') }}" class="d-flex align-items-center">
+            <input type="month" name="month" id="month" class="form-control form-control-sm me-2"
+                   value="{{ request('month') }}" >
+            <button type="submit" class="btn btn-sm btn-outline-primary me-2">
+                <i class="fas fa-filter me-1"></i> Filter
+            </button>
+            @if(request('month'))
+                <a href="{{ route('marketing.clients.index') }}" class="btn btn-sm btn-outline-secondary">
+                    Clear
+                </a>
+            @endif
+        </form>
+    </div>
+
     @if ($clientsByMonth->isEmpty())
         <p>No clients found.</p>
     @else
@@ -21,7 +37,7 @@
                     <i class="fas fa-calendar-alt me-2"></i>{{ $monthYear }}
                     <span class="badge bg-secondary ms-2">{{ $clients->count() }} client(s)</span>
                 </h4>
-                
+
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered">
                         <thead class="table-primary text-center">
@@ -49,8 +65,8 @@
                                     <td>{{ $client->project_type }}</td>
                                     <td>{{ $client->technology }}</td>
                                     <td>
-                                        <span class="badge bg-{{ $client->payment_status === 'paid' ? 'success' : ($client->payment_status === 'pending' ? 'warning' : 'danger') }}">
-                                            {{ ucfirst($client->payment_status) }}
+                                        <span class="badge bg-{{ $client->payment_status === 'Full' ? 'success' : ($client->payment_status === 'Advance' ? 'warning' : 'danger') }}">
+                                            {{ $client->payment_status }}
                                         </span>
                                     </td>
                                     <td>Rs. {{ number_format($client->amount, 2) }}</td>
@@ -119,10 +135,13 @@
 }
 
 .month-heading {
-    color: #6c757d; /* Ash gray (Bootstrap's "text-muted") */
+    color: #6c757d;
     font-weight: 600;
     font-size: 1.25rem;
 }
 
+form input[type="month"] {
+    max-width: 150px;
+}
 </style>
 @endsection

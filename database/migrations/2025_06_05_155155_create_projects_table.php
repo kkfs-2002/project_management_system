@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->enum('type', ['Website', 'System', 'Mobile App', 'Other']);
             $table->date('start_date')->nullable(); // for month filtering
-
+            $table->date('deadline')->nullable();
             $table->timestamps();
         });
     }

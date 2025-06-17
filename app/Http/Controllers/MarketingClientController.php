@@ -15,24 +15,31 @@ class MarketingClientController extends Controller
     }
 
     // View all clients
-    public function index()
+    public function index(Request $request)
 {
-    // Get all clients ordered by created_at descending (newest first)
-    $clients = Client::orderBy('created_at', 'desc')->get();
-    
-    // Group clients by month and year
-    $clientsByMonth = $clients->groupBy(function($client) {
-        return $client->created_at->format('F Y'); // e.g., "January 2024"
-    });
-    
-    // Sort the groups by date (newest months first)
-    $clientsByMonth = $clientsByMonth->sortByDesc(function($clients, $monthYear) {
-        return \Carbon\Carbon::createFromFormat('F Y', $monthYear);
+    $query = Client::query();
+
+    // Check if a specific month was requested
+    if ($request->has('month') && $request->month) {
+        try {
+            $month = Carbon::parse($request->month);
+            $query->whereYear('created_at', $month->year)
+                  ->whereMonth('created_at', $month->month);
+        } catch (\Exception $e) {
+            // Handle invalid month format
+        }
+    }
+
+    $clients = $query->orderBy('created_at', 'desc')->get();
+
+    // Group by Month-Year
+    $clientsByMonth = $clients->groupBy(function ($client) {
+        return Carbon::parse($client->created_at)->format('F Y');
     });
 
     return view('marketing.clients.index', compact('clientsByMonth'));
 }
-
+    
     // Show create client form
     public function create()
     {

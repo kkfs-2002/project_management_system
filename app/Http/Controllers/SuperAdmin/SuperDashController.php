@@ -22,6 +22,7 @@ class SuperDashController extends Controller
         $end = Carbon::parse($project->deadline);
         $today = Carbon::today();
 
+        
 
         $totalDays = $start->diffInDays($end);
         $daysPassed = $start->diffInDays($today);

@@ -10,26 +10,40 @@ use Carbon\Carbon;
 class ClientController extends Controller
 {
     // Show clients grouped by month-year, with pending requests
-    public function index()
+    public function index(Request $request)
     {
-        // Get all clients ordered by creation date (newest first)
-        $clients = Client::orderBy('created_at', 'desc')->get();
-
-        // Group clients by month-year
+        $query = Client::query();
+    
+        // Filter by selected month if provided
+        if ($request->has('month') && $request->month) {
+            try {
+                $month = Carbon::parse($request->month);
+                $query->whereYear('created_at', $month->year)
+                      ->whereMonth('created_at', $month->month);
+            } catch (\Exception $e) {
+                // Optional: handle invalid input
+            }
+        }
+    
+        // Get filtered clients
+        $clients = $query->orderBy('created_at', 'desc')->get();
+    
+        // Group clients by Month-Year
         $clientsByMonth = $clients->groupBy(function ($client) {
-            return $client->created_at->format('F Y'); // e.g., "June 2025"
+            return Carbon::parse($client->created_at)->format('F Y');
         });
-
-        // Sort the grouped clients by date descending
+    
+        // Sort groups by latest
         $clientsByMonth = $clientsByMonth->sortByDesc(function ($clients, $monthYear) {
             return Carbon::createFromFormat('F Y', $monthYear);
         });
-
-        // Fetch pending requests
+    
+        // Pending requests (regardless of filter)
         $pendingRequests = Client::where('edit_permission', 'pending')->get();
-
+    
         return view('superadmin.clients.index', compact('clientsByMonth', 'pendingRequests'));
     }
+    
 
     // Approve permission request
     public function approvePermission(Client $client)

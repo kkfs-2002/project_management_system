@@ -4,6 +4,23 @@
 
 @section('content')
 <div class="container mt-4">
+
+    {{-- Compact Right-Aligned Month Filter Form --}}
+    <div class="d-flex justify-content-end mb-3">
+        <form method="GET" action="{{ route('superadmin.clients.index') }}" class="d-flex align-items-center">
+            <input type="month" name="month" id="month" class="form-control form-control-sm me-2" value="{{ request('month') }}">
+            <button type="submit" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-filter me-1"></i> Filter
+            </button>
+
+            @if(request('month'))
+                <a href="{{ route('superadmin.clients.index') }}" class="btn btn-sm btn-outline-secondary ms-2">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+            @endif
+        </form>
+    </div>
+
     <h2>All Clients</h2>
 
     @if (session('success'))
@@ -57,7 +74,7 @@
                                             {{ ucfirst($client->payment_status) }}
                                         </span>
                                     </td>
-                                    <td>${{ number_format($client->amount, 2) }}</td>
+                                    <td>Rs.{{ number_format($client->amount, 2) }}</td>
                                     <td>
                                         <span class="badge bg-{{ $client->status === 'active' ? 'success' : ($client->status === 'pending' ? 'warning' : 'secondary') }}">
                                             {{ ucfirst($client->status) }}
@@ -148,6 +165,5 @@
     font-weight: 600;
     font-size: 1.25rem;
 }
-
 </style>
 @endsection
