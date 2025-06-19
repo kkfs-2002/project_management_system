@@ -11,8 +11,8 @@ class SuperAdminAssignTaskController extends Controller
 {
     public function create()
     {
-        $projectManagers = Profile::where('role', 'projectmanager')->get();
-        $developers = Profile::where('role', 'developer')->get();
+        $projectManagers = Profile::where('role', 'Project Manager')->get();
+        $developers = Profile::where('role', 'Developer')->get();
 
         return view('superadmin.assign_task.create', compact('projectManagers', 'developers'));
     }
