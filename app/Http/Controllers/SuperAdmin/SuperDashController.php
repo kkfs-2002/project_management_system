@@ -14,45 +14,47 @@ class SuperDashController extends Controller
         // $this->middleware('auth'); // Protect this route for authenticated users
     }
     
-    //Ongoing project
-    public function dashboard()
-    {
-    $timelineProjects = Project::whereNotNull('deadline')->get()->map(function ($project) {
+//Ongoing project
+public function dashboard(Request $request)
+{
+    $type = $request->query('type');
+    $sort = $request->query('sort', 'asc'); // Default is 'asc'
+
+    $projectsQuery = Project::whereNotNull('deadline');
+
+    if ($type) {
+        $projectsQuery->where('type', $type);
+    }
+
+    // Sort by deadline
+    $projects = $projectsQuery->orderBy('deadline', $sort)->get();
+
+    $projectTypes = Project::select('type')->distinct()->pluck('type');
+
+    $timelineProjects = $projects->map(function ($project) {
         $start = Carbon::parse($project->start_date);
         $end = Carbon::parse($project->deadline);
         $today = Carbon::today();
-
-        
 
         $totalDays = $start->diffInDays($end);
         $daysPassed = $start->diffInDays($today);
         $daysRemaining = $today->diffInDays($end, false);
 
-        // Visual status color
-        if ($today->gt($end)) {
-            $status = 'Overdue';
-            $color = 'danger'; 
-        } elseif ($daysRemaining <= 5) {
-            $status = 'Near Deadline';
-            $color = 'warning'; 
-        } else {
-            $status = 'On Track';
-            $color = 'success'; 
-        }
+        $completion = min(100, round(($daysPassed / max(1, $totalDays)) * 100));
+        $color = $completion >= 80 ? 'success' : ($completion >= 50 ? 'warning' : 'danger');
 
         return [
             'name' => $project->name,
+            'type' => $project->type,
             'start_date' => $start->format('Y-m-d'),
             'deadline' => $end->format('Y-m-d'),
-            'days_passed' => $daysPassed,
-            'total_days' => $totalDays,
-            'days_remaining' => $daysRemaining,
-            'status' => $status,
+            'completion' => $completion,
             'color' => $color,
+            'days_remaining' => $daysRemaining,
         ];
     });
 
-    return view('superadmin.superdash', compact('timelineProjects'));
+    return view('superadmin.superdash', compact('timelineProjects', 'projectTypes'));
+}
 }
 
-}
