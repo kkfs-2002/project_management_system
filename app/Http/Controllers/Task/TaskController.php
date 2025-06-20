@@ -61,8 +61,9 @@ class TaskController extends Controller
     {
         $pm    = Profile::findOrFail($pmId);           // FYI: could be username instead
         $tasks = Task::where('project_manager_id', $pmId)->latest()->get();
+        $tasks = Task::latest()->get();
 
-        return view('projectmanager/tasks/index', compact('pm', 'tasks'));
+        return view('projectmanager/tasks/index', compact( 'tasks'));
     }
 
     // Forward to dev
@@ -84,8 +85,9 @@ class TaskController extends Controller
     {
         $dev   = Profile::findOrFail($devId);
         $tasks = Task::where('developer_id', $devId)->latest()->get();
+        $tasks = Task::latest()->get();
 
-        return view('developer/index', compact('dev', 'tasks'));
+        return view('developer/tasks/index', compact('dev', 'tasks'));
     }
 
     // mark as complete

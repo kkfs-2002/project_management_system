@@ -121,7 +121,9 @@
             <i class="fas fa-folder-open me-1"></i> Tasks
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="projectsDropdown">
-            <li><a class="dropdown-item" href="{{ route('superadmin.assign_task.create') }}">Create Task</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.tasks.create') }}">Create Task</a></li>
+                        <li><a class="dropdown-item" href="{{ route('superadmin.tasks.index') }}">View Task</a></li>
+
           </ul>
         </li>
 

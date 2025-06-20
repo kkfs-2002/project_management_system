@@ -45,7 +45,7 @@ class LoginController extends Controller
             case 'Admin':
                 return redirect()->route('layouts.admin');
             case 'Developer':
-                return redirect()->route('developer.dashboard');
+                return redirect()->route('layouts.developer');
             case 'Marketing Manager':
                 return redirect()->route('marketing.dashboard');
             case 'Project Manager':

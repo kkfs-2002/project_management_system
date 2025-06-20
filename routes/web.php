@@ -39,7 +39,9 @@ Route::post('/logout', function (Request $request) {
 //Redirect based on roles
 Route::get('/superadmin/dashboard', [SuperDashController::class,'dashboard'])->name('superadmin.dashboard');
 Route::get('/layouts/admin', fn() => view('layouts.admin'))->name('layouts.admin');
-Route::get('/developer/dashboard', fn() => view('dashboards.developer'))->name('developer.dashboard');
+Route::get('/layouts/developer', fn() => view('layouts.developer'))->name('layouts.developer');
+Route::get('/layouts/projectmanager', fn() => view('layouts.projectmanager'))->name('layouts.projectmanager');
+
 
 
 //profile for employee
@@ -148,12 +150,17 @@ Route::prefix('tasks')->group(function () {
     // Super Admin
     Route::get('create',       [TaskController::class, 'create'])->name('tasks.create');
     Route::post('store',       [TaskController::class, 'store'])->name('tasks.store');
-    Route::get('superadmin',   [TaskController::class, 'superadminIndex'])->name('tasks.superadmin');
-    // Project Manager 
-    Route::get('pm/{pm}',      [TaskController::class, 'projectManagerIndex'])->name('tasks.pm');
-    Route::post('pm/forward/{id}', [TaskController::class, 'forwardToDeveloper'])->name('tasks.pm.forward');
+    Route::get('superadmin.tasks.create',   [TaskController::class, 'create'])->name('superadmin.tasks.create');
+        Route::get('superadmin.tasks.index',   [TaskController::class, 'superadminIndex'])->name('superadmin.tasks.index');
+// Project Manager
+Route::get('projectmanager.tasks.index/{pm}', [TaskController::class, 'projectManagerIndex'])->name('projectmanager.tasks.index');
+Route::post('/projectmanager/tasks/{task}/forward', [TaskController::class, 'forwardToDeveloper'])->name('projectmanager.tasks.forward');
+
+
     // Developer 
-    Route::get('dev/{dev}',    [TaskController::class, 'developerIndex'])->name('tasks.dev');
-    Route::post('dev/complete/{id}', [TaskController::class, 'complete'])->name('tasks.dev.complete');
+    Route::get('developer.tasks.index/{dev}',    [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
+    Route::post('developer.tasks/complete/{id}', [TaskController::class, 'complete'])->name('developer.tasks.complete');
 });
+
+
 
