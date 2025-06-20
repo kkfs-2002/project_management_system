@@ -50,10 +50,6 @@ class LoginController extends Controller
                 return redirect()->route('marketing.dashboard');
             case 'Project Manager':
                 return redirect()->route('layouts.projectmanager');
-            case 'qa':
-                return redirect()->route('qa.dashboard');
-            case 'ba':
-                return redirect()->route('ba.dashboard');
             default:
                 return redirect()->route('home');
         }
