@@ -35,6 +35,7 @@
                         <th>Name</th>
                         <th>Contact Number</th>
                         <th>Reminder Date</th>
+                        <th>Note</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -44,6 +45,7 @@
                             <td>{{ $client->name }}</td>
                             <td>{{ $client->contact_number }}</td>
                             <td>{{ \Carbon\Carbon::parse($client->reminder_date)->format('M d, Y') }}</td>
+                            <td>{{ \Illuminate\Support\Str::limit($client->note, 50) ?? '-' }}</td>
                             <td>
                                 <span class="badge {{ $client->status == 'success' ? 'bg-success' : 'bg-warning text-dark' }}">
                                     {{ ucfirst($client->status) }}
