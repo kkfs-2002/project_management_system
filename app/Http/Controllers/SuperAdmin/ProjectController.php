@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\ProjectAccount;
 use Illuminate\Support\Facades\DB;
+use PDF;
+use Illuminate\Support\Collection;
+
 
 
 class ProjectController extends Controller
@@ -81,19 +84,38 @@ public function store(Request $request)
     return redirect()->route('superadmin.project.index')->with('success', 'Financials added successfully.');
 }
 
-
-//View all the transactions
-   public function transactions(Request $request)
+//View all transactions
+public function transactions(Request $request)
 {
     $month = $request->input('month', now()->format('Y-m'));
 
-    $accounts = ProjectAccount::with('project')
-        ->whereHas('project', function ($q) use ($month) {
-            $q->whereMonth('start_date', \Carbon\Carbon::parse($month)->month)
-              ->whereYear('start_date', \Carbon\Carbon::parse($month)->year);
-        })->get();
+    
+    $allAccounts = ProjectAccount::with('project')->get();
 
-    return view('superadmin.project.transactions', compact('accounts', 'month'));
+    // Group transactions by month (YYYY-MM format)
+    $groupedAccounts = $allAccounts->groupBy(function ($acc) {
+        return Carbon::parse($acc->project->start_date)->format('Y-m');
+    });
+
+    //Generate all 12 months for current year
+    $allMonths = collect();
+    $start = Carbon::createFromDate(now()->year, 1, 1); // Jan of current year
+    $end = Carbon::createFromDate(now()->year, 12, 1); // Dec of current year
+
+    while ($start <= $end) {
+        $allMonths->push([
+            'value' => $start->format('Y-m'),
+            'label' => $start->format('F Y'),
+        ]);
+        $start->addMonth();
+    }
+
+    return view('superadmin.project.transactions', [
+        'month' => $month,
+        'accounts' => $groupedAccounts[$month] ?? collect(),
+        'groupedAccounts' => $groupedAccounts,
+        'allMonths' => $allMonths,
+]);
 }
 
 // Show edit form
@@ -135,20 +157,27 @@ public function destroyFinancials(ProjectAccount $account)
     return redirect()->route('superadmin.project.transactions')->with('success', 'Financial record deleted.');
 }
 
-// Download PDF (you need to install barryvdh/laravel-dompdf package)
-public function downloadPdf(Request $request)
-{
-    $month = $request->input('month', now()->format('Y-m'));
+   // Download PDF for filtered month
+    public function downloadPdf(Request $request)
+    {
+        $month = $request->input('month', now()->format('Y-m'));
+        $selectedMonth = Carbon::parse($month);
 
-    $accounts = ProjectAccount::with('project')
-        ->whereHas('project', function ($q) use ($month) {
-            $q->whereMonth('start_date', \Carbon\Carbon::parse($month)->month)
-              ->whereYear('start_date', \Carbon\Carbon::parse($month)->year);
-        })->get();
+        $accounts = ProjectAccount::with('project')
+            ->whereHas('project', function ($query) use ($selectedMonth) {
+                $query->whereYear('start_date', $selectedMonth->year)
+                      ->whereMonth('start_date', $selectedMonth->month);
+            })->get();
 
-    $pdf = \PDF::loadView('superadmin.project.financials.transactions-pdf', compact('accounts', 'month'));
-    return $pdf->download("project-transactions-{$month}.pdf");
+        $pdf = PDF::loadView('superadmin.project.financials.transactions-pdf', [
+    'accounts' => $accounts,
+    'monthLabel' => $selectedMonth->format('F Y'),
+    'generatedDate' => now()->format('F j, Y')
+     ]);
+
+        return $pdf->download("project-transactions-{$selectedMonth->format('Y-m')}.pdf");
 }
+
 
 
 
