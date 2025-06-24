@@ -38,9 +38,7 @@
                 </div>
 
                 @if ($project->account)
-                    <div class="mt-3 p-3 rounded bg-light">
-                        <p><strong>Added financials details: </strong>Check the transaction list</p>
-                    </div>
+                    
                 @else
                     {{-- Financials Form --}}
                     <form id="form-{{ $project->id }}" action="{{ route('superadmin.project.financials.store') }}" method="POST" class="mt-3" style="display:none;">

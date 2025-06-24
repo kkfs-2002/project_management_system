@@ -113,18 +113,6 @@
           </ul>
         </li>
 
-        <!-- Projects -->
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-folder-open me-1"></i> Projects
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="projectsDropdown">
-            <li><a class="dropdown-item" href="#">Add Project</a></li>
-            <li><a class="dropdown-item" href="#">Project List</a></li>
-            <li><a class="dropdown-item" href="#">Project Status Update</a></li>
-            <li><a class="dropdown-item" href="#">Upcoming Deadlines</a></li>
-          </ul>
-        </li>
 
 
                 <!-- Tasks -->
@@ -133,7 +121,9 @@
             <i class="fas fa-folder-open me-1"></i> Tasks
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="projectsDropdown">
-            <li><a class="dropdown-item" href="{{ route('superadmin.assign_task.create') }}">Create Task</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.tasks.create') }}">Create Task</a></li>
+                        <li><a class="dropdown-item" href="{{ route('superadmin.tasks.index') }}">View Task</a></li>
+
           </ul>
         </li>
 
@@ -176,7 +166,7 @@
             <li><a class="dropdown-item" href="#">Activity Logs</a></li>
             <li><a class="dropdown-item" href="#">Change Password</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+            <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
           </ul>
         </li>
 
@@ -194,5 +184,25 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 @yield('scripts')
+
+<!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="logoutModalLabel"><i class="fas fa-sign-out-alt me-2"></i>Confirm Logout</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="mb-3">Are you sure you want to log out?</p>
+        <form id="logout-form" action="{{ url('/logout') }}" method="POST">
+         @csrf
+        <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

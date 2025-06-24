@@ -1,49 +1,114 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-4">
-    <h2 class="mb-4">Project Timeline Overview</h2>
+<div class="container py-4">
 
-    @if($timelineProjects->isEmpty())
-        <p>No projects with deadlines found.</p>
-    @else
-        <div class="timeline-wrapper">
-            @foreach($timelineProjects as $project)
-                <div class="timeline-item mb-4 position-relative">
-                    {{-- Connector Line --}}
-                    <div class="timeline-line"></div>
+    <!-- Header with Icons -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold text-dark">
+            <i class="fas fa-stream me-2 text-primary"></i> Project Timeline Overview
+        </h4>
 
-                    {{-- Circle indicator --}}
-                    <div class="timeline-dot {{ $project['color'] }}"></div>
+        <div class="d-flex align-items-center">
+            <!-- View toggle buttons -->
+            <button class="btn btn-outline-primary me-2" id="timelineViewBtn"><i class="fas fa-stream"></i></button>
+            <button class="btn btn-outline-primary me-2" id="gridViewBtn"><i class="fas fa-th"></i></button>
+            
+                    <!-- Sort Dropdown -->
+        <div class="dropdown me-2">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-sort me-1"></i> Sort
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="{{ route('superadmin.dashboard', array_merge(request()->query(), ['sort' => 'asc'])) }}">Deadline: Soonest</a></li>
+                <li><a class="dropdown-item" href="{{ route('superadmin.dashboard', array_merge(request()->query(), ['sort' => 'desc'])) }}">Deadline: Latest</a></li>
+            </ul>
+        </div>
 
-                    {{-- Project Info --}}
-                    <div class="timeline-content card shadow-sm p-3 ms-5">
-                    
-                        <h6 class="fw-bold mb-1">{{ $project['name'] }}</h6>
-                        <div class="small text-muted mb-1">
-                            <i class="bi bi-play-circle"></i> Start: {{ $project['start_date'] }} &nbsp; | &nbsp;
-                            <i class="bi bi-flag-fill"></i> Deadline: {{ $project['deadline'] }}
+            <!-- Filter by type -->
+            <div class="dropdown me-2">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-filter me-1"></i> Filter
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                    <li><a class="dropdown-item" href="{{ route('superadmin.dashboard') }}">All</a></li>
+                    @foreach($projectTypes as $type)
+                        <li><a class="dropdown-item" href="{{ route('superadmin.dashboard', ['type' => $type]) }}">{{ $type }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline View -->
+    <div id="timelineView">
+        @if($timelineProjects->isEmpty())
+            <div class="alert alert-warning">No projects found.</div>
+        @else
+            <div class="timeline-wrapper">
+                @foreach($timelineProjects as $index => $project)
+                    <div class="timeline-item mb-5 d-flex">
+                        <div class="timeline-line"></div>
+                        <div class="timeline-dot {{ $project['color'] }}">{{ $index + 1 }}</div>
+
+                        <div class="timeline-content card shadow-sm p-3" style="width:70%; max-width:800px;">
+                            <h6 class="fw-bold">{{ $project['name'] }}</h6>
+                            <div class="text-muted small mb-2">
+                                <i class="fas fa-calendar-alt me-1"></i> {{ $project['start_date'] }}
+                                &nbsp; → &nbsp;
+                                <i class="fas fa-flag-checkered me-1"></i> {{ $project['deadline'] }}
+                            </div>
+
+                            <div class="text-left py-1 mt-1 rounded alert-success" style="background-color: {{$project['color'] === 'success' ? 'rgba(25,135,84,0.15)' : ($project['color'] === 'warning' ? 'rgba(255,193,7,0.15)' : 'rgba(220,53,69,0.15)')}};box-shadow: 0 0 6px rgba(0, 0, 0, 0.05); font-size:14px;">
+                              <strong>{{ 100 - $project['completion'] }}%</strong> Work Remaining
+                            </div>
+
+                            <div class="progress mb-2 mt-2" style="height: 8px;">
+                                <div class="progress-bar bg-{{ $project['color'] }}" style="width: {{ $project['completion'] }}%;">
+                                </div>
+                            </div>
+
+                        
+
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+
+    <!-- Grid View -->
+    <div id="gridView" class="row" style="display: none;">
+        @foreach($timelineProjects as $project)
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $project['name'] }}</h5>
+                        <p class="text-muted small mb-1">
+                            <i class="fas fa-calendar-alt me-1"></i> {{ $project['start_date'] }} → {{ $project['deadline'] }}
+                        </p>
+
+                        <div class="progress mb-2" style="height: 6px;">
+                            <div class="progress-bar bg-{{ $project['color'] }}" style="width: {{ $project['completion'] }}%;"></div>
                         </div>
 
-                        @if($project['days_remaining'] > 0)
-                            <span class="badge bg-warning">⏳ {{ $project['days_remaining'] }} day(s) remaining</span>
-                        @elseif($project['days_remaining'] == 0)
-                            <span class="badge bg-danger">🔴 Deadline is today!</span>
-                        @else
-                            <span class="badge bg-danger">⚠ Overdue by {{ abs($project['days_remaining']) }} day(s)</span>
-                        @endif
+                        <div class="text-left py-1 mt-1 rounded alert-success" style="background-color: {{$project['color'] === 'success' ? 'rgba(25,135,84,0.15)' : ($project['color'] === 'warning' ? 'rgba(255,193,7,0.15)' : 'rgba(220,53,69,0.15)')}};box-shadow: 0 0 6px rgba(0, 0, 0, 0.05); font-size:14px;">
+                              <strong>{{ 100 - $project['completion'] }}%</strong> Work Remaining
+                            </div>
                     </div>
                 </div>
-            @endforeach
-        </div>
-    @endif
+            </div>
+        @endforeach
+    </div>
+
 </div>
 
+<!-- Styles -->
 <style>
 .timeline-wrapper {
     position: relative;
-    margin-left: 20px;
-    padding-left: 20px;
+    margin-left: 30px;
+    padding-left: 30px;
     border-left: 4px solid #0a4275;
 }
 
@@ -61,31 +126,34 @@
 }
 
 .timeline-dot {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background: #0a4275;
+    color: white;
+    font-size: 0.8rem;
+    text-align: center;
+    line-height: 24px;
     position: absolute;
-    top: 8px;
-    left: -20px;
+    top: 40px;
+    left: -24px;
+    font-weight: bold;
 }
 
-.timeline-dot.success {
-    background-color: #198754; /* Green */
-}
-
-.timeline-dot.warning {
-    background-color: #ffc107; /* Yellow */
-}
-
-.timeline-dot.danger {
-    background-color: #dc3545; /* Red */
-}
-
-.timeline-content{
-  max-width:550px;
-  padding:15px;
-  border-radius:8px;
-}
+.timeline-dot.success { background-color: #198754; }
+.timeline-dot.warning { background-color: #ffc107; }
+.timeline-dot.danger { background-color: #dc3545; }
 </style>
+
+<!-- View Switcher Script -->
+<script>
+document.getElementById('timelineViewBtn').addEventListener('click', () => {
+    document.getElementById('timelineView').style.display = 'block';
+    document.getElementById('gridView').style.display = 'none';
+});
+
+document.getElementById('gridViewBtn').addEventListener('click', () => {
+    document.getElementById('timelineView').style.display = 'none';
+    document.getElementById('gridView').style.display = 'flex';
+});
+</script>
 @endsection

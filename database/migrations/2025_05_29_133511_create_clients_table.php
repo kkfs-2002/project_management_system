@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('contact_number')->nullable();
             $table->string('project_name')->nullable();
-            $table->enum('project_type', ['Web', 'Mobile'])->nullable();
+            $table->enum('project_type', ['Website', 'System','Mobile App','Other'])->nullable();
             $table->string('technology')->nullable();
             $table->date('reminder_date')->nullable();
             $table->text('note')->nullable();
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->enum('payment_status', ['No Payment', 'Advance', 'Full'])->default('No Payment');
             $table->string('status')->default('inactive');
             $table->enum('edit_permission', ['pending', 'approved', 'rejected'])->default('pending');
-          
+            $table->string('marketing_manager_id')->nullable();
     
             $table->timestamps();
         });
