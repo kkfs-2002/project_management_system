@@ -78,6 +78,10 @@ Route::prefix('marketing')->group(function () {
     Route::get('/dashboard', function () {
         return view('marketing.dashboard');
     });
+    
+
+    Route::get('/marketing/dashboard', [MarketingClientController::class, 'dashboard'])->name('marketing.dashboard');
+
 
 
     Route::get('/clients', [MarketingClientController::class, 'index'])->name('marketing.clients.index');
@@ -101,6 +105,7 @@ Route::prefix('marketing')->group(function () {
 
     Route::get('/clients/reminders', [MarketingClientController::class, 'reminders'])->name('marketing.clients.reminders');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    Route::get('/clients/report', [MarketingClientController::class, 'report'])->name('marketing.clients.report');
 
 });
 
@@ -142,6 +147,11 @@ Route::prefix('superadmin/marketing/clients')->group(function () {
     Route::post('/{client}/reject-permission', [ClientController::class, 'rejectPermission'])->name('superadmin.clients.reject-permission');
 
 });
+
+// routes/web.php
+Route::get('superadmin/clients/create', [ClientController::class, 'create'])->name('superadmin.clients.create');
+// routes/web.php
+Route::post('superadmin/clients/store', [ClientController::class, 'store'])->name('superadmin.clients.store');
 
 
 
