@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Client;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MarketingClientController extends Controller
 {
@@ -17,7 +18,7 @@ class MarketingClientController extends Controller
     // View all clients
     public function index(Request $request)
 {
-    $query = Client::query();
+    $query = Client::where('marketing_manager_id', session('employee_id'));
 
     // Check if a specific month was requested
     if ($request->has('month') && $request->month) {
@@ -53,7 +54,7 @@ class MarketingClientController extends Controller
             'name' => 'required|string|max:255',
             'contact_number' => 'nullable|string|max:20',
             'project_name' => 'nullable|string|max:255',
-            'project_type' => 'nullable|in:Web,Mobile',
+            'project_type' => 'nullable|in:Website,System,Mobile App,Other',
             'technology' => 'nullable|string|max:255',
             'reminder_date' => 'nullable|date',
             'note' => 'nullable|string',
@@ -63,6 +64,9 @@ class MarketingClientController extends Controller
 
         // Auto-set status based on payment_status
         $validated['status'] = in_array($validated['payment_status'], ['Advance', 'Full']) ? 'active' : 'inactive';
+
+         // ✅ Add marketing manager ID from session
+         $validated['marketing_manager_id'] = session('employee_id');
 
         Client::create($validated);
 
@@ -82,7 +86,7 @@ class MarketingClientController extends Controller
             'name' => 'required|string|max:255',
             'contact_number' => 'nullable|string|max:20',
             'project_name' => 'nullable|string|max:255',
-            'project_type' => 'nullable|in:Web,Mobile',
+           'project_type' => 'required|in:Website,System,Mobile App,Other',
             'technology' => 'nullable|string|max:255',
             'reminder_date' => 'nullable|date',
             'note' => 'nullable|string',
@@ -92,6 +96,8 @@ class MarketingClientController extends Controller
 
         // Auto-set status based on payment_status
         $validated['status'] = in_array($validated['payment_status'], ['Advance', 'Full']) ? 'active' : 'inactive';
+        
+       
 
         $client->update($validated);
 
@@ -109,9 +115,10 @@ class MarketingClientController extends Controller
     // Filter by status
     public function status($type)
 {
-    $clients = Client::where('status', $type)
-                     ->orderBy('created_at', 'desc')
-                     ->get();
+    $clients = Client::where('marketing_manager_id', session('employee_id'))
+    ->where('status', $type)
+    ->orderBy('created_at', 'desc')
+    ->get();
 
     // Group clients by month-year
     $clientsByMonth = $clients->groupBy(function ($client) {
@@ -122,27 +129,70 @@ class MarketingClientController extends Controller
 }
 
 
-    // Clients with reminder dates
-    public function reminders(Request $request)
-    {
-        $query = Client::whereNotNull('reminder_date');
-    
-        // Apply month filter if provided
-        if ($request->has('month') && $request->month) {
-            try {
-                $month = \Carbon\Carbon::parse($request->month);
-                $query->whereYear('reminder_date', $month->year)
-                      ->whereMonth('reminder_date', $month->month);
-            } catch (\Exception $e) {
-                // Optional: handle invalid format
-            }
-        }
-    
-        $clients = $query->orderBy('reminder_date', 'asc')->get();
-    
-        return view('marketing.clients.reminders', compact('clients'));
+public function reminders(Request $request)
+{
+    $query = Client::where('marketing_manager_id', session('employee_id'))
+                   ->whereNotNull('reminder_date');
+
+    // 📅 If "upcoming" flag is set, only get next 7 days
+    if ($request->has('upcoming') && $request->upcoming == 1) {
+        $today = \Carbon\Carbon::today();
+        $next7 = \Carbon\Carbon::today()->addDays(7);
+
+        $query->whereDate('reminder_date', '>=', $today)
+              ->whereDate('reminder_date', '<=', $next7);
     }
-    
-    
+
+    // 📆 Optional month filter
+    elseif ($request->has('month') && $request->month) {
+        try {
+            $month = \Carbon\Carbon::parse($request->month);
+            $query->whereYear('reminder_date', $month->year)
+                  ->whereMonth('reminder_date', $month->month);
+        } catch (\Exception $e) {
+            // Handle invalid month
+        }
+    }
+
+    $clients = $query->orderBy('reminder_date')->get();
+
+    return view('marketing.clients.reminders', compact('clients'));
+}
+
+
+
+
+public function report(Request $request)
+{
+    // Get the logged-in marketing manager's employee_id
+    $employeeId = session('employee_id');
+
+    // Filter month or default to current month
+    $month = $request->input('month') ?? now()->format('Y-m');
+    $date = Carbon::parse($month);
+
+    // Get clients for this marketing manager in that month
+    $clients = Client::where('marketing_manager_id', $employeeId)
+                     ->whereYear('created_at', $date->year)
+                     ->whereMonth('created_at', $date->month)
+                     ->get();
+
+    // Prepare data for chart or summary if needed
+    $projectTypeData = $clients->groupBy('project_type')->map->count();
+
+    // If user wants PDF download
+    if ($request->has('download')) {
+        $pdf = Pdf::loadView('marketing.clients.report_pdf', [
+            'clients' => $clients,
+            'month' => $date->format('F Y')
+        ]);
+        return $pdf->download('Monthly_Client_Report.pdf');
+    }
+
+    // Show report view
+    return view('marketing.clients.report', compact('clients', 'projectTypeData', 'month'));
+}
+
+   
 
 }
