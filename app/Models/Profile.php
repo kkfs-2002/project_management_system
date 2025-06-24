@@ -17,4 +17,10 @@ class Profile extends Model
     'resume', 'offer_letter', 'id_copy', 'signed_contract', 'certificates'
     ];
 
+    
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
 }

@@ -17,7 +17,8 @@ class Client extends Model
         'amount',
         'payment_status',
         'status',
-        'edit_permission'
+        'edit_permission',
+        'marketing_manager_id'
     ];
     
 
