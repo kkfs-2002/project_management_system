@@ -117,10 +117,11 @@
 
         <!-- Reports -->
         <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fas fa-chart-line me-1"></i> Reports
-          </a>
-        </li>
+    <a class="nav-link" href="{{ route('marketing.clients.report') }}">
+        <i class="fas fa-chart-bar"></i> Report
+    </a>
+</li>
+
 
         <!-- Logout -->
         <li class="nav-item">

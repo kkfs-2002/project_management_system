@@ -5,23 +5,50 @@
 @section('content')
 <div class="container mt-4">
 
-    {{-- Compact Right-Aligned Month Filter Form --}}
-    <div class="d-flex justify-content-end mb-3">
-        <form method="GET" action="{{ route('superadmin.clients.index') }}" class="d-flex align-items-center">
-            <input type="month" name="month" id="month" class="form-control form-control-sm me-2" value="{{ request('month') }}">
-            <button type="submit" class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-filter me-1"></i> Filter
-            </button>
-
-            @if(request('month'))
-                <a href="{{ route('superadmin.clients.index') }}" class="btn btn-sm btn-outline-secondary ms-2">
-                    <i class="fas fa-times"></i> Clear
-                </a>
-            @endif
-        </form>
+    {{-- Header with Send button --}}
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
+        <h2 class="mb-0">All Clients</h2>
+        <a href="{{ route('superadmin.clients.create') }}" class="btn btn-primary flex-shrink-0">
+            <i class="fas fa-paper-plane me-1"></i> Send
+        </a>
     </div>
 
-    <h2>All Clients</h2>
+    {{-- Filters --}}
+    <form method="GET" action="{{ route('superadmin.clients.index') }}" class="row g-2 justify-content-end align-items-center mb-3">
+        {{-- Month Filter --}}
+        <div class="col-12 col-sm-auto">
+            <input type="month" name="month" id="month" class="form-control form-control-sm" value="{{ request('month') }}">
+        </div>
+
+        {{-- Marketing Manager Filter --}}
+        <div class="col-12 col-sm-auto">
+            <select name="manager" id="manager" class="form-select form-select-sm">
+                <option value="">Select Marketing Manager</option>
+                @foreach($managers as $manager)
+                    <option value="{{ $manager->employee_id }}" 
+                        {{ request('manager') == $manager->employee_id ? 'selected' : '' }}>
+                        {{ $manager->full_name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        {{-- Filter Button --}}
+        <div class="col-12 col-sm-auto">
+            <button type="submit" class="btn btn-sm btn-outline-primary w-100">
+                <i class="fas fa-filter me-1"></i> Filter
+            </button>
+        </div>
+
+        {{-- Clear Button --}}
+        @if(request('month') || request('manager'))
+        <div class="col-12 col-sm-auto">
+            <a href="{{ route('superadmin.clients.index') }}" class="btn btn-sm btn-outline-secondary w-100">
+                <i class="fas fa-times"></i> Clear
+            </a>
+        </div>
+        @endif
+    </form>
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -42,7 +69,7 @@
                         <span class="badge bg-warning text-dark ms-1">{{ $monthPendingCount }} pending</span>
                     @endif
                 </h4>
-                
+
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered">
                         <thead class="table-primary">
@@ -124,9 +151,8 @@
                 </div>
             </div>
         @endforeach
-    @endif  
+    @endif
 
-    {{-- Optional: Summary section for pending requests --}}
     @if($pendingRequests->count() > 0)
         <div class="mt-4 p-3 bg-light rounded">
             <h5 class="text-warning">
@@ -161,7 +187,7 @@
 }
 
 .month-heading {
-    color: #6c757d; /* Ash gray (Bootstrap's "text-muted") */
+    color: #6c757d;
     font-weight: 600;
     font-size: 1.25rem;
 }

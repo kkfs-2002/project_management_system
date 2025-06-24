@@ -41,10 +41,12 @@
         <input type="text" name="project_name" class="form-control" value="{{ old('project_name') }}">
 
         <label>Project Type</label>
-        <select name="project_type" class="form-select">
+        <select name="project_type" class="form-select" required>
             <option value="" disabled selected>Select Project Type</option>
-            <option value="Web" {{ old('project_type') == 'Web' ? 'selected' : '' }}>Web</option>
-            <option value="Mobile" {{ old('project_type') == 'Mobile' ? 'selected' : '' }}>Mobile</option>
+            <option value="Website" {{ old('project_type') == 'Website' ? 'selected' : '' }}>Website</option>
+            <option value="System" {{ old('project_type') == 'System' ? 'selected' : '' }}>System</option>
+            <option value="Mobile App" {{ old('project_type') == 'Mobile App' ? 'selected' : '' }}>Mobile App</option>
+            <option value="Other" {{ old('project_type') == 'Other' ? 'selected' : '' }}>Other</option>
         </select>
 
         <label>Technology</label>

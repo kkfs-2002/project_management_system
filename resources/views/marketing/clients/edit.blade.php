@@ -44,8 +44,10 @@
         <label>Project Type</label>
         <select name="project_type" class="form-select">
             <option value="" disabled>Select Project Type</option>
-            <option value="Web" {{ old('project_type', $client->project_type) == 'Web' ? 'selected' : '' }}>Web</option>
-            <option value="Mobile" {{ old('project_type', $client->project_type) == 'Mobile' ? 'selected' : '' }}>Mobile</option>
+            <option value="Website" {{ old('project_type') == 'Website' ? 'selected' : '' }}>Website</option>
+            <option value="System" {{ old('project_type') == 'System' ? 'selected' : '' }}>System</option>
+            <option value="Mobile App" {{ old('project_type') == 'MobileApp' ? 'selected' : '' }}>Mobile App</option>
+            <option value="Other" {{ old('project_type') == 'Other' ? 'selected' : '' }}>Other</option>
         </select>
 
         <label>Technology</label>
