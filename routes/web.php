@@ -10,10 +10,13 @@ use App\Http\Controllers\Admin\PMOperationsController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAttendanceController;
 use App\Http\Controllers\MarketingClientController;
 use App\Http\Controllers\SuperAdmin\ProjectController;
+use App\Http\Controllers\Developer\DeveloperTasksController;
+use App\Http\Controllers\ProjectManager\ProjectManagerTasksController;
+use App\Http\Controllers\SuperAdmin\SuperAdminAssignTaskController;
+use App\Http\Controllers\ProjectManager\ProjectManagerDashboardController;
 use App\Http\Controllers\SuperAdmin\ClientController;
 use App\Http\Controllers\SuperAdmin\SuperDashController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Task\TaskController;
 
 
 
@@ -39,9 +42,7 @@ Route::post('/logout', function (Request $request) {
 //Redirect based on roles
 Route::get('/superadmin/dashboard', [SuperDashController::class,'dashboard'])->name('superadmin.dashboard');
 Route::get('/layouts/admin', fn() => view('layouts.admin'))->name('layouts.admin');
-Route::get('/layouts/developer', fn() => view('layouts.developer'))->name('layouts.developer');
-Route::get('/layouts/projectmanager', fn() => view('layouts.projectmanager'))->name('layouts.projectmanager');
-
+Route::get('/developer/dashboard', fn() => view('dashboards.developer'))->name('developer.dashboard');
 
 
 //profile for employee
@@ -120,6 +121,7 @@ Route::prefix('marketing')->group(function () {
 
 });
 
+
 Route::prefix('superadmin/project')->name('superadmin.project.')->group(function () {
     Route::get('/', [ProjectController::class, 'index'])->name('index');
     Route::get('/create', [ProjectController::class, 'create'])->name('create');
@@ -139,6 +141,16 @@ Route::prefix('superadmin/project')->name('superadmin.project.')->group(function
 
 });
 
+// Task
+// Superadmin
+Route::get('/superadmin/assign-task/create', [SuperAdminAssignTaskController::class, 'create'])->name('superadmin.assign_task.create');
+Route::post('/superadmin/assign-task', [SuperAdminAssignTaskController::class, 'store'])->name('superadmin.assign_task.store');
+// Project Manager
+Route::get('/projectmanager/tasks', [ProjectManagerTasksController::class, 'index'])->name('projectmanager.tasks.index');
+Route::post('/projectmanager/tasks/forward/{id}', [ProjectManagerTasksController::class, 'forward'])->name('projectmanager.tasks.forward');
+Route::get('/layouts/projectmanager', [ProjectManagerDashboardController::class, 'index'])->name('layouts.projectmanager');
+// Developer
+Route::get('/developer/tasks', [DeveloperTasksController::class, 'index'])->name('developer.tasks.index');
 
 //superadmin client details
 Route::prefix('superadmin/marketing/clients')->group(function () {
@@ -153,24 +165,6 @@ Route::prefix('superadmin/marketing/clients')->group(function () {
 Route::get('superadmin/clients/create', [ClientController::class, 'create'])->name('superadmin.clients.create');
 // routes/web.php
 Route::post('superadmin/clients/store', [ClientController::class, 'store'])->name('superadmin.clients.store');
-
-
-//Task
-Route::prefix('tasks')->group(function () {
-    // Super Admin
-    Route::get('create',       [TaskController::class, 'create'])->name('tasks.create');
-    Route::post('store',       [TaskController::class, 'store'])->name('tasks.store');
-    Route::get('superadmin.tasks.create',   [TaskController::class, 'create'])->name('superadmin.tasks.create');
-        Route::get('superadmin.tasks.index',   [TaskController::class, 'superadminIndex'])->name('superadmin.tasks.index');
-// Project Manager
-Route::get('projectmanager.tasks.index/{pm}', [TaskController::class, 'projectManagerIndex'])->name('projectmanager.tasks.index');
-Route::post('/projectmanager/tasks/{task}/forward', [TaskController::class, 'forwardToDeveloper'])->name('projectmanager.tasks.forward');
-
-
-    // Developer 
-    Route::get('developer.tasks.index/{dev}',    [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
-    Route::post('developer.tasks/complete/{id}', [TaskController::class, 'complete'])->name('developer.tasks.complete');
-});
 
 
 
