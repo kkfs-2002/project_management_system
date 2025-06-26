@@ -10,14 +10,10 @@ use App\Http\Controllers\Admin\PMOperationsController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAttendanceController;
 use App\Http\Controllers\MarketingClientController;
 use App\Http\Controllers\SuperAdmin\ProjectController;
-use App\Http\Controllers\Developer\DeveloperTasksController;
-use App\Http\Controllers\ProjectManager\ProjectManagerTasksController;
-use App\Http\Controllers\SuperAdmin\SuperAdminAssignTaskController;
-use App\Http\Controllers\ProjectManager\ProjectManagerDashboardController;
 use App\Http\Controllers\SuperAdmin\ClientController;
 use App\Http\Controllers\SuperAdmin\SuperDashController;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Task\TaskController;
 
 
 
@@ -141,16 +137,6 @@ Route::prefix('superadmin/project')->name('superadmin.project.')->group(function
 
 });
 
-// Task
-// Superadmin
-Route::get('/superadmin/assign-task/create', [SuperAdminAssignTaskController::class, 'create'])->name('superadmin.assign_task.create');
-Route::post('/superadmin/assign-task', [SuperAdminAssignTaskController::class, 'store'])->name('superadmin.assign_task.store');
-// Project Manager
-Route::get('/projectmanager/tasks', [ProjectManagerTasksController::class, 'index'])->name('projectmanager.tasks.index');
-Route::post('/projectmanager/tasks/forward/{id}', [ProjectManagerTasksController::class, 'forward'])->name('projectmanager.tasks.forward');
-Route::get('/layouts/projectmanager', [ProjectManagerDashboardController::class, 'index'])->name('layouts.projectmanager');
-// Developer
-Route::get('/developer/tasks', [DeveloperTasksController::class, 'index'])->name('developer.tasks.index');
 
 //superadmin client details
 Route::prefix('superadmin/marketing/clients')->group(function () {
@@ -168,3 +154,22 @@ Route::post('superadmin/clients/store', [ClientController::class, 'store'])->nam
 
 
 
+ // Super Admin
+    Route::get('create',       [TaskController::class, 'create'])->name('tasks.create');
+    Route::post('store',       [TaskController::class, 'store'])->name('tasks.store');
+    Route::get('superadmin',   [TaskController::class, 'superadminIndex'])->name('tasks.superadmin');
+    // Project Manager 
+    Route::get('pm/{pm}',      [TaskController::class, 'projectManagerIndex'])->name('tasks.pm');
+    Route::post('pm/forward/{id}', [TaskController::class, 'forwardToDeveloper'])->name('tasks.pm.forward');
+    Route::get('superadmin.tasks.create',   [TaskController::class, 'create'])->name('superadmin.tasks.create');
+        Route::get('superadmin.tasks.index',   [TaskController::class, 'superadminIndex'])->name('superadmin.tasks.index');
+// Project Manager
+Route::get('projectmanager.tasks.index/{pm}', [TaskController::class, 'projectManagerIndex'])->name('projectmanager.tasks.index');
+Route::post('/projectmanager/tasks/{task}/forward', [TaskController::class, 'forwardToDeveloper'])->name('projectmanager.tasks.forward');
+
+
+    // Developer 
+    Route::get('dev/{dev}',    [TaskController::class, 'developerIndex'])->name('tasks.dev');
+    Route::post('dev/complete/{id}', [TaskController::class, 'complete'])->name('tasks.dev.complete');
+    Route::get('developer.tasks.index/{dev}',    [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
+    Route::post('developer.tasks/complete/{id}', [TaskController::class, 'complete'])->name('developer.tasks.complete');
