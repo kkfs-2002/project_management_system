@@ -124,11 +124,15 @@
 
 
         <!-- Logout -->
-        <li class="nav-item">
-          <a class="nav-link text-danger" href="{{ route('logout') }}">
-            <i class="fas fa-sign-out-alt me-1"></i> Logout
-          </a>
-        </li>
+<li class="nav-item">
+<form method="POST" action="{{ route('logout') }}">
+    @csrf
+    <button type="submit" class="nav-link btn btn-link text-danger" style="background: none; border: none; padding: 0;">
+        <i class="fas fa-sign-out-alt me-1"></i> Logout
+    </button>
+</form>
+
+</li>
 
       </ul>
     </div>

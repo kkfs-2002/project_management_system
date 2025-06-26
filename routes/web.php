@@ -18,6 +18,7 @@ use App\Http\Controllers\Task\TaskController;
 
 
 
+
 Route::get('/', function () {
    return redirect()->route('login');
 });
@@ -33,7 +34,8 @@ Route::post('/logout', function (Request $request) {
     $request->session()->regenerateToken();
 
     return redirect('/login');
-});
+})->name('logout');
+
 
 
 //Redirect based on roles
@@ -115,7 +117,7 @@ Route::prefix('marketing')->group(function () {
 
 
     Route::get('/clients/reminders', [MarketingClientController::class, 'reminders'])->name('marketing.clients.reminders');
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    //Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
     Route::get('/clients/report', [MarketingClientController::class, 'report'])->name('marketing.clients.report');
 
 });
