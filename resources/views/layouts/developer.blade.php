@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
     <style>
         body {background-color:#f8f9fa;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
-        .navbar-custom {background-color:rgba(13,110,253,.85);backdrop-filter:blur(8px);box-shadow:0 4px 6px rgba(0,0,0,.2);z-index:1050;}
+        .navbar-custom {background-color:rgba(0,0,0,.75);backdrop-filter:blur(8px);box-shadow:0 4px 6px rgba(0,0,0,.2);z-index:1050;}
         .navbar-custom .navbar-brand,.navbar-custom .nav-link,.navbar-custom .dropdown-toggle{color:#fff;font-weight:500;}
         .navbar-custom .nav-link:hover,.navbar-custom .dropdown-toggle:hover{color:#FFD700!important;}
         .dropdown-menu{background-color:#111;border:none;}

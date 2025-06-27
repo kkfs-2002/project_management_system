@@ -27,7 +27,7 @@
             <button class="btn btn-sm btn-warning">Forward to Developer</button>
           </form>
         @else
-          —
+          Forwarded
         @endif
       </td>
     </tr>
