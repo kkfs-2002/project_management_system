@@ -18,7 +18,7 @@ use App\Http\Controllers\Task\TaskController;
 
 
 Route::get('/', function () {
-   return redirect()->route('login');
+    return redirect()->route('login');
 });
 
 //Login
@@ -36,10 +36,10 @@ Route::post('/logout', function (Request $request) {
 
 
 //Redirect based on roles
-Route::get('/superadmin/dashboard', [SuperDashController::class,'dashboard'])->name('superadmin.dashboard');
+Route::get('/superadmin/dashboard', [SuperDashController::class, 'dashboard'])->name('superadmin.dashboard');
 Route::get('/layouts/admin', fn() => view('layouts.admin'))->name('layouts.admin');
-Route::get('/developer/dashboard', fn() => view('dashboards.developer'))->name('developer.dashboard');
-
+Route::get('/layouts/developer', fn() => view('layouts.developer'))->name('layouts.developer');
+Route::get('/layouts/projectmanager', fn() => view('layouts.projectmanager'))->name('layouts.projectmanager');
 
 //profile for employee
 Route::get('/layouts/admin', [ProfileController::class, 'dashboard'])->name('layouts.admin');
@@ -69,11 +69,11 @@ Route::post('/admin/attendance', [AttendanceController::class, 'store'])->name('
 Route::get('/admin/attendance/sheet', [AttendanceController::class, 'showSheet'])->name('attendance.sheet');
 
 // Admin Dashboard Operations
-    Route::get('/admin/operations/logbook', [PMOperationsController::class, 'showLogForm'])->name('admin.operations.logbook');
-    Route::post('/admin/operations/logbook', [PMOperationsController::class, 'storeLog'])->name('admin.operations.logbook');
+Route::get('/admin/operations/logbook', [PMOperationsController::class, 'showLogForm'])->name('admin.operations.logbook');
+Route::post('/admin/operations/logbook', [PMOperationsController::class, 'storeLog'])->name('admin.operations.logbook');
 
-    Route::get('/admin/operations/assign_task', [PMOperationsController::class, 'showAssignForm'])->name('admin.operations.assign_task');
-    Route::post('/admin/operations/assign_task', [PMOperationsController::class, 'assignTask'])->name('admin.operations.assign_task');
+Route::get('/admin/operations/assign_task', [PMOperationsController::class, 'showAssignForm'])->name('admin.operations.assign_task');
+Route::post('/admin/operations/assign_task', [PMOperationsController::class, 'assignTask'])->name('admin.operations.assign_task');
 
 //Summary and charts of Attendance - Super admin
 Route::prefix('superadmin')->name('superadmin.')->group(function () {
@@ -86,7 +86,7 @@ Route::prefix('marketing')->group(function () {
     Route::get('/dashboard', function () {
         return view('marketing.dashboard');
     });
-    
+
 
     Route::get('/marketing/dashboard', [MarketingClientController::class, 'dashboard'])->name('marketing.dashboard');
 
@@ -105,7 +105,7 @@ Route::prefix('marketing')->group(function () {
     // Update client
     Route::put('/clients/{client}', [MarketingClientController::class, 'update'])->name('marketing.clients.update');
 
-   // Delete (already added earlier)
+    // Delete (already added earlier)
     Route::delete('/clients/{client}', [MarketingClientController::class, 'destroy'])->name('marketing.clients.destroy');
 
     Route::get('/clients/status/{type}', [MarketingClientController::class, 'status'])->name('marketing.clients.status');
@@ -114,7 +114,6 @@ Route::prefix('marketing')->group(function () {
     Route::get('/clients/reminders', [MarketingClientController::class, 'reminders'])->name('marketing.clients.reminders');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('/clients/report', [MarketingClientController::class, 'report'])->name('marketing.clients.report');
-
 });
 
 
@@ -126,7 +125,7 @@ Route::prefix('superadmin/project')->name('superadmin.project.')->group(function
     // Financials
     Route::get('/{project}/financials/create', [ProjectController::class, 'createFinancials'])->name('financials.create');
     Route::post('/financials/store', [ProjectController::class, 'storeFinancials'])->name('financials.store');
-    
+
     //View transactions
     Route::get('/transactions', [ProjectController::class, 'transactions'])->name('transactions');
     Route::get('/transactions/download-pdf', [ProjectController::class, 'downloadPdf'])->name('transactions.downloadPdf');
@@ -134,17 +133,15 @@ Route::prefix('superadmin/project')->name('superadmin.project.')->group(function
     Route::get('/financials/{account}/edit', [ProjectController::class, 'editFinancials'])->name('financials.edit');
     Route::put('/financials/{account}', [ProjectController::class, 'updateFinancials'])->name('financials.update');
     Route::delete('/financials/{account}', [ProjectController::class, 'destroyFinancials'])->name('financials.destroy');
-
 });
 
 
 //superadmin client details
 Route::prefix('superadmin/marketing/clients')->group(function () {
     Route::get('/', [ClientController::class, 'index'])->name('superadmin.clients.index');
-    
+
     Route::post('/{client}/approve-permission', [ClientController::class, 'approvePermission'])->name('superadmin.clients.approve-permission');
     Route::post('/{client}/reject-permission', [ClientController::class, 'rejectPermission'])->name('superadmin.clients.reject-permission');
-
 });
 
 // routes/web.php
@@ -154,22 +151,17 @@ Route::post('superadmin/clients/store', [ClientController::class, 'store'])->nam
 
 
 
- // Super Admin
-    Route::get('create',       [TaskController::class, 'create'])->name('tasks.create');
-    Route::post('store',       [TaskController::class, 'store'])->name('tasks.store');
-    Route::get('superadmin',   [TaskController::class, 'superadminIndex'])->name('tasks.superadmin');
-    // Project Manager 
-    Route::get('pm/{pm}',      [TaskController::class, 'projectManagerIndex'])->name('tasks.pm');
-    Route::post('pm/forward/{id}', [TaskController::class, 'forwardToDeveloper'])->name('tasks.pm.forward');
-    Route::get('superadmin.tasks.create',   [TaskController::class, 'create'])->name('superadmin.tasks.create');
-        Route::get('superadmin.tasks.index',   [TaskController::class, 'superadminIndex'])->name('superadmin.tasks.index');
+// Super Admin
+Route::get('create',       [TaskController::class, 'create'])->name('tasks.create');
+Route::post('store',       [TaskController::class, 'store'])->name('tasks.store');
+Route::get('superadmin',   [TaskController::class, 'superadminIndex'])->name('tasks.superadmin');
+Route::get('superadmin.tasks.index',   [TaskController::class, 'superadminIndex'])->name('superadmin.tasks.index');
+
 // Project Manager
 Route::get('projectmanager.tasks.index/{pm}', [TaskController::class, 'projectManagerIndex'])->name('projectmanager.tasks.index');
 Route::post('/projectmanager/tasks/{task}/forward', [TaskController::class, 'forwardToDeveloper'])->name('projectmanager.tasks.forward');
 
 
-    // Developer 
-    Route::get('dev/{dev}',    [TaskController::class, 'developerIndex'])->name('tasks.dev');
-    Route::post('dev/complete/{id}', [TaskController::class, 'complete'])->name('tasks.dev.complete');
-    Route::get('developer.tasks.index/{dev}',    [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
-    Route::post('developer.tasks/complete/{id}', [TaskController::class, 'complete'])->name('developer.tasks.complete');
+// Developer 
+Route::get('developer.tasks.index/{dev}',    [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
+Route::post('developer.tasks/complete/{id}', [TaskController::class, 'complete'])->name('developer.tasks.complete');

@@ -86,7 +86,7 @@ class TaskController extends Controller
         $dev = Profile::findOrFail($devId);
 
         $tasks = Task::where('developer_id', $devId)
-                     ->orderBy('id', 'asc') // ✅ fix: show by ascending task ID
+                     ->orderBy('id', 'asc') 
                      ->get();
 
         return view('developer/tasks/index', compact('dev', 'tasks'));
