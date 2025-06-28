@@ -108,6 +108,10 @@
             <li><a class="dropdown-item" href="{{ route('superadmin.employee.create') }}">Add Employee</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.employee.index') }}">Employee List</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.employee.attendance.index') }}">Attendance Tracker</a></li>
+                            <li><a class="dropdown-item" href="{{ route('attendance.index') }}">Mark attendance</a></li>
+                            <li><a class="dropdown-item" href="{{ route('attendance.sheet') }}">View attendance</a></li>
+
+
             <li><a class="dropdown-item" href="#">Leave & Presence Report</a></li>
             <li><a class="dropdown-item" href="#">Monthly Working Hour Summary</a></li>
           </ul>

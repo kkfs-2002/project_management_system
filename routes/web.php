@@ -5,7 +5,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SuperAdmin\EmployeeController;
-use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\PMOperationsController;
 use App\Http\Controllers\SuperAdmin\SuperAdminAttendanceController;
 use App\Http\Controllers\MarketingClientController;
@@ -14,7 +13,7 @@ use App\Http\Controllers\SuperAdmin\ClientController;
 use App\Http\Controllers\SuperAdmin\SuperDashController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Task\TaskController;
-
+use App\Http\Controllers\SuperAdmin\AttendanceController;
 
 
 Route::get('/', function () {
@@ -62,8 +61,8 @@ Route::put('/superadmin/employee/{id}', [EmployeeController::class, 'update'])->
 Route::delete('/superadmin/employee/{id}', [EmployeeController::class, 'destroy'])->name('superadmin.employee.destroy');
 
 //Mark Attendance employee- Admin
-Route::get('/admin/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
-Route::post('/admin/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+Route::get('/superadmin/attendance/index', [AttendanceController::class, 'index'])->name('attendance.index');
+Route::post('/superadmin/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
 
 //View attendance filtered by date and month
 Route::get('/admin/attendance/sheet', [AttendanceController::class, 'showSheet'])->name('attendance.sheet');
