@@ -90,7 +90,6 @@ Route::prefix('superadmin/attendance')
         ->name('employee.month.pdf');
 });
 
-
 //Digital Marketing Manager
 Route::prefix('marketing')->group(function () {
     Route::get('/dashboard', function () {
@@ -162,7 +161,7 @@ Route::post('superadmin/clients/store', [ClientController::class, 'store'])->nam
 
 
 // Super Admin
-Route::get('create',       [TaskController::class, 'create'])->name('superadmin.tasks.create');
+Route::get('create',       [TaskController::class, 'create'])->name('tasks.create');
 Route::post('store',       [TaskController::class, 'store'])->name('tasks.store');
 Route::get('superadmin',   [TaskController::class, 'superadminIndex'])->name('tasks.superadmin');
 Route::get('superadmin.tasks.index',   [TaskController::class, 'superadminIndex'])->name('superadmin.tasks.index');

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\SuperAdmin;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use App\Models\Profile;
-use App\Models\Project;
 use App\Models\Attendance;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,6 +12,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Models\Project;
+
 
 class SuperAdminAttendanceController extends Controller
 {
@@ -55,7 +56,6 @@ for ($d = (clone $start); $d <= $end; $d->addDay()) {
     $date = $d->format('Y-m-d');
     $dailyHours->put($date, $hoursByDate[$date] ?? 0.0);   // always a float
 }
-
             }
         }
 
