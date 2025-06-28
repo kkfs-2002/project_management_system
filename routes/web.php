@@ -60,7 +60,7 @@ Route::get('/superadmin/employee/{id}/edit', [EmployeeController::class, 'edit']
 Route::put('/superadmin/employee/{id}', [EmployeeController::class, 'update'])->name('superadmin.employee.update');
 Route::delete('/superadmin/employee/{id}', [EmployeeController::class, 'destroy'])->name('superadmin.employee.destroy');
 
-//Mark Attendance employee- Admin
+//Mark Attendance employee- SuperAdmin
 Route::get('/superadmin/attendance/index', [AttendanceController::class, 'index'])->name('attendance.index');
 Route::post('/superadmin/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
 
@@ -157,11 +157,9 @@ Route::get('superadmin',   [TaskController::class, 'superadminIndex'])->name('ta
 Route::get('superadmin.tasks.index',   [TaskController::class, 'superadminIndex'])->name('superadmin.tasks.index');
 Route::get('superadmin.tasks.create',   [TaskController::class, 'create'])->name('superadmin.tasks.create');
 
-
 // Project Manager
 Route::get('projectmanager.tasks.index/{pm}', [TaskController::class, 'projectManagerIndex'])->name('projectmanager.tasks.index');
 Route::post('/projectmanager/tasks/{task}/forward', [TaskController::class, 'forwardToDeveloper'])->name('projectmanager.tasks.forward');
-
 
 // Developer 
 Route::get('developer.tasks.index/{dev}',    [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
