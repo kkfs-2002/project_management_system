@@ -107,9 +107,8 @@
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="employeesDropdown">
             <li><a class="dropdown-item" href="{{ route('superadmin.employee.create') }}">Add Employee</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.employee.index') }}">Employee List</a></li>
-            <li><a class="dropdown-item" href="{{ route('superadmin.employee.attendance.index') }}">Attendance Tracker</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.attendance.employee.month') }}">Attendance Tracker</a></li>
             <li><a class="dropdown-item" href="#">Leave & Presence Report</a></li>
-            <li><a class="dropdown-item" href="#">Monthly Working Hour Summary</a></li>
           </ul>
         </li>
 
@@ -160,10 +159,6 @@
             <i class="fas fa-cogs me-1"></i> Admin Tools
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminToolsDropdown">
-            <li><a class="dropdown-item" href="#">Admin Profile</a></li>
-            <li><a class="dropdown-item" href="#">Roles & Permissions</a></li>
-            <li><a class="dropdown-item" href="#">Notification Center</a></li>
-            <li><a class="dropdown-item" href="#">Activity Logs</a></li>
             <li><a class="dropdown-item" href="#">Change Password</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>

@@ -76,10 +76,21 @@ Route::get('/admin/operations/assign_task', [PMOperationsController::class, 'sho
 Route::post('/admin/operations/assign_task', [PMOperationsController::class, 'assignTask'])->name('admin.operations.assign_task');
 
 //Summary and charts of Attendance - Super admin
-Route::prefix('superadmin')->name('superadmin.')->group(function () {
-    Route::get('/attendance', [SuperAdminAttendanceController::class, 'index'])->name('employee.attendance.index');
-    Route::get('/attendance/download', [SuperAdminAttendanceController::class, 'downloadPdf'])->name('employee.attendance.pdf');
+Route::prefix('superadmin/attendance')
+      ->name('superadmin.attendance.')
+      ->group(function () {
+
+    // 1.  Employee–Month dashboard
+    Route::get('/employee',
+        [SuperAdminAttendanceController::class,'employeeMonth'])
+        ->name('employee.month');
+
+    // 2.  Single-employee PDF
+    Route::get('/employee/pdf',
+        [SuperAdminAttendanceController::class,'employeeMonthPdf'])
+        ->name('employee.month.pdf');
 });
+
 
 //Digital Marketing Manager
 Route::prefix('marketing')->group(function () {
@@ -152,7 +163,7 @@ Route::post('superadmin/clients/store', [ClientController::class, 'store'])->nam
 
 
 // Super Admin
-Route::get('create',       [TaskController::class, 'create'])->name('tasks.create');
+Route::get('create',       [TaskController::class, 'create'])->name('superadmin.tasks.create');
 Route::post('store',       [TaskController::class, 'store'])->name('tasks.store');
 Route::get('superadmin',   [TaskController::class, 'superadminIndex'])->name('tasks.superadmin');
 Route::get('superadmin.tasks.index',   [TaskController::class, 'superadminIndex'])->name('superadmin.tasks.index');
