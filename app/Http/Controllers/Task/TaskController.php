@@ -58,11 +58,11 @@ class TaskController extends Controller
     //PROJECT MANAGER
     public function projectManagerIndex($pmId)
     {
-        $pm = Profile::findOrFail($pmId);
+        $pm    = Profile::findOrFail($pmId);          
+        $tasks = Task::where('project_manager_id', $pmId);
+        $tasks = Task::orderBy('id', 'asc')->get();
 
-        $tasks = Task::where('project_manager_id', $pmId)
-                     ->orderBy('id', 'asc') 
-                     ->get();
+        
 
         return view('projectmanager/tasks/index', compact('tasks'));
     }
@@ -83,12 +83,9 @@ class TaskController extends Controller
     //DEVELOPER 
     public function developerIndex($devId)
     {
-        $dev = Profile::findOrFail($devId);
-
-        $tasks = Task::where('developer_id', $devId)
-                     ->orderBy('id', 'asc') // ✅ fix: show by ascending task ID
-                     ->get();
-
+        $dev   = Profile::findOrFail($devId);
+        $tasks = Task::where('developer_id', $devId)->latest()->get();
+        $tasks = Task::orderBy('id', 'asc')->get();
         return view('developer/tasks/index', compact('dev', 'tasks'));
     }
 

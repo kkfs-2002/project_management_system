@@ -10,58 +10,89 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Collection;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use App\Models\Project;
 
 
 class SuperAdminAttendanceController extends Controller
 {
-    public function index(Request $request)
+    public function employeeMonth(Request $request)
     {
+        $employeeId = $request->integer('employee_id');
         $month = $request->input('month', now()->format('Y-m'));
+        $employees = Profile::orderBy('full_name')->get();
 
-        $start = Carbon::parse($month . '-01')->startOfMonth();
-        $end = $start->copy()->endOfMonth();
+        $employee = null;
+        $daysPresent = 0;
+        $totalHours = 0;
+        $dailyHours = collect();
+        $allMonths = collect();
 
-        $dates = collect(CarbonPeriod::create($start, $end))->map(fn($date) => $date->format('Y-m-d'));
+        if ($employeeId) {
+            $employee = Profile::find($employeeId);
+            if ($employee) {
+                $start = Carbon::parse($month.'-01')->startOfMonth();
+                $end = (clone $start)->endOfMonth();
 
-        $employees = Profile::all();
+                /* 4.  fetch this employee’s attendance for the month  */
+$records = Attendance::where('profile_id', $employeeId)
+          ->whereDate('date', '>=', $start)   // use DATE comparison
+          ->whereDate('date', '<=', $end)
+          ->get();
 
-        // Get all attendance records for the selected month
-        $attendance = Attendance::whereBetween('date', [$start, $end])->get();
+/* 4-b. index rows by pure date → total hours */
+$hoursByDate = $records
+    ->groupBy(fn ($row) => Carbon::parse($row->date)->format('Y-m-d'))
+    ->map(fn ($rows)    => (float) $rows->sum('total_hours'));
 
-        // Group attendance by date and count
-        $dailyCount = $dates->mapWithKeys(function ($date) use ($attendance) {
-            $count = $attendance->filter(function ($att) use ($date) {
-                return Carbon::parse($att->date)->format('Y-m-d') === $date;
-            })->count();
+/* 5. KPIs (leave as-is) */
+$daysPresent = $records->count();
+$totalHours  = round($records->sum('total_hours'), 2);
 
-            return [$date => $count];
-        });
+/* 6.  build dailyHours for every day of the month */
+$dailyHours = collect();
+for ($d = (clone $start); $d <= $end; $d->addDay()) {
+    $date = $d->format('Y-m-d');
+    $dailyHours->put($date, $hoursByDate[$date] ?? 0.0);   // always a float
+}
+            }
+        }
 
-        // Calculate total hours per employee
-        $employeeProgress = $employees->map(function ($emp) use ($attendance) {
-            $records = $attendance->where('profile_id', $emp->id);
-            $totalHours = $records->sum('total_hours');
+        // Month list
+        $first = Project::min('start_date') ?? now()->format('Y-m-01');
+        $run = Carbon::parse($first)->startOfMonth();
+        while ($run <= now()) {
+            $allMonths->push([
+                'value' => $run->format('Y-m'),
+                'label' => $run->format('F Y'),
+            ]);
+            $run->addMonth();
+        }
 
-            return [
-                'name' => $emp->full_name,
-                'hours' => round($totalHours, 2)
-            ];
-        });
-
-        return view('superadmin.employee.attendance.index', compact('month', 'dailyCount', 'employeeProgress', 'dates'));
+        return view('superadmin.employee.attendance.employee-select', compact(
+            'employees', 'employee', 'month',
+            'daysPresent', 'totalHours', 'dailyHours', 'allMonths'
+        ));
     }
 
-    public function downloadPdf(Request $request)
+    public function employeeMonthPdf(Request $request)
     {
-        $data = [
-            'month' => $request->input('month'),
-            'dailyCount' => json_decode($request->input('dailyCount'), true),
-            'employeeProgress' => json_decode($request->input('employeeProgress'), true)
-        ];
+        $employee   = Profile::findOrFail($request->employee_id);
+        $month      = Carbon::parse($request->month)->format('F Y');
+        $daysPresent= $request->days_present;
+        $totalHours = $request->total_hours;
+        $dailyHours = json_decode($request->daily_hours, true);
 
-        $pdf = Pdf::loadView('superadmin.employee.attendance.pdf', $data);
-        return $pdf->download('attendance-summary.pdf');
+        $pdf = Pdf::loadView(
+            'superadmin.employee.attendance.single-pdf',
+            compact('employee','month','daysPresent','totalHours','dailyHours')
+        );
+
+        return $pdf->download(
+            Str::slug($employee->full_name).'_'.$request->month.'_attendance.pdf'
+        );
     }
 }
+
 
