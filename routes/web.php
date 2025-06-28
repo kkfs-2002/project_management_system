@@ -156,6 +156,8 @@ Route::get('create',       [TaskController::class, 'create'])->name('tasks.creat
 Route::post('store',       [TaskController::class, 'store'])->name('tasks.store');
 Route::get('superadmin',   [TaskController::class, 'superadminIndex'])->name('tasks.superadmin');
 Route::get('superadmin.tasks.index',   [TaskController::class, 'superadminIndex'])->name('superadmin.tasks.index');
+Route::get('superadmin.tasks.create',   [TaskController::class, 'create'])->name('superadmin.tasks.create');
+
 
 // Project Manager
 Route::get('projectmanager.tasks.index/{pm}', [TaskController::class, 'projectManagerIndex'])->name('projectmanager.tasks.index');
