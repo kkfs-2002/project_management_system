@@ -18,16 +18,19 @@ class MarketingClientController extends Controller
     // View all clients
     public function index(Request $request)
 {
-    $query = Client::where('marketing_manager_id', session('employee_id'));
+    $employeeId = session('employee_id'); // Ensure we get the correct manager ID
 
-    // Check if a specific month was requested
+    // ✅ Always filter by marketing_manager_id since this controller is ONLY for Marketing Managers
+    $query = Client::where('marketing_manager_id', $employeeId);
+
+    // Optional month filter
     if ($request->has('month') && $request->month) {
         try {
             $month = Carbon::parse($request->month);
             $query->whereYear('created_at', $month->year)
                   ->whereMonth('created_at', $month->month);
         } catch (\Exception $e) {
-            // Handle invalid month format
+            // Optional: log error or ignore
         }
     }
 
@@ -40,6 +43,7 @@ class MarketingClientController extends Controller
 
     return view('marketing.clients.index', compact('clientsByMonth'));
 }
+
     
     // Show create client form
     public function create()
