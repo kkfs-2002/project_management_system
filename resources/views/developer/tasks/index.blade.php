@@ -27,7 +27,7 @@
             <button class="btn btn-sm btn-warning">Mark Completed</button>
           </form>
         @else
-          Submitted
+          -
         @endif
       </td>
     </tr>
