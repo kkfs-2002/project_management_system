@@ -18,7 +18,7 @@ class SuperDashController extends Controller
 public function dashboard(Request $request)
 {
     $type = $request->query('type');
-    $sort = $request->query('sort', 'asc'); // Default is 'asc'
+    $sort = $request->query('sort', 'asc'); 
 
     $projectsQuery = Project::whereNotNull('deadline');
 

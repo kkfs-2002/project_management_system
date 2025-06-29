@@ -82,12 +82,12 @@ Route::prefix('superadmin/attendance')
       ->name('superadmin.attendance.')
       ->group(function () {
 
-    // 1.  Employee–Month dashboard
+    //Employee–Month dashboard
     Route::get('/employee',
         [SuperAdminAttendanceController::class,'employeeMonth'])
         ->name('employee.month');
 
-    // 2.  Single-employee PDF
+    //Single-employee PDF
     Route::get('/employee/pdf',
         [SuperAdminAttendanceController::class,'employeeMonthPdf'])
         ->name('employee.month.pdf');
@@ -183,18 +183,18 @@ Route::prefix('superadmin/password')
       ->name('superadmin.password.')
       ->group(function () {
 
-    /* ❶ LIST – pick an employee to reset */
-    Route::get('/reset',                 // /superadmin/password/reset
+    /*LIST – pick an employee to reset */
+    Route::get('/reset',                 
         [PasswordAdminController::class,'listEmployees'])
         ->name('list');
 
-    /* ❷ individual reset form & post */
+    /*individual reset form & post */
     Route::get ('/reset/{profile}',  [PasswordAdminController::class,'editOther'])
          ->name('editOther');
     Route::post('/reset/{profile}', [PasswordAdminController::class,'updateOther'])
          ->name('updateOther');
 
-    /* ❸ self-change routes (unchanged) */
+    /*self-change routes */
     Route::get ('/change',  [PasswordAdminController::class,'editSelf'])->name('editSelf');
     Route::post('/change', [PasswordAdminController::class,'updateSelf'])->name('updateSelf');
 });

@@ -109,9 +109,6 @@
             <li><a class="dropdown-item" href="{{ route('superadmin.employee.index') }}">Employee List</a></li>
             <li><a class="dropdown-item" href="{{ route('attendance.index') }}">Mark attendance</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.attendance.employee.month') }}">Attendance Tracker</a></li>
-
-
-            <li><a class="dropdown-item" href="#">Leave & Presence Report</a></li>
           </ul>
         </li>
 
@@ -137,7 +134,6 @@
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="financeDropdown">
             <li><a class="dropdown-item" href="{{ route('superadmin.project.index') }}">Add Financial Entry</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.project.transactions') }}">View All Transactions</a></li>
-            <li><a class="dropdown-item" href="#">Monthly Sheets</a></li>
             <li><a class="dropdown-item" href="#">Expense Tracker</a></li>
             <li><a class="dropdown-item" href="#">Developer Salary View</a></li>
             <li><a class="dropdown-item" href="#">Profit/Loss Summary</a></li>

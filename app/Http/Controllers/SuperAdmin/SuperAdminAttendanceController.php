@@ -35,22 +35,22 @@ class SuperAdminAttendanceController extends Controller
                 $start = Carbon::parse($month.'-01')->startOfMonth();
                 $end = (clone $start)->endOfMonth();
 
-                /* 4.  fetch this employee’s attendance for the month  */
+                /*fetch this employee’s attendance for the month  */
 $records = Attendance::where('profile_id', $employeeId)
           ->whereDate('date', '>=', $start)   // use DATE comparison
           ->whereDate('date', '<=', $end)
           ->get();
 
-/* 4-b. index rows by pure date → total hours */
+/*index rows by pure date → total hours */
 $hoursByDate = $records
     ->groupBy(fn ($row) => Carbon::parse($row->date)->format('Y-m-d'))
     ->map(fn ($rows)    => (float) $rows->sum('total_hours'));
 
-/* 5. KPIs (leave as-is) */
+/*KPIs (leave as-is) */
 $daysPresent = $records->count();
 $totalHours  = round($records->sum('total_hours'), 2);
 
-/* 6.  build dailyHours for every day of the month */
+/*build dailyHours for every day of the month */
 $dailyHours = collect();
 for ($d = (clone $start); $d <= $end; $d->addDay()) {
     $date = $d->format('Y-m-d');
