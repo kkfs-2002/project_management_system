@@ -14,6 +14,7 @@ use App\Http\Controllers\SuperAdmin\SuperDashController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Task\TaskController;
 use App\Http\Controllers\SuperAdmin\AttendanceController;
+use App\Http\Controllers\SuperAdmin\PasswordAdminController;
 
 
 
@@ -176,3 +177,27 @@ Route::post('/projectmanager/tasks/{task}/forward', [TaskController::class, 'for
 // Developer 
 Route::get('developer.tasks.index/{dev}',    [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
 Route::post('developer.tasks/complete/{id}', [TaskController::class, 'complete'])->name('developer.tasks.complete');
+
+/*PASSWORD MANAGEMENT (Super-Admin) */
+Route::prefix('superadmin/password')
+      ->name('superadmin.password.')
+      ->group(function () {
+
+    /* ❶ LIST – pick an employee to reset */
+    Route::get('/reset',                 // /superadmin/password/reset
+        [PasswordAdminController::class,'listEmployees'])
+        ->name('list');
+
+    /* ❷ individual reset form & post */
+    Route::get ('/reset/{profile}',  [PasswordAdminController::class,'editOther'])
+         ->name('editOther');
+    Route::post('/reset/{profile}', [PasswordAdminController::class,'updateOther'])
+         ->name('updateOther');
+
+    /* ❸ self-change routes (unchanged) */
+    Route::get ('/change',  [PasswordAdminController::class,'editSelf'])->name('editSelf');
+    Route::post('/change', [PasswordAdminController::class,'updateSelf'])->name('updateSelf');
+});
+
+
+

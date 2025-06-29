@@ -163,7 +163,8 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminToolsDropdown">
 
-            <li><a class="dropdown-item" href="#">Change Password</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.password.editSelf') }}">Change My Password</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.password.list') }}">Change Employee Password</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
           </ul>
