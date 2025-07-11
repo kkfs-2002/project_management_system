@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Task\TaskController;
 use App\Http\Controllers\SuperAdmin\AttendanceController;
 use App\Http\Controllers\SuperAdmin\PasswordAdminController;
+use App\Http\Controllers\SuperAdmin\ExpenseController;
 
 
 
@@ -198,6 +199,19 @@ Route::prefix('superadmin/password')
     Route::get ('/change',  [PasswordAdminController::class,'editSelf'])->name('editSelf');
     Route::post('/change', [PasswordAdminController::class,'updateSelf'])->name('updateSelf');
 });
+
+                         
+//add expenses in superadmin
+
+Route::prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
+    Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
+    Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
+});
+
+
+
+
 
 
 
