@@ -16,6 +16,7 @@ use App\Http\Controllers\Task\TaskController;
 use App\Http\Controllers\SuperAdmin\AttendanceController;
 use App\Http\Controllers\SuperAdmin\PasswordAdminController;
 use App\Http\Controllers\SuperAdmin\ExpenseController;
+use App\Http\Controllers\SuperAdmin\SalaryController;
 
 
 
@@ -207,6 +208,12 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
     Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
     Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
+});
+
+Route::prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/salaries', [SalaryController::class, 'index'])->name('salary.index');
+    Route::get('/salaries/create', [SalaryController::class, 'create'])->name('salary.create');
+    Route::post('/salaries', [SalaryController::class, 'store'])->name('salary.store');
 });
 
 

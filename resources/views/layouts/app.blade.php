@@ -135,7 +135,10 @@
             <li><a class="dropdown-item" href="{{ route('superadmin.project.index') }}">Add Financial Entry</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.project.transactions') }}">View All Transactions</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.expenses.index') }}">Expense Tracker</a></li>
-            <li><a class="dropdown-item" href="#">Developer Salary View</a></li>
+          
+            <li><a class="dropdown-item" href="{{ route('superadmin.salary.index') }}">Employee Salary View</a></li>
+
+
             <li><a class="dropdown-item" href="#">Profit/Loss Summary</a></li>
           </ul>
         </li>
