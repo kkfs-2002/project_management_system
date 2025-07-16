@@ -139,7 +139,7 @@
             <li><a class="dropdown-item" href="{{ route('superadmin.salary.index') }}">Employee Salary View</a></li>
 
 
-            <li><a class="dropdown-item" href="#">Profit/Loss Summary</a></li>
+         
           </ul>
         </li>
 
