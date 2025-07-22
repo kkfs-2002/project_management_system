@@ -180,6 +180,13 @@ Route::post('/projectmanager/tasks/{task}/forward', [TaskController::class, 'for
 Route::get('developer.tasks.index/{dev}',    [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
 Route::post('developer.tasks/complete/{id}', [TaskController::class, 'complete'])->name('developer.tasks.complete');
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+//
+Route::get('/superadmin/tasks', [TaskController::class, 'superadminIndex'])->name('superadmin.tasks');
+=======
+>>>>>>> Stashed changes
 /*PASSWORD MANAGEMENT (Super-Admin) */
 Route::prefix('superadmin/password')
       ->name('superadmin.password.')
@@ -222,3 +229,7 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
 
 
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> 3eb1f87ae4f5a473b02efaadeca0d4a6c35fde81
+>>>>>>> Stashed changes

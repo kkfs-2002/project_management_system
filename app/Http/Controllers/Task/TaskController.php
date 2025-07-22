@@ -49,12 +49,28 @@ class TaskController extends Controller
     }
 
     //  list visible to Super Admin
-    public function superadminIndex()
-    {
-        $tasks = Task::orderBy('id', 'asc')->get(); 
-        return view('superadmin/tasks/index', compact('tasks'));
+public function superadminIndex(Request $request)
+{
+    $query = Task::query();
+
+    // If month filter is applied
+    if ($request->filled('month')) {
+        $monthYear = explode('-', $request->month); // format: YYYY-MM
+        if (count($monthYear) === 2) {
+            $query->whereYear('deadline', $monthYear[0])
+                  ->whereMonth('deadline', $monthYear[1]);
+        }
     }
 
+        // Filter by status
+    if ($request->filled('status') && in_array($request->status, ['Pending', 'Completed', 'Forwarded'])) {
+        $query->where('status', $request->status);
+    }
+
+    $tasks = $query->orderBy('id', 'asc')->get();
+
+    return view('superadmin/tasks/index', compact('tasks'));
+}
     //PROJECT MANAGER
     public function projectManagerIndex($pmId)
     {
