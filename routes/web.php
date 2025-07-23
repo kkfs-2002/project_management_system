@@ -175,6 +175,13 @@ Route::get('superadmin.tasks.create',   [TaskController::class, 'create'])->name
 // Project Manager
 Route::get('projectmanager.tasks.index/{pm}', [TaskController::class, 'projectManagerIndex'])->name('projectmanager.tasks.index');
 Route::post('/projectmanager/tasks/{task}/forward', [TaskController::class, 'forwardToDeveloper'])->name('projectmanager.tasks.forward');
+// Project Manager Task Routes
+Route::prefix('projectmanager')->group(function () {
+    Route::get('/projects', [TaskController::class, 'projectList'])->name('projectmanager.projects');
+    Route::get('/projects/{project}/tasks', [TaskController::class, 'tasksByProject'])->name('projectmanager.projects.tasks');
+    Route::post('/tasks/{task}/forward', [TaskController::class, 'forwardToDeveloper'])->name('projectmanager.tasks.forward');
+});
+ Route::get('/projectmanager/tasks', [TaskController::class, 'projectManagerIndex'])->name('projectmanager.tasks');
 
 // Developer 
 Route::get('developer.tasks.index/{dev}',    [TaskController::class, 'developerIndex'])->name('developer.tasks.index');

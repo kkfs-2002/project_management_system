@@ -22,5 +22,10 @@ class Project extends Model
     {
         return $this->hasOne(ProjectAccount::class);
     }
+    public function tasks()
+{
+    return $this->hasMany(\App\Models\AssignedTask::class);
+}
+
 
 }

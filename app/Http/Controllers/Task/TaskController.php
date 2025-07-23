@@ -75,7 +75,7 @@ class TaskController extends Controller
 
         return view('superadmin.tasks.index', compact('tasks'));
     }
-
+/*
     // PROJECT MANAGER - view tasks
     public function projectManagerIndex($pmId)
     {
@@ -97,7 +97,7 @@ class TaskController extends Controller
 
         return back()->with('success', 'Task forwarded to developer.');
     }
-
+*/
     // DEVELOPER - view tasks
     public function developerIndex($devId)
     {
@@ -119,4 +119,39 @@ class TaskController extends Controller
 
         return back()->with('success', 'Great! Task marked as complete.');
     }
+
+    public function projectList()
+{
+    $projects = Project::all(); // Or filter by assigned project manager if needed
+    return view('projectmanager.projects.index', compact('projects'));
+}
+
+public function tasksByProject(Project $project, Request $request)
+{
+    $query = $project->tasks()->with(['developer']); // assuming a relationship
+
+    if ($request->status) {
+        $query->where('status', $request->status);
+    }
+
+    $tasks = $query->get();
+    return view('projectmanager.tasks.index', compact('project', 'tasks'));
+}
+
+public function forwardToDeveloper($taskId)
+{
+    $task = AssignedTask::findOrFail($taskId);
+    $task->status = 'Forwarded';
+    $task->save();
+
+    return back()->with('success', 'Task forwarded to developer.');
+}
+// Show project selection view for Project Manager
+public function projectManagerIndex()
+{
+    $projects = Project::all(); // or filter by authenticated PM if needed
+    return view('projectmanager.projects.index', compact('projects'));
+}
+
+
 }

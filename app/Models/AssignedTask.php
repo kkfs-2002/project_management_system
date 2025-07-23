@@ -27,4 +27,9 @@ class AssignedTask extends Model
     {
         return $this->belongsTo(Project::class);
     }
+    public function developer()
+{
+    return $this->belongsTo(\App\Models\Profile::class, 'developer_id');
+}
+
 }
