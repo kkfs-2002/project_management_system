@@ -54,7 +54,15 @@ public function dashboard(Request $request)
         ];
     });
 
-    return view('superadmin.superdash', compact('timelineProjects', 'projectTypes'));
+    $employeeCount = \App\Models\Profile::count();
+    $projectCount = \App\Models\Project::count();
+    
+
+     return view('superadmin.superdash', compact('timelineProjects', 'projectTypes', 'employeeCount', 'projectCount'));
+
+
+
+    
 }
 }
 

@@ -3,6 +3,33 @@
 @section('content')
 <div class="container py-4">
 
+<!-- About Section with Typing -->
+<div class="mb-5 position-relative">
+    <img src="{{ asset('images/company-bg.jpeg') }}" class="img-fluid w-100" style="max-height:350px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
+
+    <div class="position-absolute top-50 start-50 translate-middle bg-white bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
+        <h3 id="typingText" class="fw-bold mb-2 text-primary"></h3>
+        <p class="mb-0 text-dark">We specialize in delivering cutting-edge software and digital solutions that drive results. From enterprise web apps to mobile platforms, we empower businesses to scale and succeed.</p>
+    </div>
+</div>
+
+<!-- Animated Stats Section -->
+<div class="row text-center mb-5">
+    <div class="col-md-4 mx-auto">
+        <div class="p-4 bg-white border border-primary rounded shadow-sm h-100 transition" style="transition: all 0.3s ease;">
+            <h2 id="employeeCount" class="text-primary fw-bold">0</h2>
+            <p class="text-muted mb-0">Total Employees</p>
+        </div>
+    </div>
+    <div class="col-md-4 mx-auto mt-4 mt-md-0">
+        <div class="p-4 bg-white border border-success rounded shadow-sm h-100 transition" style="transition: all 0.3s ease;">
+            <h2 id="projectCount" class="text-success fw-bold">0</h2>
+            <p class="text-muted mb-0">Total Projects</p>
+        </div>
+    </div>
+</div>
+
+
     <!-- Header with Icons -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="fw-bold text-dark">
@@ -156,4 +183,46 @@ document.getElementById('gridViewBtn').addEventListener('click', () => {
     document.getElementById('gridView').style.display = 'flex';
 });
 </script>
+
+<!-- Counter + Typing Script -->
+<script>
+    function animateCounter(id, endValue, duration = 1200) {
+        const element = document.getElementById(id);
+        const startTime = performance.now();
+
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const value = Math.floor(progress * endValue);
+            element.innerText = value.toLocaleString();
+
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    function typeWriter(text, elementId, speed = 50) {
+        let i = 0;
+        const element = document.getElementById(elementId);
+        function type() {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, speed);
+            }
+        }
+        type();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        animateCounter("employeeCount", {{ $employeeCount }});
+        animateCounter("projectCount", {{ $projectCount }});
+        typeWriter("Welcome to NetIT Solutions....!", "typingText");
+    });
+</script>
+
+
 @endsection
