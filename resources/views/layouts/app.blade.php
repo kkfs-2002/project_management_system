@@ -41,7 +41,7 @@
 
     .dropdown-item {
       color: #f1f1f1;
-      padding: 10px 20px;
+      padding: 10px 15px;
       font-size: 0.95rem;
       transition: background 0.2s ease;
     }
@@ -64,8 +64,8 @@
     }
 
     .navbar-nav > li.nav-item {
-       margin-left: 15px;
-       margin-right: 15px;
+       margin-left: 10px;
+       margin-right: 10px;
     }
 
     .navbar-brand span {
@@ -107,6 +107,16 @@
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="employeesDropdown">
             <li><a class="dropdown-item" href="{{ route('superadmin.employee.create') }}">Add Employee</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.employee.index') }}">Employee List</a></li>
+            
+          </ul>
+        </li>
+        
+        <!--Mark attendance-->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="employeesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-clipboard-check me-1"></i> Attendance
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="employeesDropdown">
             <li><a class="dropdown-item" href="{{ route('attendance.index') }}">Mark attendance</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.attendance.employee.month') }}">Attendance Tracker</a></li>
           </ul>
