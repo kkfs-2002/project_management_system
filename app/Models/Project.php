@@ -25,7 +25,7 @@ class Project extends Model
 
 public function tasks()
 {
-    return $this->hasMany(AssignedTask::class, 'project_id', 'id');
+    return $this->hasMany(\App\Models\AssignedTask::class);
 }
 
 

@@ -55,26 +55,35 @@ class TaskController extends Controller
     }
 
     // Task list visible to Super Admin
-    public function superadminIndex(Request $request)
-    {
-        $query = AssignedTask::query();
+public function superadminIndex(Request $request)
+{
+    $query = AssignedTask::query();
 
-        // Filter by month
-        if ($request->filled('month')) {
-            [$year, $month] = explode('-', $request->month);
-            $query->whereYear('deadline', $year)
-                  ->whereMonth('deadline', $month);
-        }
-
-        // Filter by status
-        if ($request->filled('status') && in_array($request->status, ['Pending', 'Completed', 'Forwarded'])) {
-            $query->where('status', $request->status);
-        }
-
-        $tasks = $query->orderBy('id', 'asc')->get();
-
-        return view('superadmin.tasks.index', compact('tasks'));
+    // Filter by project
+    if ($request->filled('project_id')) {
+        $query->where('project_id', $request->project_id);
     }
+
+    // Filter by month
+    if ($request->filled('month')) {
+        [$year, $month] = explode('-', $request->month);
+        $query->whereYear('deadline', $year)
+              ->whereMonth('deadline', $month);
+    }
+
+    // Filter by status
+    if ($request->filled('status') && in_array($request->status, ['Pending', 'Completed', 'Forwarded'])) {
+        $query->where('status', $request->status);
+    }
+
+    $tasks = $query->orderBy('id', 'asc')->get();
+
+    // Pass projects to the view for the filter dropdown
+    $projects = Project::all();
+
+    return view('superadmin.tasks.index', compact('tasks', 'projects'));
+}
+
 /*
     // PROJECT MANAGER - view tasks
     public function projectManagerIndex($pmId)
@@ -114,21 +123,14 @@ public function developerProjectList()
 // Show tasks of selected project, but only tasks assigned to this developer
 public function developerTasksByProject(Project $project, Request $request)
 {
-    $developerId = session('developer_id');
+    $developerId = session('developer_id'); // Make sure developer_id is stored in session on login
 
-    $query = $project->tasks()
+    $tasks = $project->tasks()
                      ->where('developer_id', $developerId)
-                     ->where('status', 'Forwarded');
-
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
-
-    $tasks = $query->get();
+                     ->get();
 
     return view('developer.tasks.index', compact('project', 'tasks'));
 }
-
 
 // Developer marks a task as completed
 public function markTaskCompleted($taskId)

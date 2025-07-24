@@ -1,14 +1,67 @@
 @extends('layouts.developer')
 
 @section('content')
+<style>
+    /* Table base style like Employee List */
+    .task-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .task-table th, .task-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+    .task-table th {
+        background-color: #e6f2fa;
+        color: rgba(0, 0, 0, 0.75);
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+    .task-table tbody tr:hover {
+        background-color: #f1faff;
+        cursor: pointer;
+    }
+
+    /* Action buttons styling similar to Employee List action icons */
+    .action-btn {
+        margin-right: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 5px 10px;
+        color: #005a99;
+        transition: color 0.3s ease;
+        border-radius: 4px;
+    }
+    .action-btn:hover {
+        color: #d4af37;
+    }
+
+    /* Alert success styling */
+    .alert-success {
+        color: green;
+        background: #e6ffed;
+        padding: 10px;
+        border-left: 4px solid green;
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+</style>
+
 <div class="container">
     <h3>Tasks for Project: <strong>{{ $project->name }}</strong></h3>
 
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert-success">
+            {{ session('success') }}
+        </div>
     @endif
 
-    <!-- Filter by status -->
+    <!-- Filter by Status -->
     <form method="GET" class="mb-3">
         <div class="row g-2">
             <div class="col-md-3">
@@ -28,11 +81,12 @@
         </div>
     </form>
 
-    <table class="table table-bordered table-striped mt-3">
-        <thead class="table-dark">
+    <table class="task-table">
+        <thead>
             <tr>
                 <th>ID</th>
                 <th>Title</th>
+                <th>Description</th> 
                 <th>Start Date</th>
                 <th>Deadline</th>
                 <th>Status</th>
@@ -44,6 +98,7 @@
                 <tr>
                     <td>{{ $task->id }}</td>
                     <td>{{ $task->title }}</td>
+                    <td>{{ $task->description }}</td> 
                     <td>{{ \Carbon\Carbon::parse($task->start_date)->format('Y-m-d') }}</td>
                     <td>{{ \Carbon\Carbon::parse($task->deadline)->format('Y-m-d') }}</td>
                     <td>
@@ -53,9 +108,9 @@
                     </td>
                     <td>
                         @if($task->status !== 'Completed')
-                            <form method="POST" action="{{ route('developer.tasks.complete', $task->id) }}">
+                            <form method="POST" action="{{ route('developer.tasks.complete', $task->id) }}" style="display:inline;">
                                 @csrf
-                                <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Mark this task as completed?')">
+                                <button type="submit" class="action-btn btn btn-sm btn-success" onclick="return confirm('Mark this task as completed?')">
                                     Mark Completed
                                 </button>
                             </form>
@@ -65,7 +120,9 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="6" class="text-center">No tasks found for this project.</td></tr>
+                <tr>
+                    <td colspan="7" class="text-center">No tasks found for this project.</td>
+                </tr>
             @endforelse
         </tbody>
     </table>

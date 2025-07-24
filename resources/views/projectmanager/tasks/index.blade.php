@@ -1,11 +1,83 @@
 @extends('layouts.projectmanager')
 
 @section('content')
+<style>
+    /* Table style matching Employee List look */
+    .task-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .task-table th, .task-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+    .task-table th {
+        background-color: #e6f2fa;
+        color: rgba(0, 0, 0, 0.75);
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+    .task-table tbody tr:hover {
+        background-color: #f1faff;
+    }
+
+    /* Badge styling for status */
+    .badge {
+        padding: 0.35em 0.65em;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 0.375rem;
+        color: #fff;
+        display: inline-block;
+        text-align: center;
+        min-width: 80px;
+    }
+    .badge.bg-success {
+        background-color: #28a745;
+    }
+    .badge.bg-info {
+        background-color: #17a2b8;
+    }
+    .badge.bg-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    /* Button styling for forwarding */
+    .btn-forward {
+        padding: 5px 12px;
+        font-size: 14px;
+        cursor: pointer;
+        background-color: #ffc107; /* Bootstrap warning color */
+        border: none;
+        border-radius: 4px;
+        color: #212529;
+        transition: background-color 0.3s ease;
+    }
+    .btn-forward:hover {
+        background-color: #e0a800;
+        color: #fff;
+    }
+
+    /* Success alert box styling */
+    .alert-success {
+        color: green;
+        background: #e6ffed;
+        padding: 10px;
+        border-left: 4px solid green;
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+</style>
+
 <div class="container">
     <h3>Tasks for Project: <strong>{{ $project->name }}</strong></h3>
 
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert-success">{{ session('success') }}</div>
     @endif
 
     <!-- Filter by status -->
@@ -29,11 +101,12 @@
     </form>
 
     <!-- Tasks Table -->
-    <table class="table table-bordered table-striped mt-3">
-        <thead class="table-dark">
+    <table class="task-table">
+        <thead>
             <tr>
                 <th>ID</th>
                 <th>Title</th>
+                <th>Description</th>
                 <th>Developer</th>
                 <th>Start Date</th>
                 <th>Deadline</th>
@@ -46,6 +119,7 @@
             <tr>
                 <td>{{ $task->id }}</td>
                 <td>{{ $task->title }}</td>
+                <td>{{ $task->description }}</td>
                 <td>{{ $task->developer_name }}</td>
                 <td>{{ \Carbon\Carbon::parse($task->start_date)->format('Y-m-d') }}</td>
                 <td>{{ \Carbon\Carbon::parse($task->deadline)->format('Y-m-d') }}</td>
@@ -56,9 +130,11 @@
                 </td>
                 <td>
                     @if($task->status === 'Pending')
-                        <form method="POST" action="{{ route('projectmanager.tasks.forward', $task->id) }}">
+                        <form method="POST" action="{{ route('projectmanager.tasks.forward', $task->id) }}" style="display:inline;">
                             @csrf
-                            <button class="btn btn-sm btn-warning">Forward to Developer</button>
+                            <button type="submit" class="btn-forward" onclick="return confirm('Forward this task to the developer?')">
+                                Forward to Developer
+                            </button>
                         </form>
                     @else
                         <span class="text-muted">Already Forwarded</span>
@@ -66,7 +142,7 @@
                 </td>
             </tr>
         @empty
-            <tr><td colspan="7" class="text-center">No tasks found for this project.</td></tr>
+            <tr><td colspan="8" class="text-center">No tasks found for this project.</td></tr>
         @endforelse
         </tbody>
     </table>
