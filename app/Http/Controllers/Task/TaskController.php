@@ -98,27 +98,50 @@ class TaskController extends Controller
         return back()->with('success', 'Task forwarded to developer.');
     }
 */
-    // DEVELOPER - view tasks
-    public function developerIndex($devId)
-    {
-        $dev   = Profile::findOrFail($devId);
-        $tasks = AssignedTask::where('developer_id', $devId)->orderBy('id', 'asc')->get();
+public function developerIndex()
+{
+    $projects = Project::all();
+    return view('developer.projects.index', compact('projects'));
+}
 
-        return view('developer.tasks.index', compact('dev', 'tasks'));
+// Show all projects (no filtering) to developer
+public function developerProjectList()
+{
+    $projects = Project::all();
+    return view('developer.projects.index', compact('projects'));
+}
+
+// Show tasks of selected project, but only tasks assigned to this developer
+public function developerTasksByProject(Project $project, Request $request)
+{
+    $developerId = session('developer_id');
+
+    $query = $project->tasks()
+                     ->where('developer_id', $developerId)
+                     ->where('status', 'Forwarded');
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
     }
 
-    // Developer marks task as completed
-    public function complete($id)
-    {
-        $task = AssignedTask::findOrFail($id);
+    $tasks = $query->get();
 
-        $task->update([
-            'status'       => 'Completed',
-            'completed_at' => Carbon::now(),
-        ]);
+    return view('developer.tasks.index', compact('project', 'tasks'));
+}
 
-        return back()->with('success', 'Great! Task marked as complete.');
-    }
+
+// Developer marks a task as completed
+public function markTaskCompleted($taskId)
+{
+    $task = AssignedTask::findOrFail($taskId);
+
+    $task->status = 'Completed';
+    $task->developer_completed_at = now(); // if you have this column
+    $task->save();
+
+    return back()->with('success', 'Task marked as completed.');
+}
+
 
     public function projectList()
 {

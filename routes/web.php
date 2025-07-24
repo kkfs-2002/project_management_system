@@ -186,7 +186,13 @@ Route::prefix('projectmanager')->group(function () {
 // Developer 
 Route::get('developer.tasks.index/{dev}',    [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
 Route::post('developer.tasks/complete/{id}', [TaskController::class, 'complete'])->name('developer.tasks.complete');
+Route::prefix('developer')->group(function() {
+    Route::get('projects', [TaskController::class, 'developerProjectList'])->name('developer.projects.index');
 
+    Route::get('projects/{project}/tasks', [TaskController::class, 'developerTasksByProject'])->name('developer.projects.tasks');
+
+    Route::post('tasks/{task}/complete', [TaskController::class, 'markTaskCompleted'])->name('developer.tasks.complete');
+});
 
 //Task
 Route::get('/superadmin/tasks', [TaskController::class, 'superadminIndex'])->name('superadmin.tasks');
