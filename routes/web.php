@@ -193,7 +193,7 @@ Route::prefix('developer')->group(function() {
 
     Route::get('projects/{project}/tasks', [TaskController::class, 'developerTasksByProject'])->name('developer.projects.tasks');
 
-    Route::post('tasks/{task}/complete', [TaskController::class, 'markTaskCompleted'])->name('developer.tasks.complete');
+    Route::post('tasks/{task}/complete', [TaskController::class, 'markAsCompleted'])->name('developer.tasks.complete');
 });
 //Developer Dasboard 
 Route::get('/developer/{id}/dashboard', [DeveloperController::class, 'dashboard'])->name('developer.dashboard');
@@ -262,4 +262,5 @@ Route::post('/projectmanager/logout', function (Illuminate\Http\Request $request
 Route::get('/projectmanager/{id}/dashboard', [ProjectManagerController::class, 'dashboard'])
     ->name('projectmanager.dashboard');
 
+Route::post('/tasks/{id}/complete', [TaskController::class, 'markAsCompleted']);
 

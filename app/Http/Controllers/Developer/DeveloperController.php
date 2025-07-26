@@ -19,4 +19,5 @@ public function dashboard($id)
 
     return view('developer.dashboard', compact('developer', 'totalTasks', 'completedTasks', 'pendingTasks'));
 }
+
 }
