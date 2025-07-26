@@ -92,7 +92,7 @@
     <table class="task-table">
         <thead>
             <tr>
-                <th>ID</th>
+                
                 <th>Title</th>
                 <th>Description</th>
                 <th>Developer</th>
@@ -105,7 +105,7 @@
         <tbody>
         @forelse($tasks as $task)
             <tr>
-                <td>{{ $task->id }}</td>
+                
                 <td>{{ $task->title }}</td>
                 <td>{{ $task->description }}</td>
                 <td>{{ $task->developer_name }}</td>

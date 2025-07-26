@@ -89,7 +89,7 @@
     <table class="task-table">
         <thead>
             <tr>
-                <th>ID</th>
+                
                 <th>Project</th>
                 <th>Title</th>
                 <th>Start Date</th>
@@ -101,7 +101,7 @@
         <tbody>
             @forelse($tasks as $task)
                 <tr>
-                    <td>{{ $task->id }}</td>
+                    
                     <td>{{ $task->project->name ?? 'N/A' }}</td>
                     <td>{{ $task->title }}</td>
                     <td>{{ \Carbon\Carbon::parse($task->start_date)->format('Y-m-d') }}</td>
