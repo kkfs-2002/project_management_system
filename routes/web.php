@@ -255,3 +255,9 @@ Route::post('/projectmanager/logout', function (Illuminate\Http\Request $request
 
 //Developer Dasboard 
 Route::get('/developer/{id}/dashboard', [DeveloperController::class, 'dashboard'])->name('developer.dashboard');
+
+
+Route::get('/developer/tasks', [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
+Route::post('/developer/tasks/{id}/complete', [TaskController::class, 'markAsCompleted'])->name('developer.tasks.complete');
+Route::get('/developer/tasks', [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
+Route::post('/developer/tasks/{id}/complete', [TaskController::class, 'markAsCompleted'])->name('developer.tasks.complete');

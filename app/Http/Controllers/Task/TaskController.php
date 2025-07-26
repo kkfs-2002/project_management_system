@@ -84,42 +84,47 @@ class TaskController extends Controller
         return view('superadmin.tasks.index', compact('tasks', 'projects'));
     }
 
-    public function developerIndex()
-    {
-        $projects = Project::all();
-        return view('developer.projects.index', compact('projects'));
+// Developer task list (only forwarded tasks)
+public function developerIndex(Request $request)
+{
+    $query = AssignedTask::query();
+    $query->whereIn('status', ['Forwarded', 'Completed']);
+
+    if ($request->filled('project_id')) {
+        $query->where('project_id', $request->project_id);
     }
 
-    // Show all projects (no filtering) to developer
-    public function developerProjectList()
-    {
-        $projects = Project::all();
-        return view('developer.projects.index', compact('projects'));
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
     }
 
-    // Show tasks of selected project, but only tasks assigned to this developer
-    public function developerTasksByProject(Project $project, Request $request)
-    {
-        $developerId = session('developer_id'); // Make sure developer_id is stored in session on login
-
-        $tasks = $project->tasks()
-            ->where('developer_id', $developerId)
-            ->get();
-
-        return view('developer.tasks.index', compact('project', 'tasks'));
+    if ($request->filled('month')) {
+        [$year, $month] = explode('-', $request->month);
+        $query->whereYear('deadline', $year)
+              ->whereMonth('deadline', $month);
     }
 
-    // Developer marks a task as completed
-    public function markTaskCompleted($taskId)
-    {
-        $task = AssignedTask::findOrFail($taskId);
+    $tasks = $query->orderBy('id', 'asc')->get();
+    $projects = Project::all();
 
+    return view('developer.tasks.index', compact('tasks', 'projects'));
+}
+
+
+// Developer marks task as completed
+public function markAsCompleted($id)
+{
+    $task = AssignedTask::findOrFail($id);
+
+    if ($task->status === 'Forwarded') {
         $task->status = 'Completed';
-        $task->developer_completed_at = now(); // if you have this column
+        $task->completed_at = now();
         $task->save();
-
-        return back()->with('success', 'Task marked as completed.');
     }
+
+    return back()->with('success', 'Task marked as completed.');
+}
+
 
     //Project Manager
     public function projectList()
