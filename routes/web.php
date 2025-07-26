@@ -234,3 +234,10 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
 });
 
 
+Route::post('/developer/logout', function (Request $request) {
+    Auth::logout(); // or just: session()->forget('developer_logged_in'); if you use custom sessions
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/login');
+})->name('developer.logout');
