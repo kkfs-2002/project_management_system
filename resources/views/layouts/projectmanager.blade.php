@@ -41,41 +41,41 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
     <div class="container-fluid">
-        <!-- Left: Logo and Welcome -->
+        <!-- Left: Logo + Welcome -->
         <a class="navbar-brand d-flex align-items-center" href="{{ route('layouts.projectmanager', $pm->id ?? 1) }}">
             <img src="{{ asset('NetIT logo.png') }}" alt="PM" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
-            <span>Welcome, {{ $pm->full_name ?? 'Project Manager' }}</span>
+            <span>Welcome, {{ 'Project Manager' }}</span>
         </a>
 
-        <!-- Toggler for mobile -->
+        <!-- Toggler for Mobile View -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#pmNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Navbar links and logout -->
+        <!-- Navigation Items -->
         <div class="collapse navbar-collapse" id="pmNavbar">
-            <!-- Centered Links -->
+            <!-- Center Navigation -->
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="tasksDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
+                        <i class="fa fa-home me-1"></i> Dashboard
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('projectmanager.tasks.index', $pm->id ?? 1) }}">
                         <i class="fa fa-tasks me-1"></i> Tasks
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="tasksDropdown">
-                        <li>
-                            <a class="dropdown-item" href="{{ route('projectmanager.tasks.index', $pm->id ?? 1) }}">All Tasks</a>
-                        </li>
-                    </ul>
                 </li>
             </ul>
 
-            <!-- Right-aligned Logout Dropdown -->
+            <!-- Right-Aligned: Account Dropdown -->
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="pmDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-user me-1"></i> {{ $pm->full_name ?? 'Account' }}
+                        <i class="fa fa-user me-1"></i> {{ 'Account' }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="pmDropdown">
-
                         <li>
                             <form method="POST" action="{{ route('projectmanager.logout') }}">
                                 @csrf
@@ -91,7 +91,7 @@
     </div>
 </nav>
 
-<!-- Main content -->
+<!-- Main Content Area -->
 <div class="container mt-4" style="padding-top:100px;">
     @yield('content')
 </div>

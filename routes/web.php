@@ -18,6 +18,7 @@ use App\Http\Controllers\SuperAdmin\PasswordAdminController;
 use App\Http\Controllers\SuperAdmin\ExpenseController;
 use App\Http\Controllers\SuperAdmin\SalaryController;
 use App\Http\Controllers\Developer\DeveloperController;
+use App\Http\Controllers\ProjectManager\ProjectManagerController;
 
 
 
@@ -201,10 +202,6 @@ Route::get('/developer/tasks', [TaskController::class, 'developerIndex'])->name(
 Route::post('/developer/tasks/{id}/complete', [TaskController::class, 'markAsCompleted'])->name('developer.tasks.complete');
 Route::get('/developer/tasks', [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
 Route::post('/developer/tasks/{id}/complete', [TaskController::class, 'markAsCompleted'])->name('developer.tasks.complete');
-
-
-
-//Task
 Route::get('/superadmin/tasks', [TaskController::class, 'superadminIndex'])->name('superadmin.tasks');
 
 /*PASSWORD MANAGEMENT (Super-Admin) */
@@ -261,5 +258,8 @@ Route::post('/projectmanager/logout', function (Illuminate\Http\Request $request
     return redirect('/login');
 })->name('projectmanager.logout');
 
+//Project manager dashboard
+Route::get('/projectmanager/{id}/dashboard', [ProjectManagerController::class, 'dashboard'])
+    ->name('projectmanager.dashboard');
 
 
