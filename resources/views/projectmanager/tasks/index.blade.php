@@ -22,8 +22,6 @@
     .task-table tbody tr:hover {
         background-color: #f1faff;
     }
-
-    /* Badge styling for status */
     .badge {
         padding: 0.35em 0.65em;
         font-size: 0.75rem;
@@ -34,18 +32,9 @@
         text-align: center;
         min-width: 80px;
     }
-    .badge.bg-success {
-        background-color: #28a745;
-    }
-    .badge.bg-info {
-        background-color: #17a2b8;
-    }
-    .badge.bg-warning {
-        background-color: #ffc107;
-        color: #212529;
-    }
-
-    /* Button styling for forwarding */
+    .badge.bg-success { background-color: #28a745; }
+    .badge.bg-info { background-color: #17a2b8; }
+    .badge.bg-warning { background-color: #ffc107; color: #212529; }
     .btn-forward {
         padding: 5px 12px;
         font-size: 14px;
@@ -56,12 +45,7 @@
         color: #212529;
         transition: background-color 0.3s ease;
     }
-    .btn-forward:hover {
-        background-color: #e0a800;
-        color: #fff;
-    }
-
-    /* Success alert box styling */
+    .btn-forward:hover { background-color: #e0a800; color: #fff; }
     .alert-success {
         color: green;
         background: #e6ffed;
@@ -79,7 +63,7 @@
         <div class="alert-success">{{ session('success') }}</div>
     @endif
 
-    <!-- Filter by status -->
+    <!-- Filter Form -->
     <form method="GET" class="mb-3">
         <div class="row g-2">
             <div class="col-md-3">
@@ -90,6 +74,11 @@
                     <option value="Forwarded" {{ request('status') == 'Forwarded' ? 'selected' : '' }}>Forwarded</option>
                     <option value="Completed" {{ request('status') == 'Completed' ? 'selected' : '' }}>Completed</option>
                 </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="month" class="form-label">Filter by Deadline Month</label>
+                <input type="month" name="month" id="month" class="form-control" value="{{ request('month') }}">
             </div>
 
             <div class="col-md-3 align-self-end">

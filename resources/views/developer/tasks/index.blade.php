@@ -22,6 +22,7 @@
     .task-table tbody tr:hover {
         background-color: #f1faff;
     }
+
     .badge {
         padding: 0.35em 0.65em;
         font-size: 0.75rem;
@@ -35,55 +36,53 @@
     .badge.bg-success { background-color: #28a745; }
     .badge.bg-info { background-color: #17a2b8; }
     .badge.bg-warning { background-color: #ffc107; color: #212529; }
-    .btn-complete {
-        padding: 5px 12px;
-        font-size: 14px;
-        cursor: pointer;
-        background-color: #28a745;
-        border: none;
-        border-radius: 4px;
-        color: #fff;
-        transition: background-color 0.3s ease;
-    }
-    .btn-complete:hover { background-color: #218838; }
-    .alert-success {
-        color: green;
-        background: #e6ffed;
-        padding: 10px;
-        border-left: 4px solid green;
-        margin-bottom: 15px;
-        border-radius: 4px;
-    }
 </style>
 
 <div class="container">
     <h3>Tasks</h3>
 
+    {{-- Success Message --}}
     @if(session('success'))
-        <div class="alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
     @endif
 
     <!-- Filter Form -->
-    <form method="GET" class="mb-3" style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <select name="project_id">
-            <option value="">All Projects</option>
-            @foreach($projects as $project)
-                <option value="{{ $project->id }}" {{ request('project_id') == $project->id ? 'selected' : '' }}>
-                    {{ $project->name }}
-                </option>
-            @endforeach
-        </select>
+    <form method="GET" action="{{ route('developer.tasks.index') }}" class="mb-4">
+        <div class="row g-3 align-items-end">
 
-        <select name="status">
-            <option value="">All Statuses</option>
-            <option value="Forwarded" {{ request('status') == 'Forwarded' ? 'selected' : '' }}>Forwarded</option>
-            <option value="Completed" {{ request('status') == 'Completed' ? 'selected' : '' }}>Completed</option>
-        </select>
+            <div class="col-md-3">
+                <label for="project_id" class="form-label">Filter by Project</label>
+                <select name="project_id" id="project_id" class="form-select">
+                    <option value="">All Projects</option>
+                    @foreach($projects as $project)
+                        <option value="{{ $project->id }}" {{ request('project_id') == $project->id ? 'selected' : '' }}>
+                            {{ $project->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-        <input type="month" name="month" value="{{ request('month') }}">
+            <div class="col-md-3">
+                <label for="status" class="form-label">Filter by Status</label>
+                <select name="status" id="status" class="form-select">
+                    <option value="">All Statuses</option>
+                    <option value="Forwarded" {{ request('status') == 'Forwarded' ? 'selected' : '' }}>Forwarded</option>
+                    <option value="Completed" {{ request('status') == 'Completed' ? 'selected' : '' }}>Completed</option>
+                </select>
+            </div>
 
-        <button type="submit" class="btn-complete" style="background-color:#007bff;">Filter</button>
-        <a href="{{ route('developer.tasks.index') }}" class="btn-complete" style="background-color:#6c757d;">Reset</a>
+            <div class="col-md-3">
+                <label for="month" class="form-label">Filter by Month</label>
+                <input type="month" name="month" id="month" value="{{ request('month') }}" class="form-control">
+            </div>
+
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="{{ route('developer.tasks.index') }}" class="btn btn-secondary">Reset</a>
+            </div>
+        </div>
     </form>
 
     <!-- Task Table -->
@@ -100,34 +99,36 @@
             </tr>
         </thead>
         <tbody>
-        @forelse($tasks as $task)
-            <tr>
-                <td>{{ $task->id }}</td>
-                <td>{{ $task->project->name ?? 'N/A' }}</td>
-                <td>{{ $task->title }}</td>
-                <td>{{ \Carbon\Carbon::parse($task->start_date)->format('Y-m-d') }}</td>
-                <td>{{ \Carbon\Carbon::parse($task->deadline)->format('Y-m-d') }}</td>
-                <td>
-                    <span class="badge bg-{{ $task->status === 'Completed' ? 'success' : ($task->status === 'Forwarded' ? 'info' : 'warning') }}">
-                        {{ $task->status }}
-                    </span>
-                </td>
-                <td>
-                    @if($task->status === 'Forwarded')
-                        <form action="{{ route('developer.tasks.complete', $task->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit" class="btn-complete" onclick="return confirm('Mark this task as completed?')">
-                                Mark as Completed
-                            </button>
-                        </form>
-                    @else
-                        <span class="text-muted">Already Completed</span>
-                    @endif
-                </td>
-            </tr>
-        @empty
-            <tr><td colspan="7" class="text-center">No tasks found.</td></tr>
-        @endforelse
+            @forelse($tasks as $task)
+                <tr>
+                    <td>{{ $task->id }}</td>
+                    <td>{{ $task->project->name ?? 'N/A' }}</td>
+                    <td>{{ $task->title }}</td>
+                    <td>{{ \Carbon\Carbon::parse($task->start_date)->format('Y-m-d') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($task->deadline)->format('Y-m-d') }}</td>
+                    <td>
+                        <span class="badge bg-{{ $task->status === 'Completed' ? 'success' : ($task->status === 'Forwarded' ? 'info' : 'warning') }}">
+                            {{ $task->status }}
+                        </span>
+                    </td>
+                    <td>
+                        @if($task->status === 'Forwarded')
+                            <form action="{{ route('developer.tasks.complete', $task->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Mark this task as completed?')">
+                                    Mark as Completed
+                                </button>
+                            </form>
+                        @else
+                            <span class="text-muted">Already Completed</span>
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="7" class="text-center">No tasks found.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>

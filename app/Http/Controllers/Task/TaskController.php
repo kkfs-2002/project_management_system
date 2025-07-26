@@ -129,17 +129,22 @@ public function markAsCompleted($id)
     //Project Manager
     public function projectList()
     {
-        $projects = Project::all(); // Or filter by assigned project manager if needed
+        $projects = Project::all(); 
         return view('projectmanager.projects.index', compact('projects'));
     }
 
     public function tasksByProject(Project $project, Request $request)
     {
-        $query = $project->tasks()->with(['developer']); // assuming a relationship
+        $query = $project->tasks()->with(['developer']); 
 
         if ($request->status) {
             $query->where('status', $request->status);
         }
+            if ($request->filled('month')) {
+        [$year, $month] = explode('-', $request->month);
+        $query->whereYear('deadline', $year)
+              ->whereMonth('deadline', $month);
+    }
 
         $tasks = $query->get();
         return view('projectmanager.tasks.index', compact('project', 'tasks'));
@@ -156,7 +161,7 @@ public function markAsCompleted($id)
     // Show project selection view for Project Manager
     public function projectManagerIndex()
     {
-        $projects = Project::all(); // or filter by authenticated PM if needed
+        $projects = Project::all(); 
         return view('projectmanager.projects.index', compact('projects'));
     }
 }

@@ -194,6 +194,15 @@ Route::prefix('developer')->group(function() {
 
     Route::post('tasks/{task}/complete', [TaskController::class, 'markTaskCompleted'])->name('developer.tasks.complete');
 });
+//Developer Dasboard 
+Route::get('/developer/{id}/dashboard', [DeveloperController::class, 'dashboard'])->name('developer.dashboard');
+//Task
+Route::get('/developer/tasks', [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
+Route::post('/developer/tasks/{id}/complete', [TaskController::class, 'markAsCompleted'])->name('developer.tasks.complete');
+Route::get('/developer/tasks', [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
+Route::post('/developer/tasks/{id}/complete', [TaskController::class, 'markAsCompleted'])->name('developer.tasks.complete');
+
+
 
 //Task
 Route::get('/superadmin/tasks', [TaskController::class, 'superadminIndex'])->name('superadmin.tasks');
@@ -253,11 +262,4 @@ Route::post('/projectmanager/logout', function (Illuminate\Http\Request $request
 })->name('projectmanager.logout');
 
 
-//Developer Dasboard 
-Route::get('/developer/{id}/dashboard', [DeveloperController::class, 'dashboard'])->name('developer.dashboard');
 
-
-Route::get('/developer/tasks', [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
-Route::post('/developer/tasks/{id}/complete', [TaskController::class, 'markAsCompleted'])->name('developer.tasks.complete');
-Route::get('/developer/tasks', [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
-Route::post('/developer/tasks/{id}/complete', [TaskController::class, 'markAsCompleted'])->name('developer.tasks.complete');
