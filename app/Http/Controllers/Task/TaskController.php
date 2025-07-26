@@ -55,128 +55,103 @@ class TaskController extends Controller
     }
 
     // Task list visible to Super Admin
-public function superadminIndex(Request $request)
-{
-    $query = AssignedTask::query();
-
-    // Filter by project
-    if ($request->filled('project_id')) {
-        $query->where('project_id', $request->project_id);
-    }
-
-    // Filter by month
-    if ($request->filled('month')) {
-        [$year, $month] = explode('-', $request->month);
-        $query->whereYear('deadline', $year)
-              ->whereMonth('deadline', $month);
-    }
-
-    // Filter by status
-    if ($request->filled('status') && in_array($request->status, ['Pending', 'Completed', 'Forwarded'])) {
-        $query->where('status', $request->status);
-    }
-
-    $tasks = $query->orderBy('id', 'asc')->get();
-
-    // Pass projects to the view for the filter dropdown
-    $projects = Project::all();
-
-    return view('superadmin.tasks.index', compact('tasks', 'projects'));
-}
-
-/*
-    // PROJECT MANAGER - view tasks
-    public function projectManagerIndex($pmId)
+    public function superadminIndex(Request $request)
     {
-        $pm    = Profile::findOrFail($pmId);
-        $tasks = AssignedTask::where('project_manager_id', $pmId)->orderBy('id', 'asc')->get();
+        $query = AssignedTask::query();
 
-        return view('projectmanager.tasks.index', compact('pm', 'tasks'));
+        // Filter by project
+        if ($request->filled('project_id')) {
+            $query->where('project_id', $request->project_id);
+        }
+
+        // Filter by month
+        if ($request->filled('month')) {
+            [$year, $month] = explode('-', $request->month);
+            $query->whereYear('deadline', $year)
+                ->whereMonth('deadline', $month);
+        }
+
+        // Filter by status
+        if ($request->filled('status') && in_array($request->status, ['Pending', 'Completed', 'Forwarded'])) {
+            $query->where('status', $request->status);
+        }
+
+        $tasks = $query->orderBy('id', 'asc')->get();
+
+        // Pass projects to the view for the filter dropdown
+        $projects = Project::all();
+
+        return view('superadmin.tasks.index', compact('tasks', 'projects'));
     }
 
-    // Forward task to developer
-    public function forwardToDeveloper($id)
+    public function developerIndex()
     {
-        $task = AssignedTask::findOrFail($id);
+        $projects = Project::all();
+        return view('developer.projects.index', compact('projects'));
+    }
 
-        $task->update([
-            'status'          => 'Forwarded',
-            'pm_forwarded_at' => Carbon::now(),
-        ]);
+    // Show all projects (no filtering) to developer
+    public function developerProjectList()
+    {
+        $projects = Project::all();
+        return view('developer.projects.index', compact('projects'));
+    }
+
+    // Show tasks of selected project, but only tasks assigned to this developer
+    public function developerTasksByProject(Project $project, Request $request)
+    {
+        $developerId = session('developer_id'); // Make sure developer_id is stored in session on login
+
+        $tasks = $project->tasks()
+            ->where('developer_id', $developerId)
+            ->get();
+
+        return view('developer.tasks.index', compact('project', 'tasks'));
+    }
+
+    // Developer marks a task as completed
+    public function markTaskCompleted($taskId)
+    {
+        $task = AssignedTask::findOrFail($taskId);
+
+        $task->status = 'Completed';
+        $task->developer_completed_at = now(); // if you have this column
+        $task->save();
+
+        return back()->with('success', 'Task marked as completed.');
+    }
+
+    //Project Manager
+    public function projectList()
+    {
+        $projects = Project::all(); // Or filter by assigned project manager if needed
+        return view('projectmanager.projects.index', compact('projects'));
+    }
+
+    public function tasksByProject(Project $project, Request $request)
+    {
+        $query = $project->tasks()->with(['developer']); // assuming a relationship
+
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        $tasks = $query->get();
+        return view('projectmanager.tasks.index', compact('project', 'tasks'));
+    }
+
+    public function forwardToDeveloper($taskId)
+    {
+        $task = AssignedTask::findOrFail($taskId);
+        $task->status = 'Forwarded';
+        $task->save();
 
         return back()->with('success', 'Task forwarded to developer.');
     }
-*/
-public function developerIndex()
-{
-    $projects = Project::all();
-    return view('developer.projects.index', compact('projects'));
-}
-
-// Show all projects (no filtering) to developer
-public function developerProjectList()
-{
-    $projects = Project::all();
-    return view('developer.projects.index', compact('projects'));
-}
-
-// Show tasks of selected project, but only tasks assigned to this developer
-public function developerTasksByProject(Project $project, Request $request)
-{
-    $developerId = session('developer_id'); // Make sure developer_id is stored in session on login
-
-    $tasks = $project->tasks()
-                     ->where('developer_id', $developerId)
-                     ->get();
-
-    return view('developer.tasks.index', compact('project', 'tasks'));
-}
-
-// Developer marks a task as completed
-public function markTaskCompleted($taskId)
-{
-    $task = AssignedTask::findOrFail($taskId);
-
-    $task->status = 'Completed';
-    $task->developer_completed_at = now(); // if you have this column
-    $task->save();
-
-    return back()->with('success', 'Task marked as completed.');
-}
-
-
-    public function projectList()
-{
-    $projects = Project::all(); // Or filter by assigned project manager if needed
-    return view('projectmanager.projects.index', compact('projects'));
-}
-
-public function tasksByProject(Project $project, Request $request)
-{
-    $query = $project->tasks()->with(['developer']); // assuming a relationship
-
-    if ($request->status) {
-        $query->where('status', $request->status);
+    // Show project selection view for Project Manager
+    public function projectManagerIndex()
+    {
+        $projects = Project::all(); // or filter by authenticated PM if needed
+        return view('projectmanager.projects.index', compact('projects'));
     }
-
-    $tasks = $query->get();
-    return view('projectmanager.tasks.index', compact('project', 'tasks'));
-}
-
-public function forwardToDeveloper($taskId)
-{
-    $task = AssignedTask::findOrFail($taskId);
-    $task->status = 'Forwarded';
-    $task->save();
-
-    return back()->with('success', 'Task forwarded to developer.');
-}
-// Show project selection view for Project Manager
-public function projectManagerIndex()
-{
-    $projects = Project::all(); // or filter by authenticated PM if needed
-    return view('projectmanager.projects.index', compact('projects'));
-}
-
-
 }

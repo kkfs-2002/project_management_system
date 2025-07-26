@@ -2,7 +2,6 @@
 
 @section('content')
 <style>
-    /* Table base style like Employee List */
     .task-table {
         width: 100%;
         border-collapse: collapse;
@@ -25,7 +24,6 @@
         cursor: pointer;
     }
 
-    /* Action buttons styling similar to Employee List action icons */
     .action-btn {
         margin-right: 10px;
         font-size: 14px;
@@ -41,7 +39,6 @@
         color: #d4af37;
     }
 
-    /* Alert success styling */
     .alert-success {
         color: green;
         background: #e6ffed;
@@ -68,7 +65,6 @@
                 <label for="status" class="form-label">Filter by Status</label>
                 <select name="status" id="status" class="form-select">
                     <option value="">-- All --</option>
-                    <option value="Pending"   {{ request('status') == 'Pending' ? 'selected' : '' }}>Pending</option>
                     <option value="Forwarded" {{ request('status') == 'Forwarded' ? 'selected' : '' }}>Forwarded</option>
                     <option value="Completed" {{ request('status') == 'Completed' ? 'selected' : '' }}>Completed</option>
                 </select>

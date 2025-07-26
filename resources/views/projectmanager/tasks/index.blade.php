@@ -2,7 +2,6 @@
 
 @section('content')
 <style>
-    /* Table style matching Employee List look */
     .task-table {
         width: 100%;
         border-collapse: collapse;
@@ -51,7 +50,7 @@
         padding: 5px 12px;
         font-size: 14px;
         cursor: pointer;
-        background-color: #ffc107; /* Bootstrap warning color */
+        background-color: #ffc107; 
         border: none;
         border-radius: 4px;
         color: #212529;
