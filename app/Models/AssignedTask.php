@@ -31,5 +31,8 @@ class AssignedTask extends Model
 {
     return $this->belongsTo(\App\Models\Profile::class, 'developer_id');
 }
-
+    public function projectManager()
+    {
+        return $this->belongsTo(Profile::class, 'project_manager_id');
+    }
 }

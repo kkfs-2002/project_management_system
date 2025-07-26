@@ -17,6 +17,7 @@ use App\Http\Controllers\SuperAdmin\AttendanceController;
 use App\Http\Controllers\SuperAdmin\PasswordAdminController;
 use App\Http\Controllers\SuperAdmin\ExpenseController;
 use App\Http\Controllers\SuperAdmin\SalaryController;
+use App\Http\Controllers\Developer\DeveloperController;
 
 
 
@@ -250,3 +251,7 @@ Route::post('/projectmanager/logout', function (Illuminate\Http\Request $request
 
     return redirect('/login');
 })->name('projectmanager.logout');
+
+
+//Developer Dasboard 
+Route::get('/developer/{id}/dashboard', [DeveloperController::class, 'dashboard'])->name('developer.dashboard');

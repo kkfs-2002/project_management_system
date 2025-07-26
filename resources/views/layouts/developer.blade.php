@@ -56,6 +56,11 @@
         <div class="collapse navbar-collapse" id="devNavbar">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('developer.dashboard', $developer->id ?? 1) }}">
+                        <i class="fa fa-home me-1"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('developer.tasks.index', $dev->id ?? 1) }}">
                         <i class="fa fa-tasks me-1"></i> My Tasks
                     </a>
@@ -69,7 +74,6 @@
                         <i class="fa fa-user me-1"></i> {{ $dev->full_name ?? 'Account' }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="devDropdown">
-
                         <li>
                             <form method="POST" action="{{ route('developer.logout') }}">
                                 @csrf
