@@ -233,11 +233,20 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
     Route::post('/salaries', [SalaryController::class, 'store'])->name('salary.store');
 });
 
-
+//Logout Developer
 Route::post('/developer/logout', function (Request $request) {
-    Auth::logout(); // or just: session()->forget('developer_logged_in'); if you use custom sessions
+    Auth::logout(); 
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
     return redirect('/login');
 })->name('developer.logout');
+
+//logout Project Manager
+Route::post('/projectmanager/logout', function (Illuminate\Http\Request $request) {
+    Auth::logout(); 
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/login');
+})->name('projectmanager.logout');
