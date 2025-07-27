@@ -115,7 +115,7 @@
                         @if($task->status === 'Forwarded')
                             <form action="{{ route('developer.tasks.complete', $task->id) }}" method="POST" style="display:inline;">
                                 @csrf
-                                <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Mark this task as completed?')">
+                                <button type="submit" class="btn btn-success btn-sm">
                                     Mark as Completed
                                 </button>
                             </form>

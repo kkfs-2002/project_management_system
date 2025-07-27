@@ -120,7 +120,7 @@
                     @if($task->status === 'Pending')
                         <form method="POST" action="{{ route('projectmanager.tasks.forward', $task->id) }}" style="display:inline;">
                             @csrf
-                            <button type="submit" class="btn-forward" onclick="return confirm('Forward this task to the developer?')">
+                            <button type="submit" class="btn-forward" >
                                 Forward to Developer
                             </button>
                         </form>
