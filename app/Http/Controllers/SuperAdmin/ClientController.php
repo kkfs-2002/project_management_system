@@ -18,7 +18,8 @@ class ClientController extends Controller
         $managers = Profile::where('role', 'Marketing Manager')->with('user')->get();
 
     
-        $query = Client::query();
+        $query = Client::whereIn('payment_status', ['Advance', 'Full']);
+
     
         // Filter by selected month if provided
         if ($request->filled('month')) {

@@ -232,6 +232,7 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
     Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
     Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
+    Route::get('expenses/pdf', [ExpenseController::class, 'downloadPdf'])->name('expenses.pdf');
 });
 
 Route::prefix('superadmin')->name('superadmin.')->group(function () {

@@ -6,25 +6,37 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Expense;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ExpenseController extends Controller
 {
     // Show all expenses with optional month filter
     public function index(Request $request)
-    {
-        $query = Expense::query();
+{
+    // Use current year or the one from selected month
+    $selectedMonth = $request->input('month', now()->format('Y-m'));
+    $year = \Carbon\Carbon::parse($selectedMonth)->format('Y');
 
-        if ($request->has('month') && $request->month) {
-            $month = Carbon::parse($request->month);
-            $query->whereYear('expense_date', $month->year)
-                  ->whereMonth('expense_date', $month->month);
-        }
+    // Get all expenses for that year
+    $expenses = Expense::whereYear('expense_date', $year)->get();
 
-        $expenses = $query->orderBy('expense_date', 'desc')->get();
-        $total = $expenses->sum('amount');
+    // Group by month (01 to 12)
+    $expensesByMonth = collect();
+    for ($m = 1; $m <= 12; $m++) {
+        $monthName = \Carbon\Carbon::createFromDate($year, $m, 1)->format('F Y');
+        $monthExpenses = $expenses->filter(function ($expense) use ($m) {
+            return \Carbon\Carbon::parse($expense->expense_date)->month == $m;
+        });
 
-        return view('superadmin.expenses.index', compact('expenses', 'total'));
+        $expensesByMonth[$monthName] = $monthExpenses;
     }
+
+    $total = $expenses->sum('amount');
+
+    return view('superadmin.expenses.index', compact('expensesByMonth', 'total', 'selectedMonth'));
+}
+
+
 
     // Show create form
     public function create()
@@ -46,4 +58,34 @@ class ExpenseController extends Controller
 
         return redirect()->route('superadmin.expenses.index')->with('success', 'Expense added successfully.');
     }
+
+ 
+
+public function downloadPdf(Request $request)
+{
+    $selectedMonth = $request->input('month', now()->format('Y-m'));
+    $year = \Carbon\Carbon::parse($selectedMonth)->format('Y');
+
+    $expenses = Expense::whereYear('expense_date', $year)->get();
+
+    $expensesByMonth = collect();
+    for ($m = 1; $m <= 12; $m++) {
+        $monthName = \Carbon\Carbon::createFromDate($year, $m, 1)->format('F Y');
+        $monthExpenses = $expenses->filter(function ($expense) use ($m) {
+            return \Carbon\Carbon::parse($expense->expense_date)->month == $m;
+        });
+        $expensesByMonth[$monthName] = $monthExpenses;
+    }
+
+    $total = $expenses->sum('amount');
+
+    $pdf = Pdf::loadView('superadmin.expenses.pdf', [
+        'expensesByMonth' => $expensesByMonth,
+        'total' => $total,
+        'selectedMonth' => $selectedMonth,
+    ]);
+
+    return $pdf->download('monthly_expenses_' . $year . '.pdf');
+}
+
 }
