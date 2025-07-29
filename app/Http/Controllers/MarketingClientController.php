@@ -34,7 +34,10 @@ class MarketingClientController extends Controller
         }
     }
 
-    $clients = $query->orderBy('created_at', 'desc')->get();
+   $clients = $query->whereIn('payment_status', ['Advance', 'Full'])  // ✅ Only show active clients
+                 ->orderBy('created_at', 'desc')
+                 ->get();
+
 
     // Group by Month-Year
     $clientsByMonth = $clients->groupBy(function ($client) {
@@ -136,9 +139,10 @@ class MarketingClientController extends Controller
 public function reminders(Request $request)
 {
     $query = Client::where('marketing_manager_id', session('employee_id'))
-                   ->whereNotNull('reminder_date');
+                   ->where('payment_status', 'No Payment') // ✅ Only No Payment clients
+                   ->whereNotNull('reminder_date');        // ✅ Ensure reminder is set
 
-    // 📅 If "upcoming" flag is set, only get next 7 days
+    // 📅 Upcoming 7 days filter
     if ($request->has('upcoming') && $request->upcoming == 1) {
         $today = \Carbon\Carbon::today();
         $next7 = \Carbon\Carbon::today()->addDays(7);
@@ -146,7 +150,6 @@ public function reminders(Request $request)
         $query->whereDate('reminder_date', '>=', $today)
               ->whereDate('reminder_date', '<=', $next7);
     }
-
     // 📆 Optional month filter
     elseif ($request->has('month') && $request->month) {
         try {
@@ -162,7 +165,6 @@ public function reminders(Request $request)
 
     return view('marketing.clients.reminders', compact('clients'));
 }
-
 
 
 
