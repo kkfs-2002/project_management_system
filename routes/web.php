@@ -265,3 +265,10 @@ Route::get('/projectmanager/{id}/dashboard', [ProjectManagerController::class, '
 
 Route::post('/tasks/{id}/complete', [TaskController::class, 'markAsCompleted']);
 
+Route::post('/marketing/clients/{client}/confirm', [MarketingClientController::class, 'confirm'])
+     ->name('marketing.clients.confirm');
+Route::post('/marketing/clients/{client}/cancel', [MarketingClientController::class, 'cancel'])
+     ->name('marketing.clients.cancel');
+Route::post('/marketing/clients/{client}/hide', [MarketingClientController::class, 'hide'])
+     ->name('marketing.clients.hide');
+
