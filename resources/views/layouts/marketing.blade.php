@@ -93,12 +93,13 @@
     <div class="collapse navbar-collapse" id="marketingNav">
       <ul class="navbar-nav ms-auto align-items-center">
 
-        <!-- Dashboard -->
+ <!-- Dashboard -->
 <li class="nav-item">
-  <a class="nav-link" href="{{ url('/marketing/dashboard') }}">
+  <a class="nav-link" href="{{ route('marketing.dashboard') }}">
     <i class="fas fa-home me-1"></i> Dashboard
   </a>
 </li>
+
 
 
         <!-- Clients -->
