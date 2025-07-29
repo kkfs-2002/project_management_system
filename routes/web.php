@@ -99,13 +99,12 @@ Route::prefix('superadmin/attendance')
 
 //Digital Marketing Manager
 Route::prefix('marketing')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('marketing.dashboard');
-    });
+   //Route::get('/dashboard', function () {
+      //return view('marketing.dashboard');
+    //});
 
 
-    Route::get('/marketing/dashboard', [MarketingClientController::class, 'dashboard'])->name('marketing.dashboard');
-
+    Route::get('/dashboard', [MarketingClientController::class, 'dashboard'])->name('marketing.dashboard');
 
 
     Route::get('/clients', [MarketingClientController::class, 'index'])->name('marketing.clients.index');
