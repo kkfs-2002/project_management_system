@@ -203,6 +203,19 @@ class MarketingClientController extends Controller
     return redirect()->back()->with('success', 'Client marked as confirmed and active.');
 }
 
+
+public function cancelled()
+{
+    $employeeId = session('employee_id');
+
+    $clients = Client::where('marketing_manager_id', $employeeId)
+                     ->where('status', 'cancelled')
+                     ->orderBy('updated_at', 'desc')
+                     ->get();
+
+    return view('marketing.clients.cancelled', compact('clients'));
+}
+
 }
 
 

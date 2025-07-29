@@ -271,4 +271,5 @@ Route::post('/marketing/clients/{client}/cancel', [MarketingClientController::cl
      ->name('marketing.clients.cancel');
 Route::post('/marketing/clients/{client}/hide', [MarketingClientController::class, 'hide'])
      ->name('marketing.clients.hide');
+Route::get('/marketing/clients/cancelled', [MarketingClientController::class, 'cancelled'])->name('marketing.clients.cancelled');
 

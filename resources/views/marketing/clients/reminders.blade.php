@@ -7,24 +7,21 @@
     <h2>Clients by Reminder Date</h2>
 
     {{-- Filter by Month --}}
-    <div class="d-flex justify-content-end mb-3">
-        <form action="{{ route('marketing.clients.reminders') }}" method="GET" class="d-flex align-items-center">
-            <label for="month" class="me-2 fw-bold">Filter by Month:</label>
-            <input type="month" name="month" id="month" class="form-control form-control-sm me-2"
-                   value="{{ request('month') }}">
-            <button type="submit" class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-filter me-1"></i> Filter
-            </button>
+    <form action="{{ route('marketing.clients.reminders') }}" method="GET" class="d-flex align-items-center mb-3">
+        <label for="month" class="me-2 fw-bold">Filter by Month:</label>
+        <input type="month" name="month" id="month" class="form-control form-control-sm me-2"
+               value="{{ request('month') }}">
+        <button type="submit" class="btn btn-sm btn-outline-primary">Filter</button>
+        @if(request('month'))
+            <a href="{{ route('marketing.clients.reminders') }}" class="btn btn-sm btn-outline-secondary ms-2">Clear</a>
+        @endif
+    </form>
 
-            @if(request('month'))
-                <a href="{{ route('marketing.clients.reminders') }}" class="btn btn-sm btn-outline-secondary ms-2">
-                    Clear
-                </a>
-            @endif
-        </form>
-    </div>
+    {{-- View Hidden Clients --}}
+    <a href="{{ route('marketing.clients.cancelled') }}" class="btn btn-sm btn-outline-danger mb-3">
+        <i class="fas fa-eye-slash me-1"></i> View Hidden Clients
+    </a>
 
-    {{-- Client Table --}}
     @if ($clients->isEmpty())
         <p>No reminder clients found.</p>
     @else
@@ -53,45 +50,43 @@
                                 </span>
                             </td>
                             <td>
-                                {{-- Mark as Confirmed --}}
+                                {{-- Confirm --}}
                                 <form method="POST" action="{{ route('marketing.clients.confirm', $client->id) }}" class="d-inline">
                                     @csrf
-                                    <button class="btn btn-sm btn-success" title="Mark as Confirmed">
+                                    <button class="btn btn-sm btn-success" title="Confirm">
                                         <i class="fas fa-check"></i>
                                     </button>
                                 </form>
 
-                                {{-- Cancel (Hide) --}}
-                                <button class="btn btn-sm btn-danger" title="Cancel Client" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $client->id }}">
+                                {{-- Cancel --}}
+                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $client->id }}">
                                     <i class="fas fa-eye-slash"></i>
                                 </button>
 
-                                {{-- Modal --}}
-                                <div class="modal fade" id="cancelModal{{ $client->id }}" tabindex="-1" aria-labelledby="cancelModalLabel{{ $client->id }}" aria-hidden="true">
+                                {{-- Cancel Modal --}}
+                                <div class="modal fade" id="cancelModal{{ $client->id }}" tabindex="-1">
                                     <div class="modal-dialog">
                                         <form method="POST" action="{{ route('marketing.clients.cancel', $client->id) }}">
                                             @csrf
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Cancel Client</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>Are you sure you want to cancel this client?</p>
                                                     <div class="mb-3">
-                                                        <label for="cancel_reason" class="form-label">Reason for Cancellation</label>
+                                                        <label class="form-label">Reason for Cancellation</label>
                                                         <textarea name="cancel_reason" class="form-control" required></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-danger">Yes, Cancel</button>
+                                                    <button type="submit" class="btn btn-danger">Cancel Client</button>
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-
                             </td>
                         </tr>
                     @endforeach
