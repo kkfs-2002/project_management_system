@@ -9,11 +9,21 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class MarketingClientController extends Controller
 {
-    // Dashboard page
-    public function dashboard()
-    {
-        return view('marketing.dashboard');
-    }
+public function dashboard()
+{
+    $employeeId = session('employee_id'); // Get the logged-in marketing manager's ID
+
+    // ✅ Count clients added by this manager
+    $totalClients = Client::where('marketing_manager_id', $employeeId)->count();
+
+    // ✅ Count only reminders for clients with 'No Payment' and reminder set
+    $totalReminders = Client::where('marketing_manager_id', $employeeId)
+                            ->where('payment_status', 'No Payment')
+                            ->whereNotNull('reminder_date')
+                            ->count();
+
+    return view('marketing.dashboard', compact('totalClients', 'totalReminders'));
+}
 
     // View all clients
     public function index(Request $request)
