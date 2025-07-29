@@ -161,7 +161,14 @@ public function markAsCompleted($id)
     // Show project selection view for Project Manager
     public function projectManagerIndex()
     {
-        $projects = Project::all(); 
+        $today = Carbon::today();
+
+        // Show only projects that are active (deadline not passed or null)
+        $projects = Project::where(function ($query) use ($today) {
+            $query->whereNull('deadline') // Projects without deadline
+                  ->orWhereDate('deadline', '>=', $today); // Not expired
+        })->get();
+
         return view('projectmanager.projects.index', compact('projects'));
     }
 }
