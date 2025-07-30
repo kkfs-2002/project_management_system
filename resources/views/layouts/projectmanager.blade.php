@@ -94,6 +94,36 @@
 <!-- Main Content Area -->
 <div class="container mt-4" style="padding-top:100px;">
     @yield('content')
+        <div class="mb-5 position-relative">
+    <img src="{{ asset('images/company-bg.jpeg') }}" class="img-fluid w-100" style="max-height:350px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
+
+    <div class="position-absolute top-50 start-50 translate-middle bg-white bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
+        <h3 id="typingText" class="fw-bold mb-2 text-primary"></h3>
+        <p class="mb-0 text-dark">We specialize in delivering cutting-edge software and digital solutions that drive results. From enterprise web apps to mobile platforms, we empower businesses to scale and succeed.</p>
+    </div>
+</div>
+</div>
+<script>
+    function typeWriter(text, elementId, speed = 50) {
+        let i = 0;
+        const element = document.getElementById(elementId);
+        if (!element) return;
+
+        function type() {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, speed);
+            }
+        }
+
+        type();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        typeWriter("Welcome to NetIT Technology....!", "typingText");
+    });
+</script>
 </div>
 
 <!-- Scripts -->
