@@ -97,34 +97,7 @@
         </div>
     </div>
 
-    <!-- Dashboard Cards -->
-    <div class="row">
-        <div class="col-md-4 mb-3">
-            <div class="card border-0 shadow" style="background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px); border-radius: 15px;">
-                <div class="card-body text-center p-4">
-                    <h5 class="text-primary fw-bold">Total Assigned Tasks</h5>
-                    <p class="fs-4 text-dark mb-0">{{ $totalTasks }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card border-0 shadow" style="background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px); border-radius: 15px;">
-                <div class="card-body text-center p-4">
-                    <h5 class="text-primary fw-bold">Forwarded Tasks</h5>
-                    <p class="fs-4 text-dark mb-0">{{ $forwardedTasks }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card border-0 shadow" style="background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px); border-radius: 15px;">
-                <div class="card-body text-center p-4">
-                    <h5 class="text-primary fw-bold">Completed Tasks</h5>
-                    <p class="fs-4 text-dark mb-0">{{ $completedTasks }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+  
 
 <!-- Typing Script -->
 <script>
