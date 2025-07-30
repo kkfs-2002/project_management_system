@@ -41,27 +41,21 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
     <div class="container-fluid">
-        <!-- Left: Logo + Welcome -->
         <a class="navbar-brand d-flex align-items-center" href="{{ route('layouts.projectmanager', $pm->id ?? 1) }}">
             <img src="{{ asset('NetIT logo.png') }}" alt="PM" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
             <span>Welcome, {{ 'Project Manager' }}</span>
         </a>
-
-        <!-- Toggler for Mobile View -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#pmNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Navigation Items -->
         <div class="collapse navbar-collapse" id="pmNavbar">
-            <!-- Center Navigation -->
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
                         <i class="fa fa-home me-1"></i> Dashboard
                     </a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('projectmanager.tasks.index', $pm->id ?? 1) }}">
                         <i class="fa fa-tasks me-1"></i> Tasks
@@ -69,7 +63,6 @@
                 </li>
             </ul>
 
-            <!-- Right-Aligned: Account Dropdown -->
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="pmDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -94,15 +87,46 @@
 <!-- Main Content Area -->
 <div class="container mt-4" style="padding-top:100px;">
     @yield('content')
-        <div class="mb-5 position-relative">
-    <img src="{{ asset('images/company-bg.jpeg') }}" class="img-fluid w-100" style="max-height:350px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
 
-    <div class="position-absolute top-50 start-50 translate-middle bg-white bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
-        <h3 id="typingText" class="fw-bold mb-2 text-primary"></h3>
-        <p class="mb-0 text-dark">We specialize in delivering cutting-edge software and digital solutions that drive results. From enterprise web apps to mobile platforms, we empower businesses to scale and succeed.</p>
+    <!-- Welcome Section -->
+    <div class="mb-5 position-relative">
+        <img src="{{ asset('images/company-bg.jpeg') }}" class="img-fluid w-100" style="max-height:350px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
+        <div class="position-absolute top-50 start-50 translate-middle bg-white bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
+            <h3 id="typingText" class="fw-bold mb-2 text-primary"></h3>
+            <p class="mb-0 text-dark">We specialize in delivering cutting-edge software and digital solutions that drive results. From enterprise web apps to mobile platforms, we empower businesses to scale and succeed.</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow" style="background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px); border-radius: 15px;">
+                <div class="card-body text-center p-4">
+                    <h5 class="text-primary fw-bold">Total Assigned Tasks</h5>
+                    <p class="fs-4 text-dark mb-0">{{ $totalTasks }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow" style="background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px); border-radius: 15px;">
+                <div class="card-body text-center p-4">
+                    <h5 class="text-primary fw-bold">Forwarded Tasks</h5>
+                    <p class="fs-4 text-dark mb-0">{{ $forwardedTasks }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow" style="background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px); border-radius: 15px;">
+                <div class="card-body text-center p-4">
+                    <h5 class="text-primary fw-bold">Completed Tasks</h5>
+                    <p class="fs-4 text-dark mb-0">{{ $completedTasks }}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-</div>
+
+<!-- Typing Script -->
 <script>
     function typeWriter(text, elementId, speed = 50) {
         let i = 0;
@@ -124,9 +148,8 @@
         typeWriter("Welcome to NetIT Technology....!", "typingText");
     });
 </script>
-</div>
 
-<!-- Scripts -->
+<!-- Bootstrap Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @yield('scripts')
 </body>
