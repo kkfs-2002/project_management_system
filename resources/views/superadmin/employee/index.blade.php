@@ -59,13 +59,38 @@
     }
 </style>
 
-<h2>Employee List</h2>
+
 
 @if(session('success'))
     <div style="color: green; background: #e6ffed; padding: 10px; border-left: 4px solid green; margin-bottom: 15px;">
         {{ session('success') }}
     </div>
 @endif
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold text-dark mb-0">
+        <i class="fas fa-users me-2 text-primary"></i> Employee List
+    </h4>
+
+    <form method="GET" action="{{ route('superadmin.employee.index') }}" class="d-flex align-items-center" style="gap: 10px;">
+        <label for="job_title" class="fw-semibold me-2 mb-0 text-muted">Filter by Job Title:</label>
+        <div class="input-group" style="width: 250px;">
+            <select name="job_title" id="job_title" class="form-select shadow-sm border-primary text-dark" onchange="this.form.submit()">
+                <option value="">All Job Titles</option>
+                @foreach($jobTitles as $title)
+                    <option value="{{ $title }}" {{ request('job_title') == $title ? 'selected' : '' }}>
+                        {{ $title }}
+                    </option>
+                @endforeach
+            </select>
+            @if(request('job_title'))
+                <a href="{{ route('superadmin.employee.index') }}" class="btn btn-outline-secondary" title="Clear Filter">
+                    <i class="fas fa-times"></i>
+                </a>
+            @endif
+        </div>
+    </form>
+</div>
+
 
 <table class="employee-table">
     <thead>

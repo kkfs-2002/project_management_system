@@ -220,7 +220,7 @@ document.getElementById('gridViewBtn').addEventListener('click', () => {
     document.addEventListener('DOMContentLoaded', () => {
         animateCounter("employeeCount", {{ $employeeCount }});
         animateCounter("projectCount", {{ $projectCount }});
-        typeWriter("Welcome to NetIT Solutions....!", "typingText");
+        typeWriter("Welcome to NetIT Technology....!", "typingText");
     });
 </script>
 

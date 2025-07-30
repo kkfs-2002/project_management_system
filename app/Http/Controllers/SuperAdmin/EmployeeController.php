@@ -77,13 +77,21 @@ class EmployeeController extends Controller
         return redirect()->back()->with('success', 'Employee added successfully!');
     }
 
-    public function index()
+    public function index(Request $request)
 {
-    $employees = Profile::orderBy('full_name')->paginate(10);
-    return view('superadmin.employee.index', compact('employees'));
-
+    $jobTitle = $request->query('job_title');
     
+    // Get all unique job titles for the dropdown
+    $jobTitles = Profile::select('job_title')->distinct()->pluck('job_title');
+
+    // Filter employees if job_title is selected
+    $employees = Profile::when($jobTitle, function ($query, $jobTitle) {
+        return $query->where('job_title', $jobTitle);
+    })->orderBy('full_name')->paginate(10);
+
+    return view('superadmin.employee.index', compact('employees', 'jobTitles', 'jobTitle'));
 }
+
 
 public function show($id)
 {
