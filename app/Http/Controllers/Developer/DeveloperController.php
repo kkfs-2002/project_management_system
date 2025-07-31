@@ -9,15 +9,13 @@ use App\Models\AssignedTask;
 
 class DeveloperController extends Controller
 {
-public function dashboard($id)
+public function dashboard()
 {
-    $developer = Profile::findOrFail($id);
+    $forwardedTasks = AssignedTask::where('status', 'Forwarded')->count();
+    $completedTasks = AssignedTask::where('status', 'Completed')->count();
 
-    $totalTasks = AssignedTask::where('developer_id', $id)->count();
-    $completedTasks = AssignedTask::where('developer_id', $id)->where('status', 'Completed')->count();
-    $pendingTasks = AssignedTask::where('developer_id', $id)->where('status', 'Pending')->count();
-
-    return view('developer.dashboard', compact('developer', 'totalTasks', 'completedTasks', 'pendingTasks'));
+    return view('developer.dashboard', compact( 'forwardedTasks', 'completedTasks'));
 }
 
 }
+

@@ -41,18 +41,15 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
     <div class="container-fluid">
-        <!-- Left: Logo and Welcome -->
         <a class="navbar-brand d-flex align-items-center" href="{{ route('layouts.developer', $dev->id ?? 1) }}">
             <img src="{{ asset('NetIT logo.png') }}" alt="Dev" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
             <span>Welcome, {{ $dev->full_name ?? 'Developer' }}</span>
         </a>
 
-        <!-- Navbar toggler for mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#devNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Center: Navigation Links -->
         <div class="collapse navbar-collapse" id="devNavbar">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
@@ -67,7 +64,6 @@
                 </li>
             </ul>
 
-            <!-- Right: User Dropdown with Logout -->
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="devDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -92,15 +88,21 @@
 <!-- Main content -->
 <div class="container mt-4" style="padding-top:100px;">
     @yield('content')
-    <div class="mb-5 position-relative">
-    <img src="{{ asset('images/company-bg.jpeg') }}" class="img-fluid w-100" style="max-height:350px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
 
-    <div class="position-absolute top-50 start-50 translate-middle bg-white bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
-        <h3 id="typingText" class="fw-bold mb-2 text-primary"></h3>
-        <p class="mb-0 text-dark">We specialize in delivering cutting-edge software and digital solutions that drive results. From enterprise web apps to mobile platforms, we empower businesses to scale and succeed.</p>
+    <!-- Welcome Section -->
+    <div class="mb-5 position-relative">
+        <img src="{{ asset('images/company-bg.jpeg') }}" class="img-fluid w-100" style="max-height:350px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
+        <div class="position-absolute top-50 start-50 translate-middle bg-white bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
+            <h3 id="typingText" class="fw-bold mb-2 text-primary"></h3>
+            <p class="mb-0 text-dark">
+                We specialize in delivering cutting-edge software and digital solutions that drive results. From enterprise web apps to mobile platforms, we empower businesses to scale and succeed.
+            </p>
+        </div>
     </div>
-</div>
-</div>
+
+
+
+<!-- Typing Animation Script -->
 <script>
     function typeWriter(text, elementId, speed = 50) {
         let i = 0;
