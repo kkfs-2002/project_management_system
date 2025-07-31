@@ -116,12 +116,17 @@
         </ul>
         </li>
 
-        <!-- Reports -->
-        <li class="nav-item">
-    <a class="nav-link" href="{{ route('marketing.clients.report') }}">
-        <i class="fas fa-chart-bar"></i> Report
-    </a>
+        <!-- Nav Dropdown for Report -->
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="reportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fas fa-chart-line me-1"></i> Reports
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="reportDropdown">
+    <li><a class="dropdown-item" href="{{ route('marketing.clients.report') }}">📅 Monthly Client Report</a></li>
+    <li><a class="dropdown-item" href="{{ route('marketing.clients.summary') }}">📊 Client Summary Chart</a></li>
+  </ul>
 </li>
+
 
 
         <!-- Logout -->

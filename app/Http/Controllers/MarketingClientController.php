@@ -216,6 +216,40 @@ public function cancelled()
     return view('marketing.clients.cancelled', compact('clients'));
 }
 
+public function summary(Request $request)
+{
+    $employeeId = session('employee_id');
+    $month = $request->input('month') ?? now()->format('Y-m');
+    $date = \Carbon\Carbon::parse($month);
+
+    $clients = Client::where('marketing_manager_id', $employeeId)
+        ->whereYear('created_at', $date->year)
+        ->whereMonth('created_at', $date->month)
+        ->get();
+
+    $active = $clients->where('status', 'active')->count();
+    $inactive = $clients->where('status', 'inactive')->count();
+    $cancelled = $clients->where('status', 'cancelled')->count();
+
+    return view('marketing.clients.summary', compact('month', 'active', 'inactive', 'cancelled'));
+}
+
+
+public function downloadSummaryPdf()
+{
+    $employeeId = session('employee_id');
+
+    $total = Client::where('marketing_manager_id', $employeeId)->count();
+    $active = Client::where('marketing_manager_id', $employeeId)->where('status', 'active')->count();
+    $inactive = Client::where('marketing_manager_id', $employeeId)->where('status', 'inactive')->count();
+    $cancelled = Client::where('marketing_manager_id', $employeeId)->where('status', 'cancelled')->count();
+
+    $pdf = \PDF::loadView('marketing.clients.summary_pdf', compact('total', 'active', 'inactive', 'cancelled'));
+
+    return $pdf->download('Client_Summary_Report.pdf');
+}
+
+
 }
 
 
