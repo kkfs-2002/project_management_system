@@ -249,6 +249,26 @@ public function downloadSummaryPdf()
     return $pdf->download('Client_Summary_Report.pdf');
 }
 
+public function exportPdf(Request $request)
+{
+    $employeeId = session('employee_id');
+    $month = $request->input('month');
+    
+    $clientsQuery = Client::where('marketing_manager_id', $employeeId);
+
+    if ($month) {
+        $date = \Carbon\Carbon::parse($month);
+        $clientsQuery->whereYear('created_at', $date->year)
+                     ->whereMonth('created_at', $date->month);
+    }
+
+    $clients = $clientsQuery->orderBy('created_at', 'desc')->get();
+
+    $pdf = Pdf::loadView('marketing.clients.index_pdf', compact('clients', 'month'));
+
+    return $pdf->download('Client_List_' . ($month ?? now()->format('Y_m')) . '.pdf');
+}
+
 
 }
 

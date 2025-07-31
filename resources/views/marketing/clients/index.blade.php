@@ -11,6 +11,10 @@
     @endif
 
     <a href="{{ route('marketing.clients.create') }}" class="btn btn-primary mb-3">+ Create New Client</a>
+    <a href="{{ route('marketing.clients.index.pdf', ['month' => request('month')]) }}" class="btn btn-outline-secondary mb-3">
+    <i class="fas fa-file-pdf me-1"></i> Download PDF
+</a>
+
 
     {{-- Compact Month Filter --}}
     <div class="d-flex justify-content-end mb-3">

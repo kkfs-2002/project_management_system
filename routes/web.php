@@ -274,5 +274,6 @@ Route::get('/marketing/clients/cancelled', [MarketingClientController::class, 'c
 
 Route::get('/clients/summary', [MarketingClientController::class, 'summary'])->name('marketing.clients.summary');
 Route::get('/clients/summary/pdf', [MarketingClientController::class, 'downloadSummaryPdf'])->name('marketing.clients.summary.pdf');
+Route::get('/clients/pdf', [MarketingClientController::class, 'exportPdf'])->name('marketing.clients.index.pdf');
 
 

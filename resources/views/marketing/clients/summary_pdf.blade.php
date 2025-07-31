@@ -33,7 +33,7 @@
                 <td>Cancelled</td>
                 <td>{{ $cancelled }}</td>
             </tr>
-        </tbody>
+        </tbody>]
     </table>
 </body>
 </html>
