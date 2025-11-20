@@ -17,6 +17,8 @@ use App\Http\Controllers\SuperAdmin\AttendanceController;
 use App\Http\Controllers\SuperAdmin\PasswordAdminController;
 use App\Http\Controllers\SuperAdmin\ExpenseController;
 use App\Http\Controllers\SuperAdmin\SalaryController;
+use App\Http\Controllers\SuperAdmin\DailyTaskController;
+use App\Http\Controllers\SuperAdmin\KpiController;
 use App\Http\Controllers\Developer\DeveloperController;
 use App\Http\Controllers\ProjectManager\ProjectManagerController;
 
@@ -276,4 +278,28 @@ Route::get('/clients/summary', [MarketingClientController::class, 'summary'])->n
 Route::get('/clients/summary/pdf', [MarketingClientController::class, 'downloadSummaryPdf'])->name('marketing.clients.summary.pdf');
 Route::get('/clients/pdf', [MarketingClientController::class, 'exportPdf'])->name('marketing.clients.index.pdf');
 
+// Daily Tasks Routes
+Route::prefix('superadmin/daily-tasks')->group(function () {
+    Route::get('/', [DailyTaskController::class, 'index'])->name('superadmin.daily-tasks.index');
+    Route::get('/create', [DailyTaskController::class, 'create'])->name('superadmin.daily-tasks.create');
+    Route::post('/', [DailyTaskController::class, 'store'])->name('superadmin.daily-tasks.store');
+    Route::post('/{task}/update-progress', [DailyTaskController::class, 'updateProgress'])->name('superadmin.daily-tasks.update-progress');
+    Route::post('/{task}/verify', [DailyTaskController::class, 'verifyTask'])->name('superadmin.daily-tasks.verify');
+    Route::delete('/{task}', [DailyTaskController::class, 'destroy'])->name('superadmin.daily-tasks.destroy');
+    // routes/web.php
+Route::get('/daily-tasks/create', [DailyTaskController::class, 'create'])->name('superadmin.daily-tasks.create');
+    // routes/web.php එකේ
+Route::get('/daily-tasks/{dailyTask}', [DailyTaskController::class, 'show'])->name('superadmin.daily-tasks.show');
 
+    // Employee routes
+    Route::get('/my-tasks', [DailyTaskController::class, 'employeeTasks'])->name('employee.daily-tasks.index');
+});
+
+// KPI Routes
+Route::prefix('superadmin/kpi')->group(function () {
+    Route::get('/', [KpiController::class, 'index'])->name('superadmin.kpi.index');
+    Route::get('/create', [KpiController::class, 'create'])->name('superadmin.kpi.create');
+    Route::post('/', [KpiController::class, 'store'])->name('superadmin.kpi.store');
+    Route::post('/{kpi}/update-achievement', [KpiController::class, 'updateAchievement'])->name('superadmin.kpi.update-achievement');
+    Route::delete('/{kpi}', [KpiController::class, 'destroy'])->name('superadmin.kpi.destroy');
+});

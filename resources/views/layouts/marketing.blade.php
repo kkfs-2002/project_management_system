@@ -126,7 +126,16 @@
     <li><a class="dropdown-item" href="{{ route('marketing.clients.summary') }}">📊 Client Summary Chart</a></li>
   </ul>
 </li>
-
+<!-- In your app.blade.php navbar add this -->
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="tasksDropdown" role="button" data-bs-toggle="dropdown">
+        <i class="fas fa-target me-1"></i> Tasks & KPIs
+    </a>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ route('superadmin.daily-tasks.index') }}">Daily Tasks</a></li>
+        <li><a class="dropdown-item" href="{{ route('superadmin.kpi.index') }}">KPI Management</a></li>
+    </ul>
+</li>
 
 
         <!-- Logout -->

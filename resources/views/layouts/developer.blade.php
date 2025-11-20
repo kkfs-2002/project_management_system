@@ -63,7 +63,16 @@
                     </a>
                 </li>
             </ul>
-
+<!-- In your app.blade.php navbar add this -->
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="tasksDropdown" role="button" data-bs-toggle="dropdown">
+        <i class="fas fa-target me-1"></i> Tasks & KPIs
+    </a>
+    <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ route('superadmin.daily-tasks.index') }}">Daily Tasks</a></li>
+        <li><a class="dropdown-item" href="{{ route('superadmin.kpi.index') }}">KPI Management</a></li>
+    </ul>
+</li>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="devDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
