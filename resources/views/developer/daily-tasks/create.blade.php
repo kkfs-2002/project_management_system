@@ -96,7 +96,7 @@
                     <h2 class="mb-0 text-primary">
                         <i class="fas fa-plus-circle me-2"></i>Daily Task Updates
                     </h2>
-                    <a href="{{ route('superadmin.daily-tasks.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('developer.daily-tasks.index') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-1"></i> Back to Tasks
                     </a>
                 </div>
@@ -109,7 +109,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('superadmin.daily-tasks.store') }}" method="POST">
+                <form action="{{ route('developer.daily-tasks.store') }}" method="POST">
                     @csrf
                  
                        <div class="row">
@@ -275,7 +275,7 @@
                     </div>
                     <!-- Submit Buttons -->
                     <div class="d-flex justify-content-between align-items-center">
-                        <a href="{{ route('superadmin.daily-tasks.index') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('developer.daily-tasks.index') }}" class="btn btn-outline-secondary">
                             <i class="fas fa-times me-1"></i> Cancel
                         </a>
                         <div class="btn-group">

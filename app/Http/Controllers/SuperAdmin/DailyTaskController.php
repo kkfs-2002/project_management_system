@@ -62,57 +62,7 @@ class DailyTaskController extends Controller
         return view('superadmin.daily.create', compact('employees'));
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'profile_id' => 'required|exists:profiles,id',
-            'task_date' => 'required|date',
-            'task_name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'task_type' => 'required|in:Senior Developer,Junior Developer,Intern/Trainee,Marketing Manager,Project Manager',
-            'target_count' => 'required|integer|min:1',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i',
-            'priority' => 'required|in:low,medium,high,urgent',
-            'notes' => 'nullable|string',
-            'working_days' => 'nullable|string'
-        ]);
-
-        // Calculate estimated time from start and end times
-        $start = Carbon::createFromFormat('H:i', $validated['start_time']);
-        $end = Carbon::createFromFormat('H:i', $validated['end_time']);
-        $estimatedMinutes = $start->diffInMinutes($end);
-        
-        // Convert minutes to hours:minutes format
-        $hours = floor($estimatedMinutes / 60);
-        $minutes = $estimatedMinutes % 60;
-        $validated['estimated_time'] = sprintf('%02d:%02d', $hours, $minutes);
-
-        // Handle authentication
-        if (Auth::check()) {
-            $validated['assigned_by'] = Auth::id();
-        } else {
-            $validated['assigned_by'] = $validated['profile_id'];
-        }
-
-        $validated['completed_count'] = 0;
-        $validated['status'] = 'pending';
-
-        // Remove working_days temporarily if column doesn't exist
-        if (!Schema::hasColumn('daily_tasks', 'working_days')) {
-            unset($validated['working_days']);
-        }
-
-        DailyTask::create($validated);
-
-        $action = $request->get('action');
-        if ($action === 'save_and_new') {
-            return redirect()->route('superadmin.daily-tasks.create')->with('success', 'Daily task assigned successfully!');
-        }
-
-        return redirect()->route('superadmin.daily-tasks.index')->with('success', 'Daily task assigned successfully!');
-    }
-
+   
     public function updateProgress(Request $request, DailyTask $task)
     {
         $validated = $request->validate([
@@ -482,7 +432,7 @@ class DailyTaskController extends Controller
         return view('marketing.daily-tasks.create', compact('employees'));
     }
 
-    public function marketingstore(Request $request)
+    public function MarketingStore(Request $request)
     {
         $validated = $request->validate([
             'profile_id' => 'required|exists:profiles,id',
@@ -527,10 +477,10 @@ class DailyTaskController extends Controller
 
         $action = $request->get('action');
         if ($action === 'save_and_new') {
-            return redirect()->route('marketing.daily-tasks-tasks.create')->with('success', 'Daily task assigned successfully!');
+            return redirect()->route('marketing.daily-tasks.create')->with('success', 'Daily task assigned successfully!');
         }
 
-        return redirect()->route('marketing.daily-tasks-tasks.index')->with('success', 'Daily task assigned successfully!');
+        return redirect()->route('marketing.daily-tasks.index')->with('success', 'Daily task assigned successfully!');
     }
 
     public function marketingupdateProgress(Request $request, DailyTask $task)

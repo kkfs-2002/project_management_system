@@ -284,7 +284,7 @@ Route::get('/clients/pdf', [MarketingClientController::class, 'exportPdf'])->nam
 Route::prefix('superadmin/daily-tasks')->group(function () {
     Route::get('/', [DailyTaskController::class, 'index'])->name('superadmin.daily-tasks.index');
     Route::get('/create', [DailyTaskController::class, 'create'])->name('superadmin.daily-tasks.create');
-    Route::post('/', [DailyTaskController::class, 'store'])->name('superadmin.daily-tasks.store');
+
     Route::post('/{task}/update-progress', [DailyTaskController::class, 'updateProgress'])->name('superadmin.daily-tasks.update-progress');
     Route::post('/{task}/verify', [DailyTaskController::class, 'verifyTask'])->name('superadmin.daily-tasks.verify');
     Route::delete('/{task}', [DailyTaskController::class, 'destroy'])->name('superadmin.daily-tasks.destroy');
@@ -317,7 +317,7 @@ Route::prefix('projectmanager/daily-tasks')->group(function () {
 Route::prefix('marketing/daily-tasks')->group(function () {
     Route::get('/', [DailyTaskController::class, 'marketingIndex'])->name('marketing.daily-tasks.index');
     Route::get('/create', [DailyTaskController::class, 'marketingCreate'])->name('marketing.daily-tasks.create');
-    Route::post('/', [DailyTaskController::class, 'marketingStore'])->name('marketing.daily-tasks.store');
+    Route::post('/', [DailyTaskController::class, 'MarketingStore'])->name('marketing.daily-tasks.store');
     Route::post('/{task}/update-progress', [DailyTaskController::class, 'marketingUpdateProgress'])->name('marketing.daily-tasks.update-progress');
      Route::post('/{task}/verify', [DailyTaskController::class, 'marketingVerifyTask'])->name('marketing.daily-tasks.verify');
     Route::delete('/{task}', [DailyTaskController::class, 'marketingdestroy'])->name('marketing.daily-tasks.destroy');
