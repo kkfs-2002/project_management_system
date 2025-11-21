@@ -22,8 +22,6 @@ use App\Http\Controllers\SuperAdmin\KpiController;
 use App\Http\Controllers\Developer\DeveloperController;
 use App\Http\Controllers\ProjectManager\ProjectManagerController;
 
-
-
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -278,7 +276,9 @@ Route::get('/clients/summary', [MarketingClientController::class, 'summary'])->n
 Route::get('/clients/summary/pdf', [MarketingClientController::class, 'downloadSummaryPdf'])->name('marketing.clients.summary.pdf');
 Route::get('/clients/pdf', [MarketingClientController::class, 'exportPdf'])->name('marketing.clients.index.pdf');
 
-// Daily Tasks Routes
+// ==================== DAILY TASKS ROUTES - SEPARATED BY ROLE ====================
+
+// Super Admin Daily Tasks Routes
 Route::prefix('superadmin/daily-tasks')->group(function () {
     Route::get('/', [DailyTaskController::class, 'index'])->name('superadmin.daily-tasks.index');
     Route::get('/create', [DailyTaskController::class, 'create'])->name('superadmin.daily-tasks.create');
@@ -286,20 +286,74 @@ Route::prefix('superadmin/daily-tasks')->group(function () {
     Route::post('/{task}/update-progress', [DailyTaskController::class, 'updateProgress'])->name('superadmin.daily-tasks.update-progress');
     Route::post('/{task}/verify', [DailyTaskController::class, 'verifyTask'])->name('superadmin.daily-tasks.verify');
     Route::delete('/{task}', [DailyTaskController::class, 'destroy'])->name('superadmin.daily-tasks.destroy');
-    // routes/web.php
-Route::get('/daily-tasks/create', [DailyTaskController::class, 'create'])->name('superadmin.daily-tasks.create');
-    // routes/web.php එකේ
-Route::get('/daily-tasks/{dailyTask}', [DailyTaskController::class, 'show'])->name('superadmin.daily-tasks.show');
-
-    // Employee routes
-    Route::get('/my-tasks', [DailyTaskController::class, 'employeeTasks'])->name('employee.daily-tasks.index');
+    Route::get('/{dailyTask}', [DailyTaskController::class, 'show'])->name('superadmin.daily-tasks.show');
 });
 
-// KPI Routes
+// Developer Daily Tasks Routes
+Route::prefix('developer/daily-tasks')->group(function () {
+    Route::get('/', [DailyTaskController::class, 'developerIndex'])->name('developer.daily-tasks.index');
+    Route::get('/create', [DailyTaskController::class, 'developerCreate'])->name('developer.daily-tasks.create');
+    Route::post('/', [DailyTaskController::class, 'developerStore'])->name('developer.daily-tasks.store');
+    Route::post('/{task}/update-progress', [DailyTaskController::class, 'developerUpdateProgress'])->name('developer.daily-tasks.update-progress');
+    Route::post('/{task}/verify', [DailyTaskController::class, 'developerverifyTask'])->name('developer.daily-tasks.verify');
+    Route::delete('/{task}', [DailyTaskController::class, 'destroy'])->name('developer.daily-tasks.destroy');
+    Route::get('/{dailyTask}', [DailyTaskController::class, 'developerShow'])->name('developer.daily-tasks.show');
+});
+
+// Project Manager Daily Tasks Routes
+Route::prefix('projectmanager/daily-tasks')->group(function () {
+    Route::get('/', [DailyTaskController::class, 'projectManagerIndex'])->name('projectmanager.daily-tasks.index');
+    Route::get('/create', [DailyTaskController::class, 'projectManagerCreate'])->name('projectmanager.daily-tasks.create');
+    Route::post('/', [DailyTaskController::class, 'projectManagerStore'])->name('projectmanager.daily-tasks.store');
+    Route::post('/{task}/update-progress', [DailyTaskController::class, 'projectManagerUpdateProgress'])->name('projectmanager.daily-tasks.update-progress');
+    Route::post('/{task}/verify', [DailyTaskController::class, 'projectManagerVerifyTask'])->name('projectmanager.daily-tasks.verify');
+    Route::delete('/{task}', [DailyTaskController::class, 'projectManagerdestroy'])->name('projectmanager.daily-tasks.destroy');
+    Route::get('/{dailyTask}', [DailyTaskController::class, 'projectManagerShow'])->name('projectmanager.daily-tasks.show');
+});
+
+// Marketing Daily Tasks Routes
+Route::prefix('marketing/daily-tasks')->group(function () {
+    Route::get('/', [DailyTaskController::class, 'marketingIndex'])->name('marketing.daily-tasks.index');
+    Route::get('/create', [DailyTaskController::class, 'marketingCreate'])->name('marketing.daily-tasks.create');
+    Route::post('/', [DailyTaskController::class, 'marketingStore'])->name('marketing.daily-tasks.store');
+    Route::post('/{task}/update-progress', [DailyTaskController::class, 'marketingUpdateProgress'])->name('marketing.daily-tasks.update-progress');
+     Route::post('/{task}/verify', [DailyTaskController::class, 'marketingVerifyTask'])->name('marketing.daily-tasks.verify');
+    Route::delete('/{task}', [DailyTaskController::class, 'marketingdestroy'])->name('marketing.daily-tasks.destroy');
+    Route::get('/{dailyTask}', [DailyTaskController::class, 'marketingShow'])->name('marketing.daily-tasks.show');
+});
+
+// Common Employee routes (for all roles)
+Route::get('/daily-tasks/my-tasks', [DailyTaskController::class, 'employeeTasks'])->name('employee.daily-tasks.index');
+
+// ==================== KPI ROUTES - SEPARATED BY ROLE ====================
+
+// Super Admin KPI Routes
 Route::prefix('superadmin/kpi')->group(function () {
     Route::get('/', [KpiController::class, 'index'])->name('superadmin.kpi.index');
     Route::get('/create', [KpiController::class, 'create'])->name('superadmin.kpi.create');
     Route::post('/', [KpiController::class, 'store'])->name('superadmin.kpi.store');
     Route::post('/{kpi}/update-achievement', [KpiController::class, 'updateAchievement'])->name('superadmin.kpi.update-achievement');
     Route::delete('/{kpi}', [KpiController::class, 'destroy'])->name('superadmin.kpi.destroy');
+});
+
+// Developer KPI Routes
+Route::prefix('developer/kpi')->group(function () {
+    Route::get('/', [KpiController::class, 'developerIndex'])->name('developer.kpi.index');
+    Route::get('/{kpi}', [KpiController::class, 'developerShow'])->name('developer.kpi.show');
+    Route::post('/{kpi}/update-achievement', [KpiController::class, 'developerUpdateAchievement'])->name('developer.kpi.update-achievement');
+});
+
+// Project Manager KPI Routes
+Route::prefix('projectmanager/kpi')->group(function () {
+    Route::get('/', [KpiController::class, 'projectManagerIndex'])->name('projectmanager.kpi.index');
+    Route::get('/create', [KpiController::class, 'projectManagerCreate'])->name('projectmanager.kpi.create');
+    Route::post('/', [KpiController::class, 'projectManagerStore'])->name('projectmanager.kpi.store');
+    Route::get('/{kpi}', [KpiController::class, 'projectManagerShow'])->name('projectmanager.kpi.show');
+});
+
+// Marketing KPI Routes
+Route::prefix('marketing/kpi')->group(function () {
+    Route::get('/', [KpiController::class, 'marketingIndex'])->name('marketing.kpi.index');
+    Route::get('/{kpi}', [KpiController::class, 'marketingShow'])->name('marketing.kpi.show');
+    Route::post('/{kpi}/update-achievement', [KpiController::class, 'marketingUpdateAchievement'])->name('marketing.kpi.update-achievement');
 });
