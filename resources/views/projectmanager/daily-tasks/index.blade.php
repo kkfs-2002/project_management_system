@@ -523,7 +523,7 @@
 
                         <div class="mt-3">
                             <a href="{{ route('projectmanager.daily-tasks.create', $pm->id ?? 1) }}" class="btn btn-success">
-                                <i class="fas fa-plus me-2"></i>Assign New Task
+                                <i class="fas fa-plus me-2"></i>Daily Task Update
                             </a>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.marketing')
 
 @section('title', 'Assign Daily Task')
 
@@ -96,7 +96,7 @@
             <div class="form-container">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0 text-primary">
-                        <i class="fas fa-plus-circle me-2"></i>Assign Daily Task
+                        <i class="fas fa-plus-circle me-2"></i>Daily Task Update
                     </h2>
                     <a href="{{ route('superadmin.daily-tasks.index') }}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-1"></i> Back to Tasks
