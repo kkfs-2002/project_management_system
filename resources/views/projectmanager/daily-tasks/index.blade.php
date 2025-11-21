@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Project Manager Dashboard</title>
+       <title>Project Manager Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
@@ -41,7 +41,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="{{ route('layouts.projectmanager', $pm->id ?? 1) }}">
+        <a class="navbar-brand d-flex align-items-center" href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
             <img src="{{ asset('NetIT logo.png') }}" alt="PM" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
             <span>Welcome, {{ 'Project Manager' }}</span>
         </a>
@@ -65,7 +65,7 @@
                         <i class="fas fa-target me-1"></i> Day Updates Tasks
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ route('projectmanager.daily-tasks.index', $pm->id ?? 1) }}">Daily Tasks</a></li>
+                        <li><a class="dropdown-item" href="{{ route('projectmanager.daily-tasks.index', $pm->id ?? 1) }}">Daily Tasks</a></li>      
                     </ul>
                 </li>
             </ul>
@@ -90,9 +90,9 @@
     </div>
 </nav>
 
-<!-- Main Content Area -->
 <div class="container mt-4" style="padding-top:100px;">
     @yield('content')
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -147,7 +147,7 @@
                             </div>
                             <div class="col-md-2">
                                 <label>&nbsp;</label>
-                                <a href="{{ route('projectmanager.daily-tasks.index', $pm->id ?? 1) }}" class="btn btn-secondary w-100">Reset</a>
+                                <a href="{{ route('developer.daily-tasks.index') }}" class="btn btn-secondary w-100">Reset</a>
                             </div>
                         </form>
 
@@ -179,7 +179,7 @@
                                         <td>{{ $task->task_name }}</td>
                                         <td>
                                             @if($task->description)
-                                            <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
+                                            <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" 
                                                     data-bs-target="#descriptionModal{{ $task->id }}">
                                                 <i class="fas fa-eye"></i>
                                             </button>
@@ -209,7 +209,7 @@
                                                 $priorityColors = [
                                                     'low' => 'secondary',
                                                     'medium' => 'info',
-                                                    'high' => 'warning',
+                                                    'high' => 'warning', 
                                                     'urgent' => 'danger'
                                                 ];
                                             @endphp
@@ -234,7 +234,7 @@
                                                 // Determine current status
                                                 $currentStatus = $task->status;
                                                 $isVerified = $task->verified ?? false;
-                                               
+                                                
                                                 if ($isVerified && $currentStatus === 'completed') {
                                                     $currentStatus = 'verified';
                                                 }
@@ -246,28 +246,29 @@
                                         <td>
                                             <div class="btn-group btn-group-sm">
                                                 <!-- View Details Button -->
-                                                <button class="btn btn-outline-info" data-bs-toggle="modal"
+                                                <button class="btn btn-outline-info" data-bs-toggle="modal" 
                                                         data-bs-target="#detailsModal{{ $task->id }}" title="View Details">
                                                     <i class="fas fa-info-circle"></i>
                                                 </button>
-                                               
+                                                
                                                 <!-- Edit Progress Button -->
-                                                <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                                <button class="btn btn-outline-primary" data-bs-toggle="modal" 
                                                         data-bs-target="#progressModal{{ $task->id }}" title="Update Progress">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                               
+                                                
                                                 @if($task->status == 'completed' && !($task->verified ?? false))
                                                 <button class="btn btn-outline-success" onclick="verifyTask({{ $task->id }})" title="Verify Task">
                                                     <i class="fas fa-check-double"></i>
                                                 </button>
                                                 @endif
+
                                                 @if($task->status == 'completed' && ($task->verified ?? false))
                                                 <button class="btn btn-success" title="Verified" disabled>
                                                     <i class="fas fa-check-circle"></i>
                                                 </button>
                                                 @endif
-                                               
+                                                
                                                 <button class="btn btn-outline-danger" onclick="deleteTask({{ $task->id }})" title="Delete Task">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -337,7 +338,7 @@
                                                                                 @php
                                                                                     $currentStatus = $task->status;
                                                                                     $isVerified = $task->verified ?? false;
-                                                                                   
+                                                                                    
                                                                                     if ($isVerified && $currentStatus === 'completed') {
                                                                                         $currentStatus = 'verified';
                                                                                     }
@@ -380,7 +381,7 @@
                                                                     </table>
                                                                 </div>
                                                             </div>
-                                                           
+                                                            
                                                             @if($task->description)
                                                             <div class="row mt-3">
                                                                 <div class="col-12">
@@ -393,7 +394,7 @@
                                                                 </div>
                                                             </div>
                                                             @endif
-                                                           
+                                                            
                                                             @if($task->notes)
                                                             <div class="row mt-3">
                                                                 <div class="col-12">
@@ -443,7 +444,7 @@
                                             <div class="modal fade" id="progressModal{{ $task->id }}">
                                                 <div class="modal-dialog modal-lg">
                                                     <div class="modal-content">
-                                                        <form action="{{ route('projectmanager.daily-tasks.update-progress', [$pm->id ?? 1, $task->id]) }}" method="POST">
+                                                        <form action="{{ route('developer.daily-tasks.update-progress', $task->id) }}" method="POST">
                                                             @csrf
                                                             <div class="modal-header bg-warning text-dark">
                                                                 <h5 class="modal-title">
@@ -456,8 +457,8 @@
                                                                     <div class="col-md-6">
                                                                         <div class="mb-3">
                                                                             <label class="fw-bold">Completed Count</label>
-                                                                            <input type="number" name="completed_count"
-                                                                                   value="{{ $task->completed_count }}"
+                                                                            <input type="number" name="completed_count" 
+                                                                                   value="{{ $task->completed_count }}" 
                                                                                    min="0" max="{{ $task->target_count }}"
                                                                                    class="form-control" required>
                                                                             <small class="text-muted">Target: {{ $task->target_count }}</small>
@@ -478,7 +479,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="mb-3">
                                                                             <label class="fw-bold">Start Time</label>
-                                                                            <input type="time" name="start_time"
+                                                                            <input type="time" name="start_time" 
                                                                                    value="{{ $task->start_time ? $task->start_time->format('H:i') : '' }}"
                                                                                    class="form-control">
                                                                         </div>
@@ -486,7 +487,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="mb-3">
                                                                             <label class="fw-bold">End Time</label>
-                                                                            <input type="time" name="end_time"
+                                                                            <input type="time" name="end_time" 
                                                                                    value="{{ $task->end_time ? $task->end_time->format('H:i') : '' }}"
                                                                                    class="form-control">
                                                                         </div>
@@ -494,13 +495,13 @@
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label class="fw-bold">Actual Time (HH:MM)</label>
-                                                                    <input type="time" name="actual_time"
+                                                                    <input type="time" name="actual_time" 
                                                                            value="{{ $task->actual_time ? $task->actual_time->format('H:i') : '' }}"
                                                                            class="form-control">
                                                                 </div>
                                                                 <div class="mb-3">
                                                                     <label class="fw-bold">Notes</label>
-                                                                    <textarea name="notes" class="form-control" rows="3"
+                                                                    <textarea name="notes" class="form-control" rows="3" 
                                                                               placeholder="Add any additional notes or comments...">{{ $task->notes }}</textarea>
                                                                 </div>
                                                             </div>
@@ -522,7 +523,7 @@
                         {{ $tasks->links() }}
 
                         <div class="mt-3">
-                            <a href="{{ route('projectmanager.daily-tasks.create', $pm->id ?? 1) }}" class="btn btn-success">
+                            <a href="{{ route('developer.daily-tasks.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus me-2"></i>Daily Task Update
                             </a>
                         </div>
@@ -536,8 +537,7 @@
 <script>
 function verifyTask(taskId) {
     if (confirm('Are you sure you want to verify this task?')) {
-        const pmId = {{ $pm->id ?? 1 }};
-        fetch(`/projectmanager/${pmId}/daily-tasks/${taskId}/verify`, {
+        fetch(`/developer/daily-tasks/${taskId}/verify`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -558,8 +558,7 @@ function verifyTask(taskId) {
 
 function deleteTask(taskId) {
     if (confirm('Are you sure you want to delete this task?')) {
-        const pmId = {{ $pm->id ?? 1 }};
-        fetch(`/projectmanager/${pmId}/daily-tasks/${taskId}`, {
+        fetch(`/developer/daily-tasks/${taskId}`, {
             method: 'DELETE',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -586,7 +585,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- Bootstrap Bundle -->
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @yield('scripts')
 </body>
