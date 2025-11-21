@@ -107,7 +107,7 @@
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="employeesDropdown">
             <li><a class="dropdown-item" href="{{ route('superadmin.employee.create') }}">Add Employee</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.employee.index') }}">Employee List</a></li>
-            
+            <li><a class="dropdown-item" href="{{ route('superadmin.employee.view') }}">Employee Daily updates</a></li>
           </ul>
         </li>
         

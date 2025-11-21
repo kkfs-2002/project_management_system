@@ -59,6 +59,8 @@ Route::get('/admin/profiles/{id}', [ProfileController::class, 'show'])->name('pr
 //Add employee
 Route::get('/superadmin/employee/create', [EmployeeController::class, 'create'])->name('superadmin.employee.create');
 Route::post('/superadmin/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+// View employee page
+Route::get('/superadmin/employee/view', [EmployeeController::class, 'view'])->name('superadmin.employee.view');
 
 //View employee list/ Delete/Edit
 Route::get('/superadmin/employee', [EmployeeController::class, 'index'])->name('superadmin.employee.index');

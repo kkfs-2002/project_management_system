@@ -2,6 +2,8 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Models\Profile;
+use App\Models\DailyTask; // Add this import
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -141,5 +143,34 @@ public function destroy($id)
     return redirect()->route('superadmin.employee.index')->with('success', 'Employee deleted successfully!');
 }
 
+
+public function view(Request $request)
+{
+    $date = $request->get('date', date('Y-m-d'));
+    $employeeId = $request->get('employee_id');
+    $status = $request->get('status');
+
+    $query = DailyTask::with(['profile', 'assignedBy']);
+
+    if ($date) {
+        $query->whereDate('task_date', $date);
+    }
+
+    if ($employeeId) {
+        $query->where('profile_id', $employeeId);
+    }
+
+    if ($status) {
+        $query->where('status', $status);
+    }
+
+    $tasks = $query->orderBy('task_date', 'desc')
+                  ->orderBy('priority', 'desc')
+                  ->paginate(20);
+
+    $employees = Profile::whereIn('role', ['Senior Developer', 'Junior Developer', 'Intern/Trainee', 'Marketing Manager', 'Project Manager'])->get();
+
+    return view('superadmin.employee.view', compact('tasks', 'employees', 'date', 'employeeId', 'status'));
+}
 }
 
