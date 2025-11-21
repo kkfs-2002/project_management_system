@@ -61,6 +61,14 @@
                         <i class="fa fa-tasks me-1"></i> Tasks
                     </a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="tasksDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-target me-1"></i> Day Updates Tasks 
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ route('projectmanager.daily-tasks.index') }}">Daily Tasks</a></li>      
+                    </ul>
+                </li>
             </ul>
 
             <ul class="navbar-nav ms-auto">
@@ -80,15 +88,6 @@
                     </ul>
                 </li>
             </ul>
-            <!-- In your app.blade.php navbar add this -->
-<li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="tasksDropdown" role="button" data-bs-toggle="dropdown">
-        <i class="fas fa-target me-1"></i> Day Updates Tasks 
-    </a>
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="{{ route('projectmanager.daily-tasks.index') }}">Daily Tasks</a></li>      
-    </ul>
-</li>
         </div>
     </div>
 </nav>
@@ -97,7 +96,8 @@
 <div class="container mt-4" style="padding-top:100px;">
     @yield('content')
 
-    <!-- Welcome Section -->
+    <!-- Welcome Section - Only show on dashboard -->
+    @if(!isset($hideWelcome) || $hideWelcome === false)
     <div class="mb-5 position-relative">
         <img src="{{ asset('images/company-bg.jpeg') }}" class="img-fluid w-100" style="max-height:350px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
         <div class="position-absolute top-50 start-50 translate-middle bg-white bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
@@ -106,30 +106,30 @@
         </div>
     </div>
 
-  
+    <!-- Typing Script -->
+    <script>
+        function typeWriter(text, elementId, speed = 50) {
+            let i = 0;
+            const element = document.getElementById(elementId);
+            if (!element) return;
 
-<!-- Typing Script -->
-<script>
-    function typeWriter(text, elementId, speed = 50) {
-        let i = 0;
-        const element = document.getElementById(elementId);
-        if (!element) return;
-
-        function type() {
-            if (i < text.length) {
-                element.innerHTML += text.charAt(i);
-                i++;
-                setTimeout(type, speed);
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
             }
+
+            type();
         }
 
-        type();
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        typeWriter("Welcome to NetIT Technology....!", "typingText");
-    });
-</script>
+        document.addEventListener('DOMContentLoaded', () => {
+            typeWriter("Welcome to NetIT Technology....!", "typingText");
+        });
+    </script>
+    @endif
+</div>
 
 <!-- Bootstrap Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

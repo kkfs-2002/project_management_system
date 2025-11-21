@@ -2,6 +2,10 @@
 
 @section('title', 'Assign Daily Task')
 
+@php
+    $hideWelcome = true;
+@endphp
+
 @section('content')
 <style>
     .form-container {
@@ -98,7 +102,7 @@
                     <h2 class="mb-0 text-primary">
                         <i class="fas fa-plus-circle me-2"></i>Daily Task Update
                     </h2>
-                    <a href="{{ route('superadmin.daily-tasks.index') }}" class="btn btn-outline-secondary">
+                    <a href="{{ route('projectmanager.daily-tasks.index', $pm->id ?? 1) }}" class="btn btn-outline-secondary">
                         <i class="fas fa-arrow-left me-1"></i> Back to Tasks
                     </a>
                 </div>
@@ -113,44 +117,39 @@
                     </div>
                 @endif
 
-                <form action="{{ route('superadmin.daily-tasks.store') }}" method="POST">
+                <form action="{{ route('projectmanager.daily-tasks.store', $pm->id ?? 1) }}" method="POST">
                     @csrf
                     
-                       <div class="row">
-                       <!-- Employee Selection -->
-<div class="col-md-6">
-    <div class="form-group mb-3">
-        <label class="form-label fw-bold">Select Employee *</label>
-        <select name="profile_id" id="profile_id" class="form-select" required onchange="updateTimeSlots()">
-            <option value="">-- Choose Employee --</option>
-            @foreach($employees as $employee)
-                <option value="{{ $employee->id }}" 
-                    {{ old('profile_id') == $employee->id ? 'selected' : '' }}
-                    data-role="{{ $employee->role }}"
-                    data-work-start="{{ $employee->work_start_time ?? '09:00' }}"
-                    data-work-end="{{ $employee->work_end_time ?? '17:00' }}">
-                    {{ $employee->full_name }} 
-                    ({{ $employee->employee_id }} - {{ $employee->role }})
-                    @if($employee->employment_type)
-                        - {{ ucfirst($employee->employment_type) }}
-                    @endif
-                </option>
-            @endforeach
-        </select>
-        <div class="form-text">
-            Available employees: {{ $employees->count() }}
-            @if($employees->count() == 0)
-                <span class="text-danger"> - No employees found! Please add employees first.</span>
-            @endif
-        </div>
-    </div>
-</div>
-{{-- Debug --}}
-<div style="display: none;">
-    Employees Count: {{ isset($employees) ? $employees->count() : 'NOT SET' }}
-    <br>
-    Employees: {{ isset($employees) ? json_encode($employees->pluck('full_name')) : 'NOT SET' }}
-</div>
+                    <div class="row">
+                        <!-- Employee Selection -->
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label class="form-label fw-bold">Select Employee *</label>
+                                <select name="profile_id" id="profile_id" class="form-select" required onchange="updateTimeSlots()">
+                                    <option value="">-- Choose Employee --</option>
+                                    @foreach($employees as $employee)
+                                        <option value="{{ $employee->id }}" 
+                                            {{ old('profile_id') == $employee->id ? 'selected' : '' }}
+                                            data-role="{{ $employee->role }}"
+                                            data-work-start="{{ $employee->work_start_time ?? '09:00' }}"
+                                            data-work-end="{{ $employee->work_end_time ?? '17:00' }}">
+                                            {{ $employee->full_name }} 
+                                            ({{ $employee->employee_id }} - {{ $employee->role }})
+                                            @if($employee->employment_type)
+                                                - {{ ucfirst($employee->employment_type) }}
+                                            @endif
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="form-text">
+                                    Available employees: {{ $employees->count() }}
+                                    @if($employees->count() == 0)
+                                        <span class="text-danger"> - No employees found! Please add employees first.</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Task Date -->
                         <div class="col-md-6">
                             <div class="form-group mb-3">
@@ -289,7 +288,7 @@
 
                     <!-- Submit Buttons -->
                     <div class="d-flex justify-content-between align-items-center">
-                        <a href="{{ route('superadmin.daily-tasks.index') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('projectmanager.daily-tasks.index', $pm->id ?? 1) }}" class="btn btn-outline-secondary">
                             <i class="fas fa-times me-1"></i> Cancel
                         </a>
                         <div class="btn-group">
