@@ -104,7 +104,7 @@ class DailyTaskController extends Controller
 
     // ==================== DEVELOPER METHODS ====================
     
-   public function developerIndex(Request $request)
+  public function developerIndex(Request $request)
 {
     $date = $request->get('date', date('Y-m-d'));
     $employeeId = $request->get('employee_id');
@@ -115,7 +115,7 @@ class DailyTaskController extends Controller
     $query = DailyTask::with(['profile', 'assignedBy']);
 
     // Add this filter to show only developer-related tasks
-    $query->whereIn('task_type', ['Senior Developer', 'Junior Developer', 'Intern/Trainee']);
+    $query->whereIn('task_type', ['Senior Developer', 'Junior Developer', 'Intern/Trainee', ]);
 
     if ($date) {
         $query->whereDate('task_date', $date);
@@ -141,7 +141,10 @@ class DailyTaskController extends Controller
                   ->orderBy('priority', 'desc')
                   ->paginate(20);
 
-    $employees = Profile::whereIn('role', ['Senior Developer', 'Junior Developer', 'Intern/Trainee'])->get();
+    // FIX: Filter by job_title instead of role
+    $employees = Profile::whereIn('job_title', ['Senior Developer', 'Junior Developer', 'Intern/Trainee'])
+                       ->orderBy('full_name')
+                       ->get();
 
     return view('developer.daily-tasks.index', compact('tasks', 'employees', 'date', 'employeeId', 'taskType', 'priority', 'status'));
 }
@@ -256,16 +259,18 @@ class DailyTaskController extends Controller
 
     // ==================== PROJECT MANAGER METHODS ====================
     
-     public function projectManagerindex(Request $request)
+   public function projectManagerindex(Request $request)
 {
     $date = $request->get('date', date('Y-m-d'));
     $employeeId = $request->get('employee_id');
     $status = $request->get('status');
+    $taskType = $request->get('task_type');
+    $priority = $request->get('priority');
 
     $query = DailyTask::with(['profile', 'assignedBy']);
 
-    // CRITICAL FIX: Add this line to show ONLY Project Manager tasks
- $query->whereIn('task_type', ['Project Manager', 'Senior Developer', 'Junior Developer', 'Intern/Trainee']);
+    // Project Manager සහ අනිත් relevant tasks
+    $query->whereIn('task_type', ['Project Manager', 'Senior Developer', 'Junior Developer', 'Intern/Trainee']);
 
     if ($date) {
         $query->whereDate('task_date', $date);
@@ -279,21 +284,54 @@ class DailyTaskController extends Controller
         $query->where('status', $status);
     }
 
+    if ($taskType) {
+        $query->where('task_type', $taskType);
+    }
+
+    if ($priority) {
+        $query->where('priority', $priority);
+    }
+
     $tasks = $query->orderBy('task_date', 'desc')
                   ->orderBy('priority', 'desc')
                   ->paginate(20);
 
-      // FIX: Get ALL employees for the dropdown filter
-    $employees = Profile::whereIn('role', ['Senior Developer', 'Junior Developer', 'Intern/Trainee', 'Marketing Manager', 'Project Manager'])->get();
+
+    $employees = Profile::whereIn('role', [
+                    'Project Manager', 
+                   
+                    'Senior Developer', 
+                    'Junior Developer', 
+                    'Intern/Trainee',
+                    'Developer',
+                    'Admin',
+                    'Super Admin'
+                ])
+                ->orWhereIn('job_title', [
+                    'Project Manager',
+                  
+                    'Senior Developer', 
+                    'Junior Developer', 
+                    'Intern/Trainee'
+                ])
+                ->orderBy('full_name')
+                ->get();
 
     // Debug: Check what employees are found
     logger('Employees for Dropdown: ' . $employees->count());
     foreach($employees as $emp) {
-        logger('Employee: ' . $emp->id . ' | Name: ' . $emp->full_name . ' | Role: ' . $emp->role);
+        logger('Employee: ' . $emp->id . ' | Name: ' . $emp->full_name . ' | Role: ' . $emp->role . ' | Job Title: ' . $emp->job_title);
     }
 
-
-    return view('projectmanager.daily-tasks.index', compact('tasks', 'employees', 'date', 'employeeId', 'status'));
+    return view('projectmanager.daily-tasks.index', compact(
+        'tasks', 
+        'employees', 
+        'date', 
+        'employeeId', 
+        'status',
+        'taskType',
+        'priority'
+    ));
 }
     public function projectManagercreate()
     {

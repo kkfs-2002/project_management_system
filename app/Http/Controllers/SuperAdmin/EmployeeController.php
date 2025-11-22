@@ -149,6 +149,8 @@ public function view(Request $request)
     $date = $request->get('date', date('Y-m-d'));
     $employeeId = $request->get('employee_id');
     $status = $request->get('status');
+    $taskType = $request->get('task_type');
+    $priority = $request->get('priority');
 
     $query = DailyTask::with(['profile', 'assignedBy']);
 
@@ -164,13 +166,50 @@ public function view(Request $request)
         $query->where('status', $status);
     }
 
+    if ($taskType) {
+        $query->where('task_type', $taskType);
+    }
+
+    if ($priority) {
+        $query->where('priority', $priority);
+    }
+
     $tasks = $query->orderBy('task_date', 'desc')
                   ->orderBy('priority', 'desc')
                   ->paginate(20);
 
-    $employees = Profile::whereIn('role', ['Senior Developer', 'Junior Developer', 'Intern/Trainee', 'Marketing Manager', 'Project Manager'])->get();
+    // Get employees - filter by both role and job_title to catch all relevant employees
+    $employees = Profile::where(function($query) {
+        $query->whereIn('role', [
+                'Senior Developer', 
+                'Junior Developer', 
+                'Developer', // Add this to catch employee #2
+                'Intern/Trainee', 
+                'Marketing Manager', 
+                'Project Manager',
+                'Admin', // Add this to catch employee #2
+                'Super Admin' // Add this to catch employee #1
+            ])
+            ->orWhereIn('job_title', [
+                'Senior Developer', 
+                'Junior Developer', 
+                'Intern/Trainee', 
+                'Marketing Manager', 
+                'Project Manager'
+            ]);
+    })
+    ->orderBy('full_name')
+    ->get();
 
-    return view('superadmin.employee.view', compact('tasks', 'employees', 'date', 'employeeId', 'status'));
+    return view('superadmin.employee.view', compact(
+        'tasks', 
+        'employees', 
+        'date', 
+        'employeeId', 
+        'status',
+        'taskType',
+        'priority'
+    ));
 }
 }
 

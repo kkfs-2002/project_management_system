@@ -182,17 +182,24 @@
                                     <label class="form-label fw-bold">Date</label>
                                     <input type="date" name="date" value="{{ $date ?? today()->format('Y-m-d') }}" class="form-control">
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="form-label fw-bold">Employee</label>
-                                    <select name="employee_id" class="form-select">
-                                        <option value="">All Employees</option>
-                                        @foreach($employees as $emp)
-                                            <option value="{{ $emp->id }}" {{ ($employeeId ?? '') == $emp->id ? 'selected' : '' }}>
-                                                {{ $emp->full_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                             <div class="col-md-3">
+    <label class="form-label fw-bold">Employee</label>
+    <select name="employee_id" class="form-select">
+        <option value="">All Employees</option>
+        @if(isset($employees) && $employees->count() > 0)
+            @foreach($employees as $emp)
+                <option value="{{ $emp->id }}" {{ (request('employee_id') == $emp->id || ($employeeId ?? '') == $emp->id) ? 'selected' : '' }}>
+                    {{ $emp->full_name }} 
+                    @if($emp->employee_id)
+                        ({{ $emp->employee_id }})
+                    @endif
+                </option>
+            @endforeach
+        @else
+            <option value="">No employees available</option>
+        @endif
+    </select>
+</div>
                                 <div class="col-md-3">
                                     <label class="form-label fw-bold">Task Type</label>
                                     <select name="task_type" class="form-select">
@@ -229,7 +236,7 @@
                                         <button type="submit" class="btn btn-primary">
                                             <i class="fas fa-search me-1"></i>Filter
                                         </button>
-                                        <a href="{{ route('superadmin.daily-tasks.index') }}" class="btn btn-outline-secondary">
+                                        <a href="{{ route('superadmin.employee.view') }}" class="btn btn-outline-secondary">
                                             <i class="fas fa-redo me-1"></i>Reset
                                         </a>
                                     </div>

@@ -109,17 +109,17 @@
                                 <label>Date</label>
                                 <input type="date" name="date" value="{{ $date ?? today()->format('Y-m-d') }}" class="form-control">
                             </div>
-                            <div class="col-md-3">
-                                <label>Employee</label>
-                                <select name="employee_id" class="form-select">
-                                    <option value="">All Employees</option>
-                                    @foreach($employees as $emp)
-                                        <option value="{{ $emp->id }}" {{ ($employeeId ?? '') == $emp->id ? 'selected' : '' }}>
-                                            {{ $emp->full_name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                           <div class="col-md-3">
+    <label>Employee</label>
+    <select name="employee_id" class="form-select">
+        <option value="">All Employees</option>
+        @foreach($employees as $emp)
+            <option value="{{ $emp->id }}" {{ ($employeeId ?? '') == $emp->id ? 'selected' : '' }}>
+                {{ $emp->full_name }} - {{ $emp->job_title }} ({{ $emp->role }})
+            </option>
+        @endforeach
+    </select>
+</div>
                             <div class="col-md-3">
                                 <label>Task Type</label>
                                 <select name="task_type" class="form-select">
