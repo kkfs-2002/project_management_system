@@ -523,7 +523,7 @@
                         {{ $tasks->links() }}
 
                         <div class="mt-3">
-                            <a href="{{ route('developer.daily-tasks.create') }}" class="btn btn-success">
+                            <a href="{{ route('projectmanager.daily-tasks.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus me-2"></i>Daily Task Update
                             </a>
                         </div>
