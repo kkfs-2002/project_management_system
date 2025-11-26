@@ -13,7 +13,7 @@ use App\Http\Controllers\SuperAdmin\ClientController;
 use App\Http\Controllers\SuperAdmin\SuperDashController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Task\TaskController;
-use App\Http\Controllers\SuperAdmin\AttendanceController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\SuperAdmin\PasswordAdminController;
 use App\Http\Controllers\SuperAdmin\ExpenseController;
 use App\Http\Controllers\SuperAdmin\SalaryController;
@@ -178,14 +178,31 @@ Route::get('superadmin.tasks.create',   [TaskController::class, 'create'])->name
 // Project Manager
 Route::get('projectmanager.tasks.index/{pm}', [TaskController::class, 'projectManagerIndex'])->name('projectmanager.tasks.index');
 Route::post('/projectmanager/tasks/{task}/forward', [TaskController::class, 'forwardToDeveloper'])->name('projectmanager.tasks.forward');
-// Project Manager Task Routes
-Route::prefix('projectmanager')->group(function () {
-    Route::get('/projects', [TaskController::class, 'projectList'])->name('projectmanager.projects');
-    Route::get('/projects/{project}/tasks', [TaskController::class, 'tasksByProject'])->name('projectmanager.projects.tasks');
-    Route::post('/tasks/{task}/forward', [TaskController::class, 'forwardToDeveloper'])->name('projectmanager.tasks.forward');
+// Project Manager Routes
+Route::middleware('auth')->prefix('projectmanager')->name('projectmanager.')->group(function () {
+    
+    // ===== ATTENDANCE ROUTES =====
+    Route::post('/attendance/checkin', [AttendanceController::class, 'checkIn'])
+        ->name('attendance.checkin');
+    
+    Route::post('/attendance/checkout', [AttendanceController::class, 'checkOut'])
+        ->name('attendance.checkout');
+    
+    Route::get('/attendance/history', [AttendanceController::class, 'history'])
+        ->name('attendance.history');
+    
+    // ===== TASK/PROJECT ROUTES =====
+    // Consolidated tasks index (no {pm} for general; add below if needed)
+    Route::get('/tasks', [TaskController::class, 'projectManagerIndex'])->name('tasks.index');
+    
+    // If {pm} param is still needed (e.g., for specific PM filtering), add this:
+    Route::get('/tasks/index/{pm}', [TaskController::class, 'projectManagerIndex'])->name('tasks.index.pm');
+    
+    Route::get('/projects', [TaskController::class, 'projectList'])->name('projects');
+    Route::get('/projects/{project}/tasks', [TaskController::class, 'tasksByProject'])->name('projects.tasks');
+    Route::post('/tasks/{task}/forward', [TaskController::class, 'forwardToDeveloper'])->name('tasks.forward');
+    
 });
- Route::get('/projectmanager/tasks', [TaskController::class, 'projectManagerIndex'])->name('projectmanager.tasks');
-
 // Developer 
 Route::get('developer.tasks.index/{dev}',    [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
 Route::post('developer.tasks/complete/{id}', [TaskController::class, 'complete'])->name('developer.tasks.complete');

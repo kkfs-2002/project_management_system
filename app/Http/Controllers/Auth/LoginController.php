@@ -1,9 +1,9 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Profile;
 
 class LoginController extends Controller
@@ -17,43 +17,37 @@ class LoginController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
+        // Find by email
         $user = Profile::where('email', $request->email)->first();
 
-        if (!$user) {
-            return back()->withErrors(['email' => 'Invalid Username.']);
+        if (!$user || $user->password !== $request->password) {  // Plain text comparison
+            return back()->withErrors(['email' => 'Invalid email or password.']);
         }
 
-        // Use plain password match if you're not hashing
-        if ($user->password !== $request->password) {
-            return back()->withErrors(['password' => 'Incorrect password.']);
-        }
+        // Log in via Laravel Auth (sets session/cookies)
+        Auth::login($user);
 
-        // Store user info in session
+        // Regenerate session for security
+        $request->session()->regenerate();
+
+        // Store extras in session if needed (e.g., for quick access)
         session([
             'employee_id' => $user->employee_id,
             'role' => $user->role,
             'name' => $user->full_name,
         ]);
 
-        // Redirect based on category
-        switch ($user->role) {
-            case 'Super Admin':
-                return redirect()->route('superadmin.dashboard');
-            case 'Admin':
-                return redirect()->route('layouts.admin');
-            case 'Developer':
-                return redirect()->route('layouts.developer');
-            case 'Marketing Manager':
-                return redirect()->route('marketing.dashboard');
-            case 'Project Manager':
-                return redirect()->route('layouts.projectmanager');
-            default:
-                return redirect()->route('home');
-        }
+        // Redirect based on role
+        return match ($user->role) {  // PHP 8+ match for cleaner switch
+            'Super Admin' => redirect()->route('superadmin.dashboard'),
+            'Admin' => redirect()->route('layouts.admin'),
+            'Developer' => redirect()->route('layouts.developer'),
+            'Marketing Manager' => redirect()->route('marketing.dashboard'),
+            'Project Manager' => redirect()->route('layouts.projectmanager'),
+            default => redirect()->route('home'),
+        };
     }
-
-
 }
