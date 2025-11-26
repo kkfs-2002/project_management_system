@@ -1,16 +1,17 @@
 <?php
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Attendance extends Model
 {
-    use HasFactory;
+    protected $table = 'attendances';
 
     protected $fillable = [
-        'profile_id',
+        'user_id',       // Keep for legacy, but nullable
+        'user_type',
+        'profile_id',    // Primary FK now
         'date',
         'check_in',
         'check_out',
@@ -18,15 +19,20 @@ class Attendance extends Model
     ];
 
     protected $casts = [
+        'check_in' => 'datetime',
+        'check_out' => 'datetime',
         'date' => 'date',
-        'check_in' => 'datetime:H:i',
-        'check_out' => 'datetime:H:i',
-        'total_hours' => 'float',
+        'total_hours' => 'decimal:2',
     ];
 
-    // Relationship to employee profile
+    // Relationships
     public function profile()
     {
-        return $this->belongsTo(Profile::class);
+        return $this->belongsTo(Profile::class, 'profile_id');
+    }
+
+    public function user()  // Legacy, if needed
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Http\Controllers\Controller;
 use App\Models\DailyTask;
 use App\Models\Profile;
+use App\Models\Attendance;  // ← ADD THIS
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -104,50 +105,73 @@ class DailyTaskController extends Controller
 
     // ==================== DEVELOPER METHODS ====================
     
-  public function developerIndex(Request $request)
-{
-    $date = $request->get('date', date('Y-m-d'));
-    $employeeId = $request->get('employee_id');
-    $taskType = $request->get('task_type');
-    $priority = $request->get('priority');
-    $status = $request->get('status');
+    public function developerIndex(Request $request)
+    {
+        // ===== GET AUTHENTICATED USER AND ATTENDANCE =====
+        $user = Auth::user();
+        $profile = $user ? $user->profile : null;
+        
+        // Get today's attendance for the logged-in developer
+        $todayAttendance = null;
+        if ($profile) {
+            $todayAttendance = Attendance::where('profile_id', $profile->id)
+                ->whereDate('date', Carbon::today())
+                ->first();
+        }
+        
+        // ===== EXISTING FILTER LOGIC =====
+        $date = $request->get('date', date('Y-m-d'));
+        $employeeId = $request->get('employee_id');
+        $taskType = $request->get('task_type');
+        $priority = $request->get('priority');
+        $status = $request->get('status');
 
-    $query = DailyTask::with(['profile', 'assignedBy']);
+        $query = DailyTask::with(['profile', 'assignedBy']);
 
-    // Add this filter to show only developer-related tasks
-    $query->whereIn('task_type', ['Senior Developer', 'Junior Developer', 'Intern/Trainee', ]);
+        // Add this filter to show only developer-related tasks
+        $query->whereIn('task_type', ['Senior Developer', 'Junior Developer', 'Intern/Trainee']);
 
-    if ($date) {
-        $query->whereDate('task_date', $date);
+        if ($date) {
+            $query->whereDate('task_date', $date);
+        }
+
+        if ($employeeId) {
+            $query->where('profile_id', $employeeId);
+        }
+
+        if ($taskType) {
+            $query->where('task_type', $taskType);
+        }
+
+        if ($priority) {
+            $query->where('priority', $priority);
+        }
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        $tasks = $query->orderBy('task_date', 'desc')
+                      ->orderBy('priority', 'desc')
+                      ->paginate(20);
+
+        $employees = Profile::whereIn('job_title', ['Senior Developer', 'Junior Developer', 'Intern/Trainee'])
+                           ->orderBy('full_name')
+                           ->get();
+
+        return view('developer.daily-tasks.index', compact(
+            'tasks', 
+            'employees', 
+            'date', 
+            'employeeId', 
+            'taskType', 
+            'priority', 
+            'status',
+            'todayAttendance',
+            'user'
+        ));
     }
-
-    if ($employeeId) {
-        $query->where('profile_id', $employeeId);
-    }
-
-    if ($taskType) {
-        $query->where('task_type', $taskType);
-    }
-
-    if ($priority) {
-        $query->where('priority', $priority);
-    }
-
-    if ($status) {
-        $query->where('status', $status);
-    }
-
-    $tasks = $query->orderBy('task_date', 'desc')
-                  ->orderBy('priority', 'desc')
-                  ->paginate(20);
-
-    // FIX: Filter by job_title instead of role
-    $employees = Profile::whereIn('job_title', ['Senior Developer', 'Junior Developer', 'Intern/Trainee'])
-                       ->orderBy('full_name')
-                       ->get();
-
-    return view('developer.daily-tasks.index', compact('tasks', 'employees', 'date', 'employeeId', 'taskType', 'priority', 'status'));
-}
+    
     public function developercreate()
     {
         $allRoles = Profile::select('role')->distinct()->get();
@@ -193,7 +217,6 @@ class DailyTaskController extends Controller
         $minutes = $estimatedMinutes % 60;
         $validated['estimated_time'] = sprintf('%02d:%02d', $hours, $minutes);
 
-        // Handle authentication
         if (Auth::check()) {
             $validated['assigned_by'] = Auth::id();
         } else {
@@ -203,7 +226,6 @@ class DailyTaskController extends Controller
         $validated['completed_count'] = 0;
         $validated['status'] = 'pending';
 
-        // Remove working_days temporarily if column doesn't exist
         if (!Schema::hasColumn('daily_tasks', 'working_days')) {
             unset($validated['working_days']);
         }
@@ -259,80 +281,91 @@ class DailyTaskController extends Controller
 
     // ==================== PROJECT MANAGER METHODS ====================
     
-   public function projectManagerindex(Request $request)
-{
-    $date = $request->get('date', date('Y-m-d'));
-    $employeeId = $request->get('employee_id');
-    $status = $request->get('status');
-    $taskType = $request->get('task_type');
-    $priority = $request->get('priority');
+    public function projectManagerindex(Request $request)
+    {
+        // ===== GET AUTHENTICATED USER AND ATTENDANCE =====
+        $user = Auth::user();
+        $profile = $user ? $user->profile : null;
+        
+        // Get today's attendance for the logged-in project manager
+        $todayAttendance = null;
+        if ($profile) {
+            $todayAttendance = Attendance::where('profile_id', $profile->id)
+                ->whereDate('date', Carbon::today())
+                ->first();
+        }
+        
+        // ===== EXISTING FILTER LOGIC =====
+        $date = $request->get('date', date('Y-m-d'));
+        $employeeId = $request->get('employee_id');
+        $status = $request->get('status');
+        $taskType = $request->get('task_type');
+        $priority = $request->get('priority');
 
-    $query = DailyTask::with(['profile', 'assignedBy']);
+        $query = DailyTask::with(['profile', 'assignedBy']);
 
-    // Project Manager සහ අනිත් relevant tasks
-    $query->whereIn('task_type', ['Project Manager', 'Senior Developer', 'Junior Developer', 'Intern/Trainee']);
+        $query->whereIn('task_type', ['Project Manager', 'Senior Developer', 'Junior Developer', 'Intern/Trainee']);
 
-    if ($date) {
-        $query->whereDate('task_date', $date);
+        if ($date) {
+            $query->whereDate('task_date', $date);
+        }
+
+        if ($employeeId) {
+            $query->where('profile_id', $employeeId);
+        }
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        if ($taskType) {
+            $query->where('task_type', $taskType);
+        }
+
+        if ($priority) {
+            $query->where('priority', $priority);
+        }
+
+        $tasks = $query->orderBy('task_date', 'desc')
+                      ->orderBy('priority', 'desc')
+                      ->paginate(20);
+
+        $employees = Profile::whereIn('role', [
+                        'Project Manager', 
+                        'Senior Developer', 
+                        'Junior Developer', 
+                        'Intern/Trainee',
+                        'Developer',
+                        'Admin',
+                        'Super Admin'
+                    ])
+                    ->orWhereIn('job_title', [
+                        'Project Manager',
+                        'Senior Developer', 
+                        'Junior Developer', 
+                        'Intern/Trainee'
+                    ])
+                    ->orderBy('full_name')
+                    ->get();
+
+        logger('Employees for Dropdown: ' . $employees->count());
+        foreach($employees as $emp) {
+            logger('Employee: ' . $emp->id . ' | Name: ' . $emp->full_name . ' | Role: ' . $emp->role . ' | Job Title: ' . $emp->job_title);
+        }
+
+        return view('projectmanager.daily-tasks.index', compact(
+            'tasks', 
+            'employees', 
+            'date', 
+            'employeeId', 
+            'status',
+            'taskType',
+            'priority',
+            'todayAttendance',
+            'user'
+        ));
     }
-
-    if ($employeeId) {
-        $query->where('profile_id', $employeeId);
-    }
-
-    if ($status) {
-        $query->where('status', $status);
-    }
-
-    if ($taskType) {
-        $query->where('task_type', $taskType);
-    }
-
-    if ($priority) {
-        $query->where('priority', $priority);
-    }
-
-    $tasks = $query->orderBy('task_date', 'desc')
-                  ->orderBy('priority', 'desc')
-                  ->paginate(20);
-
-
-    $employees = Profile::whereIn('role', [
-                    'Project Manager', 
-                   
-                    'Senior Developer', 
-                    'Junior Developer', 
-                    'Intern/Trainee',
-                    'Developer',
-                    'Admin',
-                    'Super Admin'
-                ])
-                ->orWhereIn('job_title', [
-                    'Project Manager',
-                  
-                    'Senior Developer', 
-                    'Junior Developer', 
-                    'Intern/Trainee'
-                ])
-                ->orderBy('full_name')
-                ->get();
-
-    // Debug: Check what employees are found
-    logger('Employees for Dropdown: ' . $employees->count());
-    foreach($employees as $emp) {
-        logger('Employee: ' . $emp->id . ' | Name: ' . $emp->full_name . ' | Role: ' . $emp->role . ' | Job Title: ' . $emp->job_title);
-    }
-
-    return view('projectmanager.daily-tasks.index', compact(
-        'tasks', 
-        'employees', 
-        'date', 
-        'employeeId', 
-        'status',
-        'taskType',
-        'priority'
-    ));
-}
+    
     public function projectManagercreate()
     {
         $allRoles = Profile::select('role')->distinct()->get();
@@ -368,17 +401,14 @@ class DailyTaskController extends Controller
             'working_days' => 'nullable|string'
         ]);
 
-        // Calculate estimated time from start and end times
         $start = Carbon::createFromFormat('H:i', $validated['start_time']);
         $end = Carbon::createFromFormat('H:i', $validated['end_time']);
         $estimatedMinutes = $start->diffInMinutes($end);
         
-        // Convert minutes to hours:minutes format
         $hours = floor($estimatedMinutes / 60);
         $minutes = $estimatedMinutes % 60;
         $validated['estimated_time'] = sprintf('%02d:%02d', $hours, $minutes);
 
-        // Handle authentication
         if (Auth::check()) {
             $validated['assigned_by'] = Auth::id();
         } else {
@@ -388,7 +418,6 @@ class DailyTaskController extends Controller
         $validated['completed_count'] = 0;
         $validated['status'] = 'pending';
 
-        // Remove working_days temporarily if column doesn't exist
         if (!Schema::hasColumn('daily_tasks', 'working_days')) {
             unset($validated['working_days']);
         }
@@ -445,56 +474,72 @@ class DailyTaskController extends Controller
     // ==================== MARKETING METHODS ====================
     
     public function marketingIndex(Request $request)
-{
-    $date = $request->get('date', date('Y-m-d'));
-    $employeeId = $request->get('employee_id');
-    $taskType = $request->get('task_type');
-    $priority = $request->get('priority');
-    $status = $request->get('status');
-
-    $query = DailyTask::with(['profile', 'assignedBy']);
-
-    // Get current user's profile - FIXED VERSION
-    $currentUserId = auth()->id();
-    $currentProfile = Profile::where('id', $currentUserId)->first(); // Use 'id' instead of 'user_id'
-    
-    if ($currentProfile) {
-        // Show only tasks assigned to current marketing user
-        $query->where('profile_id', $currentProfile->id);
+    {
+        // ===== GET AUTHENTICATED USER AND ATTENDANCE =====
+        $user = Auth::user();
+        $profile = $user ? $user->profile : null;
         
-        // AND show only marketing tasks
-        $query->where('task_type', 'Marketing Manager');
-    } else {
-        // Fallback: show only marketing tasks if profile not found
-        $query->where('task_type', 'Marketing Manager');
+        // Get today's attendance for the logged-in marketing user
+        $todayAttendance = null;
+        if ($profile) {
+            $todayAttendance = Attendance::where('profile_id', $profile->id)
+                ->whereDate('date', Carbon::today())
+                ->first();
+        }
+        
+        // ===== EXISTING FILTER LOGIC =====
+        $date = $request->get('date', date('Y-m-d'));
+        $employeeId = $request->get('employee_id');
+        $taskType = $request->get('task_type');
+        $priority = $request->get('priority');
+        $status = $request->get('status');
+
+        $query = DailyTask::with(['profile', 'assignedBy']);
+
+        $currentUserId = auth()->id();
+        $currentProfile = Profile::where('id', $currentUserId)->first();
+        
+        if ($currentProfile) {
+            $query->where('profile_id', $currentProfile->id);
+            $query->where('task_type', 'Marketing Manager');
+        } else {
+            $query->where('task_type', 'Marketing Manager');
+        }
+
+        if ($date) {
+            $query->whereDate('task_date', $date);
+        }
+
+        if ($taskType) {
+            $query->where('task_type', $taskType);
+        }
+
+        if ($priority) {
+            $query->where('priority', $priority);
+        }
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        $tasks = $query->orderBy('task_date', 'desc')
+                      ->orderBy('priority', 'desc')
+                      ->paginate(20);
+
+        $employees = Profile::where('role', 'Marketing Manager')->get();
+
+        return view('marketing.daily-tasks.index', compact(
+            'tasks', 
+            'employees', 
+            'date', 
+            'employeeId', 
+            'taskType', 
+            'priority', 
+            'status',
+            'todayAttendance',
+            'user'
+        ));
     }
-
-    // Rest of the filters...
-    if ($date) {
-        $query->whereDate('task_date', $date);
-    }
-
-    if ($taskType) {
-        $query->where('task_type', $taskType);
-    }
-
-    if ($priority) {
-        $query->where('priority', $priority);
-    }
-
-    if ($status) {
-        $query->where('status', $status);
-    }
-
-    $tasks = $query->orderBy('task_date', 'desc')
-                  ->orderBy('priority', 'desc')
-                  ->paginate(20);
-
-    // Show only marketing employees
-    $employees = Profile::where('role', 'Marketing Manager')->get();
-
-    return view('marketing.daily-tasks.index', compact('tasks', 'employees', 'date', 'employeeId', 'taskType', 'priority', 'status'));
-}
 
     public function marketingcreate()
     {
@@ -531,17 +576,14 @@ class DailyTaskController extends Controller
             'working_days' => 'nullable|string'
         ]);
 
-        // Calculate estimated time from start and end times
         $start = Carbon::createFromFormat('H:i', $validated['start_time']);
         $end = Carbon::createFromFormat('H:i', $validated['end_time']);
         $estimatedMinutes = $start->diffInMinutes($end);
         
-        // Convert minutes to hours:minutes format
         $hours = floor($estimatedMinutes / 60);
         $minutes = $estimatedMinutes % 60;
         $validated['estimated_time'] = sprintf('%02d:%02d', $hours, $minutes);
 
-        // Handle authentication
         if (Auth::check()) {
             $validated['assigned_by'] = Auth::id();
         } else {
@@ -551,7 +593,6 @@ class DailyTaskController extends Controller
         $validated['completed_count'] = 0;
         $validated['status'] = 'pending';
 
-        // Remove working_days temporarily if column doesn't exist
         if (!Schema::hasColumn('daily_tasks', 'working_days')) {
             unset($validated['working_days']);
         }

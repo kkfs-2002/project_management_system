@@ -12,7 +12,7 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .navbar-custom {
-      background-color: rgba(0, 0, 0, 0.75);
+      background-color: #000000;
       backdrop-filter: blur(8px);
       box-shadow: 0 4px 6px rgba(0,0,0,0.2);
       z-index: 1050;
