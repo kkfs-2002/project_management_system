@@ -522,45 +522,146 @@
 
 .circle-card:hover {
     transform: scale(1.05);
+}/* Background Image + Dark Overlay */
+/* Background Image + Dark Overlay */
+#projects {
+    /* Slightly darker overlay */
+    background: 
+        linear-gradient(rgba(15,18,59,0.7), rgba(15,18,59,0.7)),
+        url("/images/company1.jpg") center/cover no-repeat fixed;
+    color: #fff;
+    padding: 60px 0;
 }
-    /* Timeline Styles */
-    .timeline-wrapper {
-        position: relative;
-        margin-left: 30px;
-        padding-left: 30px;
-        border-left: 4px solid #0a4275;
-    }
 
-    .timeline-item {
-        position: relative;
-    }
 
-    .timeline-line {
-        position: absolute;
-        left: -13px;
-        top: 0;
-        width: 2px;
-        height: 100%;
-        background: #0a4275;
-    }
+/* Hover + Click effect for cards */
+.timeline-content {
+    background: rgba(27,31,74,0.85);
+    border-radius: 22px;
+    padding: 24px;
+    margin-left: 40px;
+    width: 70%;
+    max-width: 800px;
+    color: #ffffff;
+    border: 1px solid #7c7c7cff;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+    transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
 
-    .timeline-dot {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        color: white;
-        font-size: 0.8rem;
-        text-align: center;
-        line-height: 24px;
-        position: absolute;
-        top: 40px;
-        left: -24px;
-        font-weight: bold;
-    }
+.timeline-content:hover,
+.timeline-content.active {
+    background: #fff !important;
+    color: #171b4bff !important;
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.50);
+}
 
-    .timeline-dot.success { background-color: #198754; }
-    .timeline-dot.warning { background-color: #ffc107; }
-    .timeline-dot.danger { background-color: #dc3545; }
+/* Number UI - Modern like properties section */
+.timeline-dot {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.4);
+    width: 70px;
+    height: 70px;
+    font-size: 22px;
+    border-radius: 14px;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.timeline-content:hover .timeline-dot,
+.timeline-content.active .timeline-dot {
+    background: #fff !important;
+    color: #6c3be8 !important;
+    border-color: #6c3be8 !important;
+    transform: scale(1.2);
+}
+.progress-bar {
+    transition: width 1.2s ease-in-out;
+}
+
+.timeline-item {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.7s ease-out;
+}
+
+.timeline-item.slide-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+#timelineViewBtn.active, #gridViewBtn.active {
+    background: #6c3be8;
+    color: #fff;
+    border-color: #6c3be8;
+}
+/* Grid View Card Styling */
+#gridView .card {
+    background: rgba(27,31,74,0.85); /* Dark card background */
+    color: #fff; /* Default text color white */
+    border-radius: 20px;
+    border: none;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+#gridView .card:hover {
+    background: #fff !important; /* White on hover */
+    color: #171b4b !important;   /* Dark text on hover */
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.5);
+}
+
+/* Small text inside card */
+#gridView .card .text-muted {
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s ease;
+}
+
+#gridView .card:hover .text-muted {
+    color: rgba(23,27,75,0.8); /* Slightly darker on hover */
+}
+
+/* Progress bar smooth animation */
+#gridView .progress-bar {
+    transition: width 1.2s ease-in-out;
+}
+
+/* Work Remaining box styling */
+#gridView .card .alert-success {
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+/* Button styling */
+#gridView .card button.btn {
+    transition: all 0.3s ease;
+}
+
+#gridView .card:hover button.btn {
+    background: #6c3be8;
+    color: #fff;
+    border-color: #6c3be8;
+}
+
+/* Header Title Animation */
+#projects h4 {
+    font-size: 48px;
+    font-weight: 800;
+ 
+    color: #ffffff !important; /* Makes the header white */
+
+}
+
+@keyframes slideUpFade {
+    0% {opacity: 0; transform: translateY(25px);}
+    100% {opacity: 1; transform: translateY(0);}
+}
 
     /* Responsive adjustments */
     @media (max-width: 1200px) {
@@ -684,6 +785,44 @@
             }, 100);
         }
     });
+    document.querySelectorAll('.timeline-content').forEach(card => {
+    card.addEventListener('click', () => {
+        document.querySelectorAll('.timeline-content').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+    });
+});
+
+// Animate progress bars dynamically
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.progress-bar').forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => {
+            bar.style.width = width;
+        }, 100);
+    });
+});
+
+// Intersection Observer for timeline items
+const timelineItems = document.querySelectorAll('.timeline-item');
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) entry.target.classList.add('slide-in');
+    });
+}, { threshold: 0.1 });
+timelineItems.forEach(item => observer.observe(item));
+
+// Animate grid view progress bars on page load
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('#gridView .progress-bar').forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => {
+            bar.style.width = width;
+        }, 100);
+    });
+});
+
 </script>
 
 @endsection

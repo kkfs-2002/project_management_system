@@ -10,7 +10,12 @@
     body {
       background-color: #f8f9fa;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
+    
     .navbar-custom {
       background-color: #000000;
       backdrop-filter: blur(8px);
@@ -61,6 +66,163 @@
        font-weight: 600;
        font-size: 1.1rem;
     }
+    
+    /* Main content container fixes */
+    .main-content-wrapper {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      flex: 1;
+    }
+    
+    /* Footer Styles */
+    .footer {
+      background: #000000;
+      color: #fff;
+      padding: 50px 0 20px;
+      margin-top: auto;
+    }
+    
+    .footer h5 {
+      color: #A7C7E7;
+      font-weight: 600;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+    }
+    
+    .footer p {
+      color: #b0b0b0;
+      line-height: 1.6;
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: #b0b0b0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+    
+    .footer-links a:hover {
+      color: #A7C7E7;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .contact-info {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .contact-info li {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .contact-info i {
+      color: #A7C7E7;
+      margin-right: 10px;
+      margin-top: 3px;
+      font-size: 1rem;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+      background: #A7C7E7;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(167, 199, 231, 0.3);
+    }
+    
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+      margin-top: 40px;
+      text-align: center;
+    }
+    
+    .footer-bottom p {
+      margin: 0;
+      color: #888;
+      font-size: 0.9rem;
+    }
+    
+    .company-logo {
+      max-width: 150px;
+      margin-bottom: 20px;
+    }
+    
+    /* Quick contact form */
+    .newsletter-form {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .newsletter-form input {
+      flex: 1;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    
+    .newsletter-form input::placeholder {
+      color: #b0b0b0;
+    }
+    
+    .newsletter-form button {
+      background: #A7C7E7;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+    
+    .newsletter-form button:hover {
+      background: #8ab3e0;
+      transform: translateY(-2px);
+    }
+    
     /* Mobile-specific adjustments for stacking brand and toggler */
     @media (max-width: 991.98px) {
       .navbar-custom .container-fluid {
@@ -98,6 +260,29 @@
       .navbar-custom .navbar-collapse .navbar-nav .nav-link:hover,
       .navbar-custom .navbar-collapse .navbar-nav .dropdown-toggle:hover {
         border-left-color: #A7C7E7;
+      }
+      
+      /* Footer mobile adjustments */
+      .footer {
+        padding: 30px 0 20px;
+      }
+      
+      .footer .col-md-3 {
+        margin-bottom: 30px;
+      }
+      
+      .newsletter-form {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .social-links {
+        justify-content: center;
+      }
+      
+      .footer h5 {
+        font-size: 1rem;
       }
     }
   </style>
@@ -192,13 +377,113 @@
     </div>
   </div>
 </nav>
+
 <!-- Main Content -->
-<div class="container-fluid" style="padding-top: 100px;">
+<div class="main-content-wrapper">
   @yield('content')
 </div>
+
+<!-- Footer Section -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <!-- Company Info -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <img src="{{ asset('NetIT logo.png') }}" alt="NetIT Technology" class="company-logo">
+        <p>
+          Leading provider of cutting-edge software solutions and digital transformation services. 
+          We empower businesses to thrive in the digital age.
+        </p>
+        <div class="social-links">
+          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h5>Quick Links</h5>
+        <ul class="footer-links">
+          <li><a href="{{ route('superadmin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+          <li><a href="{{ route('superadmin.employee.index') }}"><i class="fas fa-users"></i> Employees</a></li>
+          <li><a href="{{ route('superadmin.tasks.index') }}"><i class="fas fa-tasks"></i> Tasks</a></li>
+          <li><a href="{{ route('superadmin.project.transactions') }}"><i class="fas fa-chart-line"></i> Finance</a></li>
+          <li><a href="{{ route('superadmin.clients.index') }}"><i class="fas fa-bullhorn"></i> Marketing</a></li>
+        </ul>
+      </div>
+      
+      <!-- Services -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h5>Our Services</h5>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-code"></i> Web Development</a></li>
+          <li><a href="#"><i class="fas fa-mobile-alt"></i> Mobile Apps</a></li>
+          <li><a href="#"><i class="fas fa-cloud"></i> Cloud Solutions</a></li>
+          <li><a href="#"><i class="fas fa-chart-bar"></i> Data Analytics</a></li>
+          <li><a href="#"><i class="fas fa-shield-alt"></i> Cybersecurity</a></li>
+        </ul>
+      </div>
+      
+      <!-- Contact Info -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <h5>Contact Us</h5>
+        <ul class="contact-info">
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <strong>Head Office</strong><br>
+              10/20, Kandy Road, Ampitiya, Kandy<br>
+              Sri Lanka
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-phone"></i>
+            <div>
+              <strong>Phone</strong><br>
+              +94 76 151 7778
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-envelope"></i>
+            <div>
+              <strong>Email</strong><br>
+             info@netittechnology.com
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-clock"></i>
+            <div>
+              <strong>Business Hours</strong><br>
+              Mon - Fri: 9:00 AM - 5:00 PM
+            </div>
+          </li>
+        </ul>
+        
+        
+      </div>
+    </div>
+    
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="row">
+        <div class="col-md-6">
+          <p>&copy; 2025 NetIT Technology. All rights reserved.</p>
+        </div>
+        <div class="col-md-6">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
 <!-- JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @yield('scripts')
+
 <!-- Logout Confirmation Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -217,5 +502,57 @@
     </div>
   </div>
 </div>
+
+<!-- Footer JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Newsletter form submission
+  const newsletterForm = document.querySelector('.newsletter-form');
+  if (newsletterForm) {
+    newsletterForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = this.querySelector('input[type="email"]').value;
+      
+      // Simulate form submission
+      const button = this.querySelector('button');
+      const originalText = button.innerHTML;
+      
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      button.disabled = true;
+      
+      setTimeout(() => {
+        alert('Thank you for subscribing to our newsletter!');
+        this.reset();
+        button.innerHTML = originalText;
+        button.disabled = false;
+      }, 1500);
+    });
+  }
+  
+  // Smooth scroll for footer links
+  document.querySelectorAll('.footer-links a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
+  
+  // Social media links handler
+  document.querySelectorAll('.social-links a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const platform = this.title.toLowerCase();
+      alert(`Redirecting to our ${platform} page...`);
+      // In real implementation, you would use: window.open(this.href, '_blank');
+    });
+  });
+});
+</script>
 </body>
 </html>
