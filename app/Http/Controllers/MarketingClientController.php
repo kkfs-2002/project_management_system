@@ -5,24 +5,43 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Client;
 use Carbon\Carbon;
+use App\Models\Attendance;
+use Illuminate\Support\Facades\Auth; 
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class MarketingClientController extends Controller
 {
     public function dashboard()
-    {
-        $employeeId = session('employee_id');
-
-        $totalClients = Client::where('marketing_manager_id', $employeeId)->count();
-
-        $totalReminders = Client::where('marketing_manager_id', $employeeId)
-                                ->where('payment_status', 'No Payment')
-                                ->where('status', '!=', 'cancelled')
-                                ->whereNotNull('reminder_date')
-                                ->count();
-
-        return view('marketing.dashboard', compact('totalClients', 'totalReminders'));
+{
+    // Get authenticated marketing manager
+    $marketing = Auth::user();
+    
+    if (!$marketing) {
+        return redirect()->route('login')->with('error', 'Please login first');
     }
+
+    // Client statistics (adjust based on your actual model)
+    $totalClients = \App\Models\Client::count();
+    $activeClients = \App\Models\Client::where('status', 'active')->count();
+    $inactiveClients = \App\Models\Client::where('status', 'inactive')->count();
+    $upcomingReminders = \App\Models\Client::whereNotNull('reminder_date')
+        ->whereDate('reminder_date', '>=', now())
+        ->count();
+
+    // Get today's attendance
+    $todayAttendance = Attendance::where('profile_id', $marketing->id)
+        ->whereDate('date', Carbon::today())
+        ->first();
+
+    return view('marketing.dashboard', compact(
+        'marketing',
+        'totalClients',
+        'activeClients',
+        'inactiveClients',
+        'upcomingReminders',
+        'todayAttendance'
+    ));
+}
 
     public function index(Request $request)
     {

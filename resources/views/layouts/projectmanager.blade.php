@@ -36,6 +36,62 @@
             padding: 10px 20px;
             font-size: .95rem;
         }
+      
+        /* Attendance Card Styles */
+        .attendance-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        .attendance-status {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .time-display {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        .btn-attendance {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-check-in {
+            background-color: #10b981;
+            border: none;
+        }
+        .btn-check-in:hover:not(:disabled) {
+            background-color: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+        .btn-check-out {
+            background-color: #ef4444;
+            border: none;
+        }
+        .btn-check-out:hover:not(:disabled) {
+            background-color: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+        .btn-attendance:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .attendance-info {
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+      
+        /* Task Card Styles */
         .task-card {
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -62,19 +118,19 @@
             font-size: 0.75em;
             font-weight: 600;
         }
-        .status-pending { 
-            background-color: #e2e3e5; 
-            color: #383d41; 
+        .status-pending {
+            background-color: #e2e3e5;
+            color: #383d41;
             border: 1px solid #d6d8db;
         }
-        .status-in-progress { 
-            background-color: #cce7ff; 
-            color: #004085; 
+        .status-in-progress {
+            background-color: #cce7ff;
+            color: #004085;
             border: 1px solid #b3d7ff;
         }
-        .status-completed { 
-            background-color: #d4edda; 
-            color: #155724; 
+        .status-completed {
+            background-color: #d4edda;
+            color: #155724;
             border: 1px solid #c3e6cb;
         }
         .dashboard-stats {
@@ -112,7 +168,7 @@
     <div class="container-fluid">
         <a class="navbar-brand d-flex align-items-center" href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
             <img src="{{ asset('NetIT logo.png') }}" alt="PM" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
-            <span>Welcome, {{ 'Project Manager' }}</span>
+            <span>Welcome, Project Manager</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#pmNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -141,7 +197,7 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="pmDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-user me-1"></i> {{ 'Account' }}
+                        <i class="fa fa-user me-1"></i> Account
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="pmDropdown">
                         <li>
@@ -158,10 +214,10 @@
         </div>
     </div>
 </nav>
-
 <!-- Main Content Area -->
 <div class="container mt-4" style="padding-top:100px;">
     @yield('content')
+   
     
     <!-- Welcome Section -->
     @if(!isset($hideWelcome) || $hideWelcome === false)
@@ -173,6 +229,105 @@
         </div>
     </div>
 
+    <!-- Attendance Section -->
+    @if(\Route::currentRouteName() === 'projectmanager.dashboard')
+    <div class="row mb-4">
+        <div class="col-lg-6 mx-auto">
+            <div class="attendance-card">
+                <div class="text-center">
+                    <h3 class="mb-3">
+                        <i class="fas fa-clock me-2"></i>My Attendance
+                    </h3>
+                  
+                    <div class="time-display" id="currentTime">
+                        Loading...
+                    </div>
+                  
+                    <div class="attendance-status mb-3" id="currentDate">
+                        Loading...
+                    </div>
+                    @if(session('attendance_message'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>{{ session('attendance_message') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+                    @if(session('attendance_error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>{{ session('attendance_error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+                    @if(isset($todayAttendance))
+                        <div class="attendance-info">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="mb-1"><strong>Check In:</strong></p>
+                                    <p class="h5">{{ $todayAttendance->check_in ? \Carbon\Carbon::parse($todayAttendance->check_in)->format('h:i A') : '-' }}</p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="mb-1"><strong>Check Out:</strong></p>
+                                    <p class="h5">{{ $todayAttendance->check_out ? \Carbon\Carbon::parse($todayAttendance->check_out)->format('h:i A') : '-' }}</p>
+                                </div>
+                            </div>
+                            @if($todayAttendance->check_in && $todayAttendance->check_out)
+                                <div class="mt-2">
+                                    <p class="mb-1"><strong>Total Hours:</strong></p>
+                                    <p class="h5">
+                                        @php
+                                            $checkIn = \Carbon\Carbon::parse($todayAttendance->check_in);
+                                            $checkOut = \Carbon\Carbon::parse($todayAttendance->check_out);
+                                            $diff = $checkIn->diff($checkOut);
+                                        @endphp
+                                        {{ $diff->h }}h {{ $diff->i }}m
+                                    </p>
+                                </div>
+                            @endif
+                        </div>
+                    @endif
+                    <div class="mt-4">
+                        @if(isset($todayAttendance) && $todayAttendance->check_in && $todayAttendance->check_out)
+                            <!-- Both completed -->
+                            <div class="alert alert-light" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>
+                                You have completed your attendance for today!
+                            </div>
+                        @else
+                            <!-- Show both buttons side by side -->
+                            <div class="d-flex gap-3 justify-content-center">
+                                <!-- Check In Button -->
+                                <form action="{{ route('projectmanager.attendance.checkin') }}" method="POST" id="checkin-form">
+                                    @csrf
+                                    <input type="hidden" name="timezone" id="timezone-input">
+                                    <button type="submit" class="btn btn-attendance btn-check-in text-white"
+                                        @if(isset($todayAttendance) && $todayAttendance->check_in) disabled @endif>
+                                        <i class="fas fa-sign-in-alt me-2"></i>Check In
+                                    </button>
+                                </form>
+                              
+                                <!-- Check Out Button -->
+                                <form action="{{ route('projectmanager.attendance.checkout') }}" method="POST" id="checkout-form">
+                                    @csrf
+                                    <input type="hidden" name="timezone" id="timezone-input-out">
+                                    <button type="submit" class="btn btn-attendance btn-check-out text-white"
+                                        @if(!isset($todayAttendance) || !$todayAttendance->check_in) disabled @endif>
+                                        <i class="fas fa-sign-out-alt me-2"></i>Check Out
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="mt-3">
+                        <a href="{{ route('projectmanager.attendance.history') }}" class="btn btn-light btn-sm">
+                            <i class="fas fa-history me-2"></i>View Attendance History
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+   
     <!-- Dashboard Statistics -->
     <div class="dashboard-stats">
         <div class="row">
@@ -206,7 +361,6 @@
             </div>
         </div>
     </div>
-
     <!-- Recent Tasks Section -->
     <div class="row">
         <div class="col-12">
@@ -214,10 +368,7 @@
                 <h4 class="text-primary">
                     <i class="fas fa-clock me-2"></i>Recent Daily Tasks
                 </h4>
-                
             </div>
-            
-
             @if(isset($recentTasks) && $recentTasks->count() > 0)
                 <div class="row">
                     @foreach($recentTasks as $task)
@@ -251,7 +402,7 @@
                                         <small class="text-muted">
                                             <i class="fas fa-clock me-1"></i>
                                             @if($task->start_time && $task->end_time)
-                                                {{ \Carbon\Carbon::parse($task->start_time)->format('h:i A') }} - 
+                                                {{ \Carbon\Carbon::parse($task->start_time)->format('h:i A') }} -
                                                 {{ \Carbon\Carbon::parse($task->end_time)->format('h:i A') }}
                                             @else
                                                 Time not set
@@ -263,7 +414,7 @@
                                             {{ Str::limit($task->description, 100) }}
                                         </p>
                                     @endif
-                                    
+                                  
                                     <!-- Progress Bar -->
                                     <div class="mb-2">
                                         <div class="d-flex justify-content-between small text-muted mb-1">
@@ -271,14 +422,14 @@
                                             <span>{{ $task->completed_count }}/{{ $task->target_count }}</span>
                                         </div>
                                         <div class="progress">
-                                            <div class="progress-bar 
+                                            <div class="progress-bar
                                                 @if($task->completion_percentage >= 100) bg-success
                                                 @elseif($task->completion_percentage > 0) bg-info
-                                                @else bg-secondary @endif" 
-                                                role="progressbar" 
+                                                @else bg-secondary @endif"
+                                                role="progressbar"
                                                 style="width: {{ min($task->completion_percentage, 100) }}%"
-                                                aria-valuenow="{{ $task->completion_percentage }}" 
-                                                aria-valuemin="0" 
+                                                aria-valuenow="{{ $task->completion_percentage }}"
+                                                aria-valuemin="0"
                                                 aria-valuemax="100">
                                             </div>
                                         </div>
@@ -292,7 +443,6 @@
                                         <small class="text-muted">
                                             Created: {{ $task->created_at->diffForHumans() }}
                                         </small>
-                                        <!-- Removed edit button to avoid route error -->
                                         <span class="badge bg-light text-dark">
                                             ID: {{ $task->id }}
                                         </span>
@@ -302,7 +452,6 @@
                         </div>
                     @endforeach
                 </div>
-
                 @if($recentTasks->count() >= 6)
                     <div class="text-center mt-4">
                         <a href="{{ route('projectmanager.daily-tasks.index', $pm->id ?? 1) }}" class="btn btn-outline-primary">
@@ -315,38 +464,81 @@
                     <i class="fas fa-tasks fa-3x text-muted mb-3"></i>
                     <h5 class="text-muted">No daily tasks found</h5>
                     <p class="text-muted">Get started by creating your first daily task.</p>
-                   
                 </div>
             @endif
         </div>
     </div>
     @endif
 </div>
-
 <!-- Bootstrap Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Typing Script -->
 <script>
-    function typeWriter(text, elementId, speed = 50) {
-        let i = 0;
-        const element = document.getElementById(elementId);
-        if (!element) return;
-        function type() {
-            if (i < text.length) {
-                element.innerHTML += text.charAt(i);
-                i++;
-                setTimeout(type, speed);
-            }
-        }
-        type();
+// Get user's timezone
+const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+// Set timezone in hidden inputs
+document.addEventListener('DOMContentLoaded', function() {
+    const timezoneInputCheckin = document.getElementById('timezone-input');
+    const timezoneInputCheckout = document.getElementById('timezone-input-out');
+   
+    if (timezoneInputCheckin) {
+        timezoneInputCheckin.value = userTimezone;
     }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        typeWriter("Welcome to NetIT Technology....!", "typingText");
+    if (timezoneInputCheckout) {
+        timezoneInputCheckout.value = userTimezone;
+    }
+});
+// Real-time clock update with user's local time
+function updateTime() {
+    const now = new Date();
+   
+    // Update time display
+    const timeString = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
     });
+   
+    // Update date display
+    const dateOptions = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+    const dateString = now.toLocaleDateString('en-US', dateOptions);
+   
+    const timeElement = document.getElementById('currentTime');
+    const dateElement = document.getElementById('currentDate');
+   
+    if (timeElement) {
+        timeElement.textContent = timeString;
+    }
+    if (dateElement) {
+        dateElement.textContent = dateString;
+    }
+}
+// Update time every second
+setInterval(updateTime, 1000);
+updateTime();
+// Typing Script
+function typeWriter(text, elementId, speed = 50) {
+    let i = 0;
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    type();
+}
+document.addEventListener('DOMContentLoaded', () => {
+    typeWriter("Welcome to NetIT Technology....!", "typingText");
+});
 </script>
-
 @yield('scripts')
 </body>
 </html>

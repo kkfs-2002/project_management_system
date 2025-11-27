@@ -70,11 +70,9 @@ Route::put('/superadmin/employee/{id}', [EmployeeController::class, 'update'])->
 Route::delete('/superadmin/employee/{id}', [EmployeeController::class, 'destroy'])->name('superadmin.employee.destroy');
 
 //Mark Attendance employee- SuperAdmin
-Route::get('/superadmin/attendance/index', [AttendanceController::class, 'index'])->name('attendance.index');
-Route::post('/superadmin/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
-
-//View attendance filtered by date and month
-Route::get('/admin/attendance/sheet', [AttendanceController::class, 'showSheet'])->name('attendance.sheet');
+Route::get('/superadmin/attendance/developer', [AttendanceController::class, 'developer'])->name('attendance.developer');
+Route::get('/superadmin/attendance/marketingmanager', [AttendanceController::class, 'marketingmanager'])->name('attendance.marketingmanager');
+Route::get('/superadmin/attendance/projectmanager', [AttendanceController::class, 'projectmanager'])->name('attendance.projectmanager');
 
 // Admin Dashboard Operations
 Route::get('/admin/operations/logbook', [PMOperationsController::class, 'showLogForm'])->name('admin.operations.logbook');
@@ -99,38 +97,56 @@ Route::prefix('superadmin/attendance')
         ->name('employee.month.pdf');
 });
 
-//Digital Marketing Manager
-Route::prefix('marketing')->group(function () {
-   //Route::get('/dashboard', function () {
-      //return view('marketing.dashboard');
-    //});
 
 
-    Route::get('/dashboard', [MarketingClientController::class, 'dashboard'])->name('marketing.dashboard');
 
+// ===============================
+// DIGITAL MARKETING MANAGER ROUTES
+// ===============================
+Route::middleware('auth')->prefix('marketing')->name('marketing.')->group(function () {
 
-    Route::get('/clients', [MarketingClientController::class, 'index'])->name('marketing.clients.index');
-    // Show create form
-    Route::get('/clients/create', [MarketingClientController::class, 'create'])->name('marketing.clients.create');
+    // --- DASHBOARD ---
+    Route::get('/dashboard', [MarketingClientController::class, 'dashboard'])
+        ->name('dashboard');
 
-    // Store new client
-    Route::post('/clients', [MarketingClientController::class, 'store'])->name('marketing.clients.store');
+    // --- ATTENDANCE ROUTES ---
+    Route::post('/attendance/checkin', [AttendanceController::class, 'checkIn'])
+        ->name('attendance.checkin');
 
-    // Show edit form
-    Route::get('/clients/{client}/edit', [MarketingClientController::class, 'edit'])->name('marketing.clients.edit');
+    Route::post('/attendance/checkout', [AttendanceController::class, 'checkOut'])
+        ->name('attendance.checkout');
 
-    // Update client
-    Route::put('/clients/{client}', [MarketingClientController::class, 'update'])->name('marketing.clients.update');
+    Route::get('/attendance/history', [AttendanceController::class, 'marketingHistory'])
+        ->name('attendance.history');
 
-    // Delete (already added earlier)
-    Route::delete('/clients/{client}', [MarketingClientController::class, 'destroy'])->name('marketing.clients.destroy');
+    // --- CLIENT MANAGEMENT ROUTES ---
+    Route::get('/clients', [MarketingClientController::class, 'index'])
+        ->name('clients.index');
 
-    Route::get('/clients/status/{type}', [MarketingClientController::class, 'status'])->name('marketing.clients.status');
+    Route::get('/clients/create', [MarketingClientController::class, 'create'])
+        ->name('clients.create');
 
+    Route::post('/clients', [MarketingClientController::class, 'store'])
+        ->name('clients.store');
 
-    Route::get('/clients/reminders', [MarketingClientController::class, 'reminders'])->name('marketing.clients.reminders');
-    //Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
-    Route::get('/clients/report', [MarketingClientController::class, 'report'])->name('marketing.clients.report');
+    Route::get('/clients/{client}/edit', [MarketingClientController::class, 'edit'])
+        ->name('clients.edit');
+
+    Route::put('/clients/{client}', [MarketingClientController::class, 'update'])
+        ->name('clients.update');
+
+    Route::delete('/clients/{client}', [MarketingClientController::class, 'destroy'])
+        ->name('clients.destroy');
+
+    Route::get('/clients/status/{type}', [MarketingClientController::class, 'status'])
+        ->name('clients.status');
+
+    Route::get('/clients/reminders', [MarketingClientController::class, 'reminders'])
+        ->name('clients.reminders');
+
+    Route::get('/clients/report', [MarketingClientController::class, 'report'])
+        ->name('clients.report');
+
 });
 
 
@@ -174,6 +190,7 @@ Route::post('store',       [TaskController::class, 'store'])->name('tasks.store'
 Route::get('superadmin',   [TaskController::class, 'superadminIndex'])->name('tasks.superadmin');
 Route::get('superadmin.tasks.index',   [TaskController::class, 'superadminIndex'])->name('superadmin.tasks.index');
 Route::get('superadmin.tasks.create',   [TaskController::class, 'create'])->name('superadmin.tasks.create');
+Route::get('superadmin.tasks.add',   [TaskController::class, 'add'])->name('superadmin.tasks.add');
 
 // Project Manager
 Route::get('projectmanager.tasks.index/{pm}', [TaskController::class, 'projectManagerIndex'])->name('projectmanager.tasks.index');
@@ -215,11 +232,35 @@ Route::prefix('developer')->group(function() {
 });
 //Developer Dasboard 
 Route::get('/developer/{id}/dashboard', [DeveloperController::class, 'dashboard'])->name('developer.dashboard');
-//Task
-Route::get('/developer/tasks', [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
-Route::post('/developer/tasks/{id}/complete', [TaskController::class, 'markAsCompleted'])->name('developer.tasks.complete');
-Route::get('/developer/tasks', [TaskController::class, 'developerIndex'])->name('developer.tasks.index');
-Route::post('/developer/tasks/{id}/complete', [TaskController::class, 'markAsCompleted'])->name('developer.tasks.complete');
+
+// Developer Routes
+Route::middleware('auth')->prefix('developer')->name('developer.')->group(function () {
+    
+    // ===== DASHBOARD =====
+    Route::get('/dashboard', [DeveloperController::class, 'dashboard'])->name('dashboard');
+    
+    // ===== ATTENDANCE ROUTES =====
+    Route::post('/attendance/checkin', [AttendanceController::class, 'developerCheckIn'])
+        ->name('attendance.checkin');
+    
+    Route::post('/attendance/checkout', [AttendanceController::class, 'developerCheckOut'])
+        ->name('attendance.checkout');
+    
+    Route::get('/attendance/history', [AttendanceController::class, 'developerHistory'])
+        ->name('attendance.history');
+    
+    // ===== TASK ROUTES =====
+    Route::get('/tasks', [TaskController::class, 'developerIndex'])->name('tasks.index');
+    Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+    Route::post('/tasks/{task}/update-status', [TaskController::class, 'updateStatus'])->name('tasks.updateStatus');
+    
+    // ===== DAILY TASKS ROUTES =====
+    Route::get('/daily-tasks', [DailyTaskController::class, 'index'])->name('daily-tasks.index');
+    Route::get('/daily-tasks/{task}', [DailyTaskController::class, 'show'])->name('daily-tasks.show');
+    
+    // ===== LOGOUT =====
+    Route::post('/logout', [DeveloperController::class, 'logout'])->name('logout');
+});
 Route::get('/superadmin/tasks', [TaskController::class, 'superadminIndex'])->name('superadmin.tasks');
 
 /*PASSWORD MANAGEMENT (Super-Admin) */

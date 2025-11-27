@@ -13,72 +13,85 @@ class AttendanceController extends Controller
     /**
      * Get the authenticated user's profile
      */
-   private function getAuthenticatedProfile()
-{
-    $user = Auth::user();  // Now returns Profile directly
+    private function getAuthenticatedProfile()
+    {
+        $user = Auth::user();  // Now returns Profile directly
 
-    if (!$user) {
-        // Fallback to session (for legacy/transition)
-        $role = session('role');
-        if (!$role) return null;
-        return Profile::where('employee_id', session('employee_id'))->first();
-    }
-
-    return $user;  // Direct return since user == profile
-}
-
-    /**
-     * Check in attendance
-     */
-   public function checkIn(Request $request)
-{
-    try {
-        \Log::info('CheckIn Debug - Auth Check: ' . (Auth::check() ? 'TRUE' : 'FALSE'));
-        \Log::info('CheckIn Debug - User: ' . json_encode(Auth::user()));
-        \Log::info('CheckIn Debug - Session ID: ' . session()->getId());
-        
-        $user = Auth::user();
-        
         if (!$user) {
-            \Log::warning('CheckIn - User is null, redirecting to login');
-            return redirect()->route('login');
+            // Fallback to session (for legacy/transition)
+            $role = session('role');
+            if (!$role) return null;
+            return Profile::where('employee_id', session('employee_id'))->first();
         }
-        
-        $profile = $this->getAuthenticatedProfile();
-        if (!$profile) {
-            return redirect()->back()->with('attendance_error', 'Profile not found! Please contact administrator.');
-        }
-        
-        $today = Carbon::today();
-        $existingAttendance = Attendance::where('profile_id', $profile->id)
-            ->whereDate('date', $today)
-            ->first();
-            
-        if ($existingAttendance && $existingAttendance->check_in) {
-            return redirect()->back()->with('attendance_error', 'You have already checked in today!');
-        }
-        
-        $attendance = Attendance::updateOrCreate(
-            [
-                'profile_id' => $profile->id,
-                'date' => $today
-            ],
-            [
-                'check_in' => Carbon::now()
-            ]
-        );
-        
-        return redirect()->back()->with('attendance_message',
-            'Successfully checked in at ' . Carbon::now()->format('h:i A'));
-    } catch (\Exception $e) {
-        \Log::error('Check-in error: ' . $e->getMessage()); // Log for debugging
-        return redirect()->back()->with('attendance_error',
-            'Error checking in: ' . $e->getMessage());
+
+        return $user;  // Direct return since user == profile
     }
-}
+
+    
 
     /**
-     * Check out attendance
+     * Check in attendance (General - works for all roles)
+     */
+    public function checkIn(Request $request)
+    {
+        try {
+            \Log::info('CheckIn Debug - Auth Check: ' . (Auth::check() ? 'TRUE' : 'FALSE'));
+            \Log::info('CheckIn Debug - User: ' . json_encode(Auth::user()));
+             
+            $user = Auth::user();
+             
+            if (!$user) {
+                \Log::warning('CheckIn - User is null, redirecting to login');
+                return redirect()->route('login');
+            }
+             
+            $profile = $this->getAuthenticatedProfile();
+            if (!$profile) {
+                return redirect()->back()->with('attendance_error', 'Profile not found! Please contact administrator.');
+            }
+             
+            // Determine role from profile (prioritize 'role', fallback to 'job_title')
+            $userRole = $profile->role ?? $profile->job_title ?? 'Unknown';
+             
+            // Get timezone from request or use default
+            $timezone = $request->input('timezone', 'Asia/Colombo');
+            $now = Carbon::now($timezone);
+            $today = Carbon::today($timezone);
+             
+            $existingAttendance = Attendance::where('profile_id', $profile->id)
+                ->whereDate('date', $today)
+                ->first();
+               
+            if ($existingAttendance && $existingAttendance->check_in) {
+                return redirect()->back()->with('attendance_error', 'You have already checked in today!');
+            }
+             
+            $attendance = Attendance::updateOrCreate(
+                [
+                    'profile_id' => $profile->id,
+                    'date' => $today
+                ],
+                [
+                    'check_in' => $now,
+                    'role' => $userRole, // Save the role here
+                ]
+            );
+             
+            \Log::info('Check-in successful for profile_id: ' . $profile->id . ' with role: ' . $userRole);
+             
+            // Redirect to the same page - this will reload with new data
+            return redirect()->back()->with('attendance_message',
+                'Successfully checked in at ' . $now->format('h:i A'));
+               
+        } catch (\Exception $e) {
+            \Log::error('Check-in error: ' . $e->getMessage());
+            return redirect()->back()->with('attendance_error',
+                'Error checking in: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Check out attendance (General - works for all roles)
      */
     public function checkOut(Request $request)
     {
@@ -88,30 +101,33 @@ class AttendanceController extends Controller
             if (!$user) {
                 return redirect()->back()->with('attendance_error', 'User not authenticated!');
             }
-
+            
             $profile = $this->getAuthenticatedProfile();
             
             if (!$profile) {
                 return redirect()->back()->with('attendance_error', 'Profile not found! Please contact administrator.');
             }
-
-            $today = Carbon::today();
-
+            
+            // Get timezone from request or use default
+            $timezone = $request->input('timezone', 'Asia/Colombo'); // Sri Lanka timezone
+            $now = Carbon::now($timezone);
+            $today = Carbon::today($timezone);
+            
             // Find today's attendance
             $attendance = Attendance::where('profile_id', $profile->id)
                 ->whereDate('date', $today)
                 ->first();
-
+            
             if (!$attendance || !$attendance->check_in) {
                 return redirect()->back()->with('attendance_error', 'Please check in first!');
             }
-
+            
             if ($attendance->check_out) {
                 return redirect()->back()->with('attendance_error', 'You have already checked out today!');
             }
-
+            
             // Update check out time
-            $attendance->check_out = Carbon::now();
+            $attendance->check_out = $now;
             
             // Calculate total hours
             $checkIn = Carbon::parse($attendance->check_in);
@@ -119,22 +135,95 @@ class AttendanceController extends Controller
             $attendance->total_hours = $checkIn->diffInHours($checkOut, true);
             
             $attendance->save();
-
+            
             // Format message with total hours
             $diff = $checkIn->diff($checkOut);
-            $message = 'Successfully checked out at ' . Carbon::now()->format('h:i A') . 
+            $message = 'Successfully checked out at ' . $now->format('h:i A') .
                        '. Total hours: ' . $diff->h . 'h ' . $diff->i . 'm';
-
+            
             return redirect()->back()->with('attendance_message', $message);
-
         } catch (\Exception $e) {
-            return redirect()->back()->with('attendance_error', 
+            return redirect()->back()->with('attendance_error',
                 'Error checking out: ' . $e->getMessage());
         }
     }
 
     /**
-     * Get attendance history for authenticated user
+     * Developer Check In (Alias for checkIn)
+     */
+    public function developerCheckIn(Request $request)
+    {
+        return $this->checkIn($request);
+    }
+
+    /**
+     * Developer Check Out (Alias for checkOut)
+     */
+    public function developerCheckOut(Request $request)
+    {
+        return $this->checkOut($request);
+    }
+
+    /**
+     * Developer Attendance History
+     */
+    public function developerHistory(Request $request)
+    {
+        $profile = $this->getAuthenticatedProfile();
+        
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found!');
+        }
+
+        $attendances = Attendance::where('profile_id', $profile->id)
+            ->orderBy('date', 'desc')
+            ->paginate(20);
+
+        $user = Auth::user();
+        $dev = $profile; // Alias for view compatibility
+        
+        return view('developer.attendance.history', compact('attendances', 'user', 'dev'));
+    }
+
+    /**
+     * Marketing Check In
+     */
+    public function marketingCheckIn(Request $request)
+    {
+        return $this->checkIn($request);
+    }
+
+    /**
+     * Marketing Check Out
+     */
+    public function marketingCheckOut(Request $request)
+    {
+        return $this->checkOut($request);
+    }
+
+    /**
+     * Marketing Attendance History
+     */
+    public function marketingHistory(Request $request)
+    {
+        $profile = $this->getAuthenticatedProfile();
+        
+        if (!$profile) {
+            return redirect()->back()->with('error', 'Profile not found!');
+        }
+
+        $attendances = Attendance::where('profile_id', $profile->id)
+            ->orderBy('date', 'desc')
+            ->paginate(20);
+
+        $user = Auth::user();
+        $marketing = $profile; // Alias for view
+        
+        return view('marketing.attendance.history', compact('attendances', 'user', 'marketing'));
+    }
+
+    /**
+     * Get attendance history for authenticated user (General method)
      */
     public function history(Request $request)
     {
@@ -267,5 +356,29 @@ class AttendanceController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Superadmin - View Developer Attendance
+     */
+    public function developer()
+    {
+        return view('superadmin.attendance.developer');
+    }
+
+    /**
+     * Superadmin - View Marketing Manager Attendance
+     */
+    public function marketingmanager()
+    {
+        return view('superadmin.attendance.marketingmanager');
+    }
+
+    /**
+     * Superadmin - View Project Manager Attendance
+     */
+    public function projectmanager()
+    {
+        return view('superadmin.attendance.projectmanager');
     }
 }

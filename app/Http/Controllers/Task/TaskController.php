@@ -171,4 +171,8 @@ public function markAsCompleted($id)
 
         return view('projectmanager.projects.index', compact('projects'));
     }
+       public function add()
+    {
+        return view('superadmin.tasks.add');
+    }
 }

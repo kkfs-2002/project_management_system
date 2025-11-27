@@ -1,4 +1,4 @@
-@extends('layouts.projectmanager')
+@extends('layouts.developer')
 
 @php
     $hideWelcome = true;
@@ -15,7 +15,7 @@
                     </h2>
                     <p class="text-muted mb-0">View your attendance records</p>
                 </div>
-                <a href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}" class="btn btn-outline-secondary">
+                <a href="{{ route('developer.dashboard', $dev->id ?? 1) }}" class="btn btn-outline-secondary">
                     <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                 </a>
             </div>
@@ -73,17 +73,9 @@
                             <h6 class="text-muted mb-1">Avg Hours</h6>
                             <h3 class="mb-0">
                                 @php
-                                    $totalMinutes = 0;
-                                    $completeDays = 0;
-                                    foreach($attendances as $att) {
-                                        if($att->check_in && $att->check_out) {
-                                            $totalMinutes += \Carbon\Carbon::parse($att->check_in)->diffInMinutes(\Carbon\Carbon::parse($att->check_out));
-                                            $completeDays++;
-                                        }
-                                    }
-                                    $avgHours = $completeDays > 0 ? number_format($totalMinutes / $completeDays / 60, 1) : 0;
+                                    $avgHours = $attendances->where('total_hours', '>', 0)->avg('total_hours');
                                 @endphp
-                                {{ $avgHours }}h
+                                {{ $avgHours ? number_format($avgHours, 1) : '0' }}h
                             </h3>
                         </div>
                     </div>
@@ -102,12 +94,7 @@
                         </div>
                         <div class="flex-grow-1 ms-3">
                             <h6 class="text-muted mb-1">Total Hours</h6>
-                            <h3 class="mb-0">
-                                @php
-                                    $totalHours = floor($totalMinutes / 60);
-                                @endphp
-                                {{ $totalHours }}h
-                            </h3>
+                            <h3 class="mb-0">{{ number_format($attendances->sum('total_hours'), 0) }}h</h3>
                         </div>
                     </div>
                 </div>
@@ -130,13 +117,6 @@
             </div>
         </div>
         <div class="card-body p-0">
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            @endif
-
             @if($attendances->count() > 0)
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -154,11 +134,11 @@
                         @foreach($attendances as $attendance)
                         <tr>
                             <td class="px-4 py-3">
-                                <strong>{{ $attendance->date->format('M d, Y') }}</strong>
+                                <strong>{{ \Carbon\Carbon::parse($attendance->date)->format('M d, Y') }}</strong>
                             </td>
                             <td class="py-3">
                                 <span class="badge bg-light text-dark">
-                                    {{ $attendance->date->format('l') }}
+                                    {{ \Carbon\Carbon::parse($attendance->date)->format('l') }}
                                 </span>
                             </td>
                             <td class="py-3">
@@ -174,8 +154,7 @@
                             <td class="py-3">
                                 @if($attendance->check_out)
                                     <span class="text-danger">
-                                        <i class="fas fa-sign-out-alt me-1">
-</i>
+                                        <i class="fas fa-sign-out-alt me-1"></i>
                                         {{ \Carbon\Carbon::parse($attendance->check_out)->format('h:i A') }}
                                     </span>
                                 @else
@@ -234,7 +213,7 @@
                 <i class="fas fa-calendar-times fa-4x text-muted mb-3"></i>
                 <h5 class="text-muted">No Attendance Records Found</h5>
                 <p class="text-muted">Start tracking your attendance from the dashboard.</p>
-                <a href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}" class="btn btn-primary mt-3">
+                <a href="{{ route('developer.dashboard', $dev->id ?? 1) }}" class="btn btn-primary mt-3">
                     <i class="fas fa-arrow-left me-2"></i>Go to Dashboard
                 </a>
             </div>

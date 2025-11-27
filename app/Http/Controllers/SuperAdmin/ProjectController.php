@@ -56,7 +56,8 @@ public function store(Request $request)
 }
 
 //Store in database
-    public function storeFinancials(Request $request)
+//Store in database
+public function storeFinancials(Request $request)
 {
     $request->validate([
         'project_id' => 'required|exists:projects,id',
@@ -64,26 +65,28 @@ public function store(Request $request)
         'advance' => 'required|numeric|min:0',
         'hosting_fee' => 'required|numeric|min:0',
         'developer_fee' => 'required|numeric|min:0',
+        'renewal_date' => 'required|date',
     ]);
 
-    $credit = $request->total_payment - $request->advance;
+    // Auto calculate profit and balance
     $profit = $request->total_payment - ($request->hosting_fee + $request->developer_fee);
+    $balance = $request->total_payment - $request->advance;
 
     ProjectAccount::updateOrCreate(
         ['project_id' => $request->project_id],
         [
             'total_payment' => $request->total_payment,
             'advance' => $request->advance,
-            'credit' => $credit,
             'hosting_fee' => $request->hosting_fee,
             'developer_fee' => $request->developer_fee,
             'profit' => $profit,
+            'balance' => $balance,
+            'renewal_date' => $request->renewal_date,
         ]
     );
 
     return redirect()->route('superadmin.project.index')->with('success', 'Financials added successfully.');
 }
-
 //View all transactions
 public function transactions(Request $request)
 {
@@ -125,6 +128,7 @@ public function editFinancials(ProjectAccount $account)
 }
 
 // Update financial record
+// Update financial record
 public function updateFinancials(Request $request, ProjectAccount $account)
 {
     $request->validate([
@@ -132,23 +136,25 @@ public function updateFinancials(Request $request, ProjectAccount $account)
         'advance' => 'required|numeric|min:0',
         'hosting_fee' => 'required|numeric|min:0',
         'developer_fee' => 'required|numeric|min:0',
+        'renewal_date' => 'required|date',
     ]);
 
-    $credit = $request->total_payment - $request->advance;
+    // Auto calculate profit and balance
     $profit = $request->total_payment - ($request->hosting_fee + $request->developer_fee);
+    $balance = $request->total_payment - $request->advance;
 
     $account->update([
         'total_payment' => $request->total_payment,
         'advance' => $request->advance,
-        'credit' => $credit,
         'hosting_fee' => $request->hosting_fee,
         'developer_fee' => $request->developer_fee,
         'profit' => $profit,
+        'balance' => $balance,
+        'renewal_date' => $request->renewal_date,
     ]);
 
     return redirect()->route('superadmin.project.transactions')->with('success', 'Financials updated.');
 }
-
 // Delete financial record
 public function destroyFinancials(ProjectAccount $account)
 {

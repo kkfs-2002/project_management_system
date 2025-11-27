@@ -321,21 +321,24 @@
         <!--Mark attendance-->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="attendanceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-clipboard-check me-1"></i> Attendance
+            <i class="fas fa-clipboard-check me-1"></i> View Attendance
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="attendanceDropdown">
-            <li><a class="dropdown-item" href="{{ route('attendance.index') }}">Mark attendance</a></li>
-            <li><a class="dropdown-item" href="{{ route('superadmin.attendance.employee.month') }}">Attendance Tracker</a></li>
+            <li><a class="dropdown-item" href="{{ route('attendance.developer') }}">Developer Attendance view</a></li>
+           <li><a class="dropdown-item" href="{{ route('attendance.projectmanager') }}">Project Managers Attendance view</a></li>
+           <li><a class="dropdown-item" href="{{ route('attendance.marketingmanager') }}">Marketing Manager Attendance view</a></li>
           </ul>
         </li>
                 <!-- Tasks -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-folder-open me-1"></i> Tasks
+            <i class="fas fa-folder-open me-1"></i> Projects
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="projectsDropdown">
-            <li><a class="dropdown-item" href="{{ route('superadmin.tasks.create') }}">Create Task</a></li>
-                        <li><a class="dropdown-item" href="{{ route('superadmin.tasks.index') }}">View Task</a></li>
+                <li><a class="dropdown-item" href="{{ route('superadmin.tasks.add') }}">Add New Projects</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.tasks.create') }}">Assigned projects</a></li>
+                        <li><a class="dropdown-item" href="{{ route('superadmin.tasks.index') }}">View projects</a></li>
+                    
           </ul>
         </li>
         <!-- Finance -->
@@ -344,7 +347,7 @@
             <i class="fas fa-money-bill-wave me-1"></i> Accounts
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="financeDropdown">
-            <li><a class="dropdown-item" href="{{ route('superadmin.project.index') }}">Add Financial Entry</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.project.index') }}">New Projects Financial Entry</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.project.transactions') }}">View All Transactions</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.expenses.index') }}">Expense Tracker</a></li>
        

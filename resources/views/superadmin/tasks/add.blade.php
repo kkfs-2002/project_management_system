@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Assign Task')
-
 @section('content')
 <style>
     :root {
@@ -19,22 +17,23 @@
         --radius: 12px;
     }
     
-    .task-assign-container {
-        max-width: 900px;
+    .project-container {
+        max-width: 800px;
         margin: 0 auto;
         padding: 20px;
     }
     
-    .page-header {
-        background: linear-gradient(135deg, var(--primary) 0%, #1e3d72 100%);
-        border-radius: var(--radius);
-        padding: 30px;
-        color: white;
-        margin-bottom: 30px;
-        position: relative;
-        overflow: hidden;
-        margin-top: 60px;
-    }
+ .page-header {
+    background: linear-gradient(135deg, var(--primary) 0%, #1e3d72 100%);
+    border-radius: var(--radius);
+    padding: 30px;
+    color: white;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 60px; /* Fixed here */
+}
+
     
     .page-header::before {
         content: '';
@@ -168,10 +167,11 @@
         padding-right: 45px;
     }
     
-    textarea.form-control {
-        resize: vertical;
-        min-height: 120px;
-        line-height: 1.5;
+    .form-hint {
+        display: block;
+        margin-top: 6px;
+        font-size: 13px;
+        color: var(--secondary);
     }
     
     .date-grid {
@@ -211,13 +211,6 @@
     .date-card .form-control:focus {
         border-color: var(--primary);
         background: white;
-    }
-    
-    .form-hint {
-        display: block;
-        margin-top: 6px;
-        font-size: 13px;
-        color: var(--secondary);
     }
     
     .form-actions {
@@ -270,7 +263,7 @@
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     
-    .task-preview {
+    .project-preview {
         background: var(--light);
         border-radius: var(--radius);
         padding: 25px;
@@ -324,23 +317,43 @@
         font-size: 15px;
     }
     
-    .user-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: var(--primary);
-        color: white;
+    .type-badges {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
-        font-size: 14px;
-        margin-right: 10px;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
     }
     
-    .user-display {
-        display: flex;
-        align-items: center;
+    .type-badge {
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 2px solid transparent;
+    }
+    
+    .type-badge:hover {
+        transform: translateY(-1px);
+    }
+    
+    .type-badge.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+    
+    .type-badge:not(.active) {
+        background: var(--light);
+        color: var(--secondary);
+        border: 2px solid var(--border);
+    }
+    
+    .type-badge:not(.active):hover {
+        background: var(--primary-light);
+        color: var(--primary);
+        border-color: var(--primary);
     }
     
     .required::after {
@@ -348,24 +361,8 @@
         color: var(--danger);
     }
     
-    .alert-success {
-        background: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-        border-radius: var(--radius);
-        padding: 15px 20px;
-        margin-bottom: 25px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .alert-success i {
-        font-size: 18px;
-    }
-    
     @media (max-width: 768px) {
-        .task-assign-container {
+        .project-container {
             padding: 15px;
         }
         
@@ -420,122 +417,90 @@
     .form-group:nth-child(2) { animation-delay: 0.2s; }
     .form-group:nth-child(3) { animation-delay: 0.3s; }
     .form-group:nth-child(4) { animation-delay: 0.4s; }
-    .form-group:nth-child(5) { animation-delay: 0.5s; }
 </style>
 
-<div class="task-assign-container">
+<div class="project-container">
     <!-- Page Header -->
     <div class="page-header">
         <div class="page-title">
-            <i class="fas fa-tasks"></i>
+            <i class="fas fa-plus-circle"></i>
             <div>
-                <h1>Assign New Project</h1>
-                <p>Create and assign projects to your team members efficiently</p>
+                <h1>Create New Project</h1>
+                <p>Add a new project to your portfolio and start tracking progress</p>
             </div>
         </div>
     </div>
 
-    <!-- Success Message -->
-    @if(session('success'))
-        <div class="alert-success">
-            <i class="fas fa-check-circle"></i> {{ session('success') }}
-        </div>
-    @endif
-
-    <!-- Task Form -->
+    <!-- Project Form -->
     <div class="form-card">
         <div class="form-header">
-            <h2><i class="fas fa-clipboard-list"></i> Projects Details</h2>
+            <h2><i class="fas fa-project-diagram"></i> Project Information</h2>
         </div>
         
-        <form action="{{ route('tasks.store') }}" method="POST" id="taskForm">
+        <form method="POST" action="{{ route('superadmin.project.store') }}" id="projectForm">
             @csrf
             
             <div class="form-body">
                 <div class="form-grid">
-                    <!-- Project Selection -->
-                    <div class="form-group">
-                        <label class="form-label required">
-                            <i class="fas fa-project-diagram"></i>Project
-                        </label>
-                        <select name="project_id" id="project_id" class="form-control" required>
-                            <option value="">-- Choose Project --</option>
-                            @foreach($projects as $project)
-                                <option value="{{ $project->id }}">{{ $project->name }}</option>
-                            @endforeach
-                        </select>
-                        <span class="form-hint">Select the project this task belongs to</span>
-                    </div>
-
-                    <!-- Project Manager -->
-                    <div class="form-group">
-                        <label class="form-label required">
-                            <i class="fas fa-user-tie"></i>Project Manager
-                        </label>
-                        <select name="project_manager_id" id="project_manager_id" class="form-control" required>
-                            <option value="">-- Choose Project Manager --</option>
-                            @foreach($projectManagers as $pm)
-                                <option value="{{ $pm->id }}">{{ $pm->full_name }}</option>
-                            @endforeach
-                        </select>
-                        <span class="form-hint">Select the responsible project manager</span>
-                    </div>
-
-                    <!-- Developer -->
-                    <div class="form-group">
-                        <label class="form-label required">
-                            <i class="fas fa-code"></i>Developer
-                        </label>
-                        <select name="developer_id" id="developer_id" class="form-control" required>
-                            <option value="">-- Choose Developer --</option>
-                            @foreach($developers as $dev)
-                                <option value="{{ $dev->id }}">{{ $dev->full_name }}</option>
-                            @endforeach
-                        </select>
-                        <span class="form-hint">Select the developer assigned to this task</span>
-                    </div>
-
-                    <!-- Task Title -->
+                    <!-- Project Name -->
                     <div class="form-group full-width">
                         <label class="form-label required">
-                            <i class="fas fa-heading"></i>Task Title
+                            <i class="fas fa-heading"></i>Project Name
                         </label>
-                        <input type="text" name="title" id="title" class="form-control" 
-                               placeholder="Enter a clear and descriptive task title" required maxlength="255">
-                        <span class="form-hint">Be specific about what needs to be done</span>
+                        <input type="text" name="name" class="form-control" 
+                               placeholder="Enter project name (e.g., E-Commerce Website, Mobile Banking App)" 
+                               required maxlength="100">
+                        <span class="form-hint">Choose a descriptive name that clearly identifies the project</span>
                     </div>
 
-                    <!-- Task Description -->
+                    <!-- Project Type -->
                     <div class="form-group full-width">
                         <label class="form-label required">
-                            <i class="fas fa-align-left"></i>Task Description
+                            <i class="fas fa-tags"></i>Project Type
                         </label>
-                        <textarea name="description" id="description" class="form-control" 
-                                  placeholder="Provide detailed description of the task, requirements, and expectations..." 
-                                  rows="4" required></textarea>
-                        <span class="form-hint">Include any specific requirements or acceptance criteria</span>
+                        <div class="type-badges">
+                            <div class="type-badge active" data-value="Website">
+                                <i class="fas fa-globe me-2"></i>Website
+                            </div>
+                            <div class="type-badge" data-value="System">
+                                <i class="fas fa-server me-2"></i>System
+                            </div>
+                            <div class="type-badge" data-value="Mobile App">
+                                <i class="fas fa-mobile-alt me-2"></i>Mobile App
+                            </div>
+                            <div class="type-badge" data-value="Other">
+                                <i class="fas fa-cube me-2"></i>Other
+                            </div>
+                        </div>
+                        <select name="type" class="form-control mt-3" required style="display: none;">
+                            <option value="">Select Type</option>
+                            <option value="Website" selected>Website</option>
+                            <option value="System">System</option>
+                            <option value="Mobile App">Mobile App</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
 
                     <!-- Date Section -->
                     <div class="form-group full-width">
                         <label class="form-label">
-                            <i class="fas fa-calendar-alt"></i>Task Timeline
+                            <i class="fas fa-calendar-alt"></i>Project Timeline
                         </label>
                         <div class="date-grid">
                             <div class="date-card">
                                 <label class="form-label required">
                                     <i class="fas fa-play-circle"></i>Start Date
                                 </label>
-                                <input type="date" name="start_date" id="start_date" class="form-control" required>
-                                <span class="form-hint">When work should begin</span>
+                                <input type="date" name="start_date" class="form-control" required>
+                                <span class="form-hint">Project commencement date</span>
                             </div>
                             
                             <div class="date-card">
                                 <label class="form-label required">
-                                    <i class="fas fa-flag-checkered"></i>End Date
+                                    <i class="fas fa-flag-checkered"></i>Project Deadline
                                 </label>
-                                <input type="date" name="deadline" id="deadline" class="form-control" required>
-                                <span class="form-hint">When task should be completed</span>
+                                <input type="date" name="deadline" class="form-control" required>
+                                <span class="form-hint">Project completion deadline</span>
                             </div>
                         </div>
                     </div>
@@ -547,92 +512,69 @@
                         <i class="fas fa-arrow-left"></i>Cancel
                     </a>
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i>Assign Task
+                        <i class="fas fa-save"></i>Create Project
                     </button>
                 </div>
             </div>
         </form>
     </div>
 
-    <!-- Task Preview -->
-    <div class="task-preview">
+    <!-- Project Preview -->
+    <div class="project-preview">
         <div class="preview-header">
             <i class="fas fa-eye"></i>
-            <h3>Projects Preview</h3>
+            <h3>Project Preview</h3>
         </div>
         <div class="preview-grid">
             <div class="preview-item">
-                <div class="preview-label">Project</div>
-                <div class="preview-value" id="preview-project">-</div>
+                <div class="preview-label">Project Name</div>
+                <div class="preview-value" id="preview-name">-</div>
             </div>
             <div class="preview-item">
-                <div class="preview-label">Project Manager</div>
-                <div class="preview-value" id="preview-pm">-</div>
-            </div>
-            <div class="preview-item">
-                <div class="preview-label">Developer</div>
-                <div class="preview-value" id="preview-developer">-</div>
-            </div>
-            <div class="preview-item">
-                <div class="preview-label">Task Title</div>
-                <div class="preview-value" id="preview-title">-</div>
+                <div class="preview-label">Project Type</div>
+                <div class="preview-value" id="preview-type">Website</div>
             </div>
             <div class="preview-item">
                 <div class="preview-label">Start Date</div>
                 <div class="preview-value" id="preview-start">-</div>
             </div>
             <div class="preview-item">
-                <div class="preview-label">End Date</div>
+                <div class="preview-label">Deadline</div>
                 <div class="preview-value" id="preview-deadline">-</div>
             </div>
-        </div>
-        <div class="preview-item full-width" style="grid-column: 1 / -1; margin-top: 15px;">
-            <div class="preview-label">Description</div>
-            <div class="preview-value" id="preview-description" style="font-weight: normal; line-height: 1.5;">-</div>
         </div>
     </div>
 </div>
 
 <script>
+    // Initialize type badges
     document.addEventListener('DOMContentLoaded', function() {
+        const typeBadges = document.querySelectorAll('.type-badge');
+        const typeSelect = document.querySelector('select[name="type"]');
+        
+        typeBadges.forEach(badge => {
+            badge.addEventListener('click', function() {
+                // Remove active class from all badges
+                typeBadges.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked badge
+                this.classList.add('active');
+                // Update hidden select value
+                const value = this.getAttribute('data-value');
+                typeSelect.value = value;
+                // Update preview
+                document.getElementById('preview-type').textContent = value;
+            });
+        });
+        
         // Real-time preview updates
-        const projectSelect = document.getElementById('project_id');
-        const pmSelect = document.getElementById('project_manager_id');
-        const developerSelect = document.getElementById('developer_id');
-        const titleInput = document.getElementById('title');
-        const descriptionInput = document.getElementById('description');
-        const startDateInput = document.getElementById('start_date');
-        const deadlineInput = document.getElementById('deadline');
+        const nameInput = document.querySelector('input[name="name"]');
+        const startDateInput = document.querySelector('input[name="start_date"]');
+        const deadlineInput = document.querySelector('input[name="deadline"]');
         
-        // Update project preview
-        projectSelect.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            document.getElementById('preview-project').textContent = selectedOption.text || '-';
+        nameInput.addEventListener('input', function() {
+            document.getElementById('preview-name').textContent = this.value || '-';
         });
         
-        // Update project manager preview
-        pmSelect.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            document.getElementById('preview-pm').textContent = selectedOption.text || '-';
-        });
-        
-        // Update developer preview
-        developerSelect.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            document.getElementById('preview-developer').textContent = selectedOption.text || '-';
-        });
-        
-        // Update title preview
-        titleInput.addEventListener('input', function() {
-            document.getElementById('preview-title').textContent = this.value || '-';
-        });
-        
-        // Update description preview
-        descriptionInput.addEventListener('input', function() {
-            document.getElementById('preview-description').textContent = this.value || '-';
-        });
-        
-        // Update start date preview
         startDateInput.addEventListener('change', function() {
             if (this.value) {
                 const date = new Date(this.value);
@@ -646,7 +588,6 @@
             }
         });
         
-        // Update deadline preview
         deadlineInput.addEventListener('change', function() {
             if (this.value) {
                 const date = new Date(this.value);
@@ -661,14 +602,14 @@
         });
         
         // Form validation
-        const form = document.getElementById('taskForm');
+        const form = document.getElementById('projectForm');
         form.addEventListener('submit', function(e) {
             const startDate = new Date(startDateInput.value);
             const deadline = new Date(deadlineInput.value);
             
             if (deadline <= startDate) {
                 e.preventDefault();
-                alert('Task deadline must be after the start date.');
+                alert('Project deadline must be after the start date.');
                 deadlineInput.focus();
             }
         });
@@ -684,22 +625,7 @@
         const today = new Date().toISOString().split('T')[0];
         startDateInput.min = today;
         
-        // Initialize preview with current values if any
-        if (projectSelect.value) {
-            projectSelect.dispatchEvent(new Event('change'));
-        }
-        if (pmSelect.value) {
-            pmSelect.dispatchEvent(new Event('change'));
-        }
-        if (developerSelect.value) {
-            developerSelect.dispatchEvent(new Event('change'));
-        }
-        if (titleInput.value) {
-            titleInput.dispatchEvent(new Event('input'));
-        }
-        if (descriptionInput.value) {
-            descriptionInput.dispatchEvent(new Event('input'));
-        }
+        // Initialize preview with current date values if any
         if (startDateInput.value) {
             startDateInput.dispatchEvent(new Event('change'));
         }

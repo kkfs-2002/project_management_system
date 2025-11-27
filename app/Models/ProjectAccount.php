@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-
 class ProjectAccount extends Model
 {
     use HasFactory;
@@ -16,6 +15,13 @@ class ProjectAccount extends Model
         'advance',
         'hosting_fee',
         'developer_fee',
+        'profit',
+        'balance',
+        'renewal_date',
+    ];
+
+    protected $casts = [
+        'renewal_date' => 'date',
     ];
 
     // Relationship
@@ -24,15 +30,27 @@ class ProjectAccount extends Model
         return $this->belongsTo(Project::class);
     }
 
-    // Accessors for derived values
+    // Accessors for derived values (optional - ඔබට ඕන නම්)
     public function getCreditAttribute()
     {
         return $this->total_payment - $this->advance;
     }
 
-    public function getProfitAttribute()
+    // Auto calculate profit if not set
+    public function getProfitAttribute($value)
     {
-        return $this->total_payment - ($this->hosting_fee + $this->developer_fee);
+        if ($value === null) {
+            return $this->total_payment - ($this->hosting_fee + $this->developer_fee);
+        }
+        return $value;
     }
 
+    // Auto calculate balance if not set
+    public function getBalanceAttribute($value)
+    {
+        if ($value === null) {
+            return $this->total_payment - $this->advance;
+        }
+        return $value;
+    }
 }
