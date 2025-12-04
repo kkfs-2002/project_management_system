@@ -6,6 +6,9 @@
   <title>@yield('title', 'Super Admin Dashboard')</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+   <!-- Add Chart.js CDN HERE -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
   <style>
     body {
       background-color: #f8f9fa;
@@ -349,8 +352,9 @@
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="financeDropdown">
             <li><a class="dropdown-item" href="{{ route('superadmin.project.index') }}">New Projects Financial Entry</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.project.transactions') }}">View All Transactions</a></li>
+             <li><a class="dropdown-item" href="{{ route('superadmin.project.monthly-profit') }}">Monthly-Profit</a></li>
+              <li><a class="dropdown-item" href="{{ route('superadmin.project.yearly-profit') }}">Yearly-profit/a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.expenses.index') }}">Expense Tracker</a></li>
-       
             <li><a class="dropdown-item" href="{{ route('superadmin.salary.index') }}">Employee Salary View</a></li>
        
           </ul>

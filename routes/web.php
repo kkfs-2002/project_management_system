@@ -151,9 +151,20 @@ Route::middleware('auth')->prefix('marketing')->name('marketing.')->group(functi
 
 
 Route::prefix('superadmin/project')->name('superadmin.project.')->group(function () {
+    // Existing routes
     Route::get('/', [ProjectController::class, 'index'])->name('index');
     Route::get('/create', [ProjectController::class, 'create'])->name('create');
     Route::post('/store', [ProjectController::class, 'store'])->name('store');
+    
+   
+    
+    // Monthly Profit Routes (FIXED)
+    Route::get('/monthly-profit', [ProjectController::class, 'monthlyProfit'])->name('monthly-profit');
+    Route::get('/monthly-profit/download-pdf', [ProjectController::class, 'downloadMonthlyPdf'])->name('download-monthly-pdf');
+    
+    // Yearly Profit Routes (FIXED)
+    Route::get('/yearly-profit', [ProjectController::class, 'yearlyProfit'])->name('yearly-profit');
+    Route::get('/yearly-profit/download-pdf', [ProjectController::class, 'downloadYearlyPdf'])->name('download-yearly-pdf');
 
     // Financials
     Route::get('/{project}/financials/create', [ProjectController::class, 'createFinancials'])->name('financials.create');
@@ -166,6 +177,7 @@ Route::prefix('superadmin/project')->name('superadmin.project.')->group(function
     Route::get('/financials/{account}/edit', [ProjectController::class, 'editFinancials'])->name('financials.edit');
     Route::put('/financials/{account}', [ProjectController::class, 'updateFinancials'])->name('financials.update');
     Route::delete('/financials/{account}', [ProjectController::class, 'destroyFinancials'])->name('financials.destroy');
+
 });
 
 
@@ -290,6 +302,9 @@ Route::prefix('superadmin/password')
 Route::prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses.index');
     Route::get('/expenses/create', [ExpenseController::class, 'create'])->name('expenses.create');
+      Route::get('/expenses/{expense}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit');
+       Route::put('/expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
+    Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
     Route::post('/expenses', [ExpenseController::class, 'store'])->name('expenses.store');
     Route::get('expenses/pdf', [ExpenseController::class, 'downloadPdf'])->name('expenses.pdf');
 });
@@ -298,7 +313,18 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
     Route::get('/salaries', [SalaryController::class, 'index'])->name('salary.index');
     Route::get('/salaries/create', [SalaryController::class, 'create'])->name('salary.create');
     Route::post('/salaries', [SalaryController::class, 'store'])->name('salary.store');
+    Route::get('/salaries/{id}', [SalaryController::class, 'show'])->name('salary.show');
+    
+    // මේක ADD කරන්න ↓↓↓
+    Route::delete('/salaries/{id}', [SalaryController::class, 'destroy'])->name('salary.destroy');
+      Route::get('/salaries/{id}/edit', [SalaryController::class, 'edit'])->name('salary.edit');
+    Route::put('/salaries/{id}', [SalaryController::class, 'update'])->name('salary.update');
+    
 });
+ 
+
+    
+
 
 //Logout Developer
 Route::post('/developer/logout', function (Request $request) {

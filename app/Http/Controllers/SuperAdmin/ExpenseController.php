@@ -87,5 +87,12 @@ public function downloadPdf(Request $request)
 
     return $pdf->download('monthly_expenses_' . $year . '.pdf');
 }
+  public function destroy(Expense $expense)
+    {
+        $expense->delete();
+
+        return redirect()->route('superadmin.expenses.index')
+            ->with('success', 'Expense deleted successfully!');
+    }
 
 }

@@ -185,7 +185,157 @@ public function destroyFinancials(ProjectAccount $account)
 }
 
 
+ // ==================== MONTHLY PROFIT PAGE ====================
+    public function monthlyProfit(Request $request)
+    {
+        $month = $request->input('month', Carbon::now()->format('Y-m'));
+        $year = Carbon::parse($month)->year;
+        $monthNum = Carbon::parse($month)->month;
+        
+        // Get monthly data with single optimized query
+        $monthlyData = ProjectAccount::with('project')
+            ->whereHas('project', function ($query) use ($year, $monthNum) {
+                $query->whereYear('start_date', $year)
+                      ->whereMonth('start_date', $monthNum);
+            })
+            ->get();
 
+        // Calculate summary
+        $monthlySummary = [
+            'total_projects' => $monthlyData->count(),
+            'total_payment' => $monthlyData->sum('total_payment'),
+            'total_advance' => $monthlyData->sum('advance'),
+            'total_hosting' => $monthlyData->sum('hosting_fee'),
+            'total_developer' => $monthlyData->sum('developer_fee'),
+            'total_profit' => $monthlyData->sum('profit'),
+            'total_balance' => $monthlyData->sum('balance'),
+        ];
+
+        // Get months for dropdown (last 12 months)
+        $months = collect();
+        for ($i = 0; $i < 12; $i++) {
+            $date = Carbon::now()->subMonths($i);
+            $months->push([
+                'value' => $date->format('Y-m'),
+                'label' => $date->format('F Y')
+            ]);
+        }
+
+        return view('superadmin.project.monthly-profit', compact(
+            'month',
+            'monthlyData',
+            'monthlySummary',
+            'months'
+        ));
+    }
+
+    // ==================== YEARLY PROFIT PAGE ====================
+public function yearlyProfit(Request $request)
+{
+    $year = $request->input('year', Carbon::now()->year);
+    
+    // Get yearly data with optimized query
+    $yearlyData = ProjectAccount::with('project')
+        ->whereHas('project', function ($query) use ($year) {
+            $query->whereYear('start_date', $year);
+        })
+        ->get();
+
+    // Debug: Check data
+    \Log::info('Yearly Data Count: ' . $yearlyData->count());
+    
+    // Calculate yearly summary
+    $yearlySummary = [
+        'total_projects' => $yearlyData->count(),
+        'total_payment' => $yearlyData->sum('total_payment'),
+        'total_advance' => $yearlyData->sum('advance'),
+        'total_hosting' => $yearlyData->sum('hosting_fee'),
+        'total_developer' => $yearlyData->sum('developer_fee'),
+        'total_profit' => $yearlyData->sum('profit'),
+        'total_balance' => $yearlyData->sum('balance'),
+    ];
+
+    // Monthly breakdown for the year
+    $monthlyBreakdown = [];
+    $monthNames = [
+        1 => 'January', 2 => 'February', 3 => 'March', 4 => 'April',
+        5 => 'May', 6 => 'June', 7 => 'July', 8 => 'August',
+        9 => 'September', 10 => 'October', 11 => 'November', 12 => 'December'
+    ];
+
+    for ($month = 1; $month <= 12; $month++) {
+        $monthData = $yearlyData->filter(function ($account) use ($year, $month) {
+            return Carbon::parse($account->project->start_date)->month == $month;
+        });
+
+        $totalExpenses = $monthData->sum('hosting_fee') + $monthData->sum('developer_fee');
+        
+        $monthlyBreakdown[$month] = [
+            'month_name' => $monthNames[$month],
+            'projects_count' => $monthData->count(),
+            'total_payment' => $monthData->sum('total_payment'),
+            'total_profit' => $monthData->sum('profit'),
+            'total_expenses' => $totalExpenses,
+        ];
+        
+        // Debug each month
+        \Log::info("Month $month: " . json_encode($monthlyBreakdown[$month]));
+    }
+
+    // Get available years for dropdown
+    $availableYears = Project::select(DB::raw('YEAR(start_date) as year'))
+        ->distinct()
+        ->orderBy('year', 'desc')
+        ->pluck('year');
+
+    return view('superadmin.project.yearly-profit', compact(
+        'year',
+        'yearlyData',
+        'yearlySummary',
+        'monthlyBreakdown',
+        'availableYears'
+    ));
+} // Download Monthly PDF
+    public function downloadMonthlyPdf(Request $request)
+    {
+        $month = $request->input('month', Carbon::now()->format('Y-m'));
+        $date = Carbon::parse($month);
+        
+        $monthlyData = ProjectAccount::with('project')
+            ->whereHas('project', function ($query) use ($date) {
+                $query->whereYear('start_date', $date->year)
+                      ->whereMonth('start_date', $date->month);
+            })
+            ->get();
+
+        $pdf = PDF::loadView('superadmin.project.pdf.monthly-profit-pdf', [
+            'monthlyData' => $monthlyData,
+            'month' => $date->format('F Y'),
+            'generatedDate' => Carbon::now()->format('F j, Y')
+        ]);
+
+        return $pdf->download("monthly-profit-{$date->format('Y-m')}.pdf");
+    }
+
+    // Download Yearly PDF
+    public function downloadYearlyPdf(Request $request)
+    {
+        $year = $request->input('year', Carbon::now()->year);
+        
+        $yearlyData = ProjectAccount::with('project')
+            ->whereHas('project', function ($query) use ($year) {
+                $query->whereYear('start_date', $year);
+            })
+            ->get();
+
+        $pdf = PDF::loadView('superadmin.project.pdf.yearly-profit-pdf', [
+            'yearlyData' => $yearlyData,
+            'year' => $year,
+            'generatedDate' => Carbon::now()->format('F j, Y')
+        ]);
+
+        return $pdf->download("yearly-profit-{$year}.pdf");
+    }
 
 
 
