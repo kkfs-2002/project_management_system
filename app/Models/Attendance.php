@@ -12,6 +12,7 @@ class Attendance extends Model
         'user_id',       // Keep for legacy, but nullable
         'user_type',
         'profile_id',    // Primary FK now
+        'role',
         'date',
         'check_in',
         'check_out',
