@@ -20,6 +20,8 @@ use App\Http\Controllers\SuperAdmin\SalaryController;
 use App\Http\Controllers\SuperAdmin\DailyTaskController;
 use App\Http\Controllers\SuperAdmin\KpiController;
 use App\Http\Controllers\Developer\DeveloperController;
+use App\Http\Controllers\SuperAdmin\WhatsAppController;
+use App\Http\Controllers\Marketing\MarketingWhatsAppController;
 use App\Http\Controllers\ProjectManager\ProjectManagerController;
 
 Route::get('/', function () {
@@ -73,7 +75,13 @@ Route::delete('/superadmin/employee/{id}', [EmployeeController::class, 'destroy'
 Route::get('/superadmin/attendance/developer', [AttendanceController::class, 'developer'])->name('attendance.developer');
 Route::get('/superadmin/attendance/marketingmanager', [AttendanceController::class, 'marketingmanager'])->name('attendance.marketingmanager');
 Route::get('/superadmin/attendance/projectmanager', [AttendanceController::class, 'projectmanager'])->name('attendance.projectmanager');
-
+Route::get('/superadmin/attendance/export', [AttendanceController::class, 'export'])->name('superadmin.attendance.export');
+// Attendance API routes
+Route::get('/superadmin/attendance/{id}/details', [AttendanceController::class, 'getAttendanceDetails'])
+    ->name('attendance.details');
+    // Attendance actions routes
+Route::post('/superadmin/attendance/{id}/checkout', [AttendanceController::class, 'markAsCheckedOut'])
+    ->name('attendance.mark.checkout');
 // Admin Dashboard Operations
 Route::get('/admin/operations/logbook', [PMOperationsController::class, 'showLogForm'])->name('admin.operations.logbook');
 Route::post('/admin/operations/logbook', [PMOperationsController::class, 'storeLog'])->name('admin.operations.logbook');
@@ -187,6 +195,7 @@ Route::prefix('superadmin/marketing/clients')->group(function () {
 
     Route::post('/{client}/approve-permission', [ClientController::class, 'approvePermission'])->name('superadmin.clients.approve-permission');
     Route::post('/{client}/reject-permission', [ClientController::class, 'rejectPermission'])->name('superadmin.clients.reject-permission');
+    
 });
 
 // routes/web.php
@@ -219,6 +228,8 @@ Route::middleware('auth')->prefix('projectmanager')->name('projectmanager.')->gr
     
     Route::get('/attendance/history', [AttendanceController::class, 'history'])
         ->name('attendance.history');
+
+        
     
     // ===== TASK/PROJECT ROUTES =====
     // Consolidated tasks index (no {pm} for general; add below if needed)
@@ -260,7 +271,20 @@ Route::middleware('auth')->prefix('developer')->name('developer.')->group(functi
     
     Route::get('/attendance/history', [AttendanceController::class, 'developerHistory'])
         ->name('attendance.history');
+
+
+
+    Route::get('/attendance/marketingmanager', [AttendanceController::class, 'marketingmanager'])
+        ->name('attendance.marketingmanager');
     
+    Route::get('/attendance/{id}/details', [AttendanceController::class, 'getAttendanceDetails'])
+        ->name('attendance.details');
+    
+   Route::get('/attendance/marketing/export', [AttendanceController::class, 'exportMarketingAttendance'])
+    ->name('attendance.export.marketing');
+
+    
+
     // ===== TASK ROUTES =====
     Route::get('/tasks', [TaskController::class, 'developerIndex'])->name('tasks.index');
     Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');

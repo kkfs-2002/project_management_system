@@ -353,7 +353,7 @@
             <li><a class="dropdown-item" href="{{ route('superadmin.project.index') }}">New Projects Financial Entry</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.project.transactions') }}">View All Transactions</a></li>
              <li><a class="dropdown-item" href="{{ route('superadmin.project.monthly-profit') }}">Monthly-Profit</a></li>
-              <li><a class="dropdown-item" href="{{ route('superadmin.project.yearly-profit') }}">Yearly-profit/a></li>
+              <li><a class="dropdown-item" href="{{ route('superadmin.project.yearly-profit') }}">Yearly-profit</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.expenses.index') }}">Expense Tracker</a></li>
             <li><a class="dropdown-item" href="{{ route('superadmin.salary.index') }}">Employee Salary View</a></li>
        
