@@ -476,7 +476,288 @@
     @endif
     @endif
 </div>
+<!-- Salary Section - Only show on developer dashboard -->
+@if(request()->routeIs('developer.dashboard'))
+<div class="row mb-4">
+    <div class="col-lg-10 mx-auto">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-money-bill-wave me-2"></i>My Salary Details
+                </h5>
+            </div>
+            <div class="card-body">
+                @if(isset($salaryDetails) && $salaryDetails->count() > 0)
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Payment Method</th>
+                                    <th>Paid Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($salaryDetails as $salary)
+                                    <tr>
+                                        <td>{{ \Carbon\Carbon::parse($salary->salary_month)->format('F Y') }}</td>
+                                        <td class="fw-bold text-primary">Rs. {{ number_format($salary->amount, 2) }}</td>
+                                        <td>
+                                            @if($salary->status == 'paid')
+                                                <span class="badge bg-success">Paid</span>
+                                            @else
+                                                <span class="badge bg-warning">Pending</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($salary->payment_method)
+                                                <span class="badge bg-info">
+                                                    {{ ucfirst(str_replace('_', ' ', $salary->payment_method)) }}
+                                                </span>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($salary->status == 'paid' && $salary->updated_at)
+                                                {{ \Carbon\Carbon::parse($salary->updated_at)->format('d M Y') }}
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary view-salary-details" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#salaryModal"
+                                                    data-month="{{ \Carbon\Carbon::parse($salary->salary_month)->format('F Y') }}"
+                                                    data-amount="Rs. {{ number_format($salary->amount, 2) }}"
+                                                    data-status="{{ $salary->status }}"
+                                                    data-method="{{ $salary->payment_method ? ucfirst(str_replace('_', ' ', $salary->payment_method)) : 'Not specified' }}"
+                                                    data-paiddate="{{ $salary->status == 'paid' && $salary->updated_at ? \Carbon\Carbon::parse($salary->updated_at)->format('d M Y') : 'Not paid yet' }}"
+                                                    data-notes="{{ $salary->notes ?? 'No additional notes' }}">
+                                                <i class="fas fa-eye"></i> View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Salary Summary -->
+                    @if(isset($salarySummary))
+                    <div class="row mt-4">
+                        <div class="col-md-3 col-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center py-3">
+                                    <h6 class="text-muted mb-1">This Month</h6>
+                                    <h4 class="text-primary mb-0">
+                                        Rs. {{ number_format($salarySummary['current_month'] ?? 0, 2) }}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center py-3">
+                                    <h6 class="text-muted mb-1">Last Month</h6>
+                                    <h4 class="text-success mb-0">
+                                        Rs. {{ number_format($salarySummary['last_month'] ?? 0, 2) }}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center py-3">
+                                    <h6 class="text-muted mb-1">Year Total</h6>
+                                    <h4 class="text-info mb-0">
+                                        Rs. {{ number_format($salarySummary['year_total'] ?? 0, 2) }}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card bg-light">
+                                <div class="card-body text-center py-3">
+                                    <h6 class="text-muted mb-1">Pending</h6>
+                                    <h4 class="text-warning mb-0">
+                                        Rs. {{ number_format($salarySummary['pending'] ?? 0, 2) }}
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    
+                @else
+                    <div class="text-center py-5">
+                        <i class="fas fa-money-bill-wave fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No salary records available</h5>
+                        <p class="text-muted">Your salary information will be visible here once processed by accounts department.</p>
+                    </div>
+                @endif
+            </div>
+            <div class="card-footer bg-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                        <i class="fas fa-shield-alt me-1"></i>
+                        Salary information is confidential and secure
+                    </small>
+                    <a href="mailto:accounts@netit.lk?subject=Developer Salary Inquiry" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-envelope me-1"></i> Contact Accounts
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Developer Salary Modal -->
+<div class="modal fade" id="salaryModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Salary Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Month:</strong></p>
+                        <p><strong>Amount:</strong></p>
+                        <p><strong>Status:</strong></p>
+                        <p><strong>Payment Method:</strong></p>
+                        <p><strong>Paid Date:</strong></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p id="modal-month"></p>
+                        <p id="modal-amount" class="fw-bold text-primary"></p>
+                        <p id="modal-status"></p>
+                        <p id="modal-method"></p>
+                        <p id="modal-paiddate"></p>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <p><strong>Notes:</strong></p>
+                    <p id="modal-notes" class="text-muted"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="printSalaryDetails()">
+                    <i class="fas fa-print me-1"></i> Print
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const viewButtons = document.querySelectorAll('.view-salary-details');
+    
+    viewButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            document.getElementById('modal-month').textContent = this.dataset.month;
+            document.getElementById('modal-amount').textContent = this.dataset.amount;
+            document.getElementById('modal-status').innerHTML = this.dataset.status === 'paid' 
+                ? '<span class="badge bg-success">Paid</span>' 
+                : '<span class="badge bg-warning">Pending</span>';
+            document.getElementById('modal-method').textContent = this.dataset.method;
+            document.getElementById('modal-paiddate').textContent = this.dataset.paiddate;
+            document.getElementById('modal-notes').textContent = this.dataset.notes;
+        });
+    });
+});
+
+function printSalaryDetails() {
+    const month = document.getElementById('modal-month').textContent;
+    const amount = document.getElementById('modal-amount').textContent;
+    const status = document.getElementById('modal-status').innerHTML;
+    const method = document.getElementById('modal-method').textContent;
+    const paiddate = document.getElementById('modal-paiddate').textContent;
+    const notes = document.getElementById('modal-notes').textContent;
+    
+    const printContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Salary Slip - Developer</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                .salary-slip { max-width: 800px; margin: 0 auto; }
+                .text-center { text-align: center; }
+                .text-right { text-align: right; }
+                .fw-bold { font-weight: bold; }
+                .border-bottom { border-bottom: 1px solid #000; padding-bottom: 10px; }
+                .mt-4 { margin-top: 20px; }
+                .pt-4 { padding-top: 20px; }
+                .badge { padding: 3px 8px; border-radius: 4px; font-size: 12px; }
+                .bg-success { background-color: #28a745; color: white; }
+                .bg-warning { background-color: #ffc107; color: black; }
+                @media print {
+                    .no-print { display: none; }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="salary-slip">
+                <div class="text-center border-bottom">
+                    <h3 class="text-primary">NET IT TECHNOLOGY</h3>
+                    <p class="text-muted">Developer Salary Slip</p>
+                </div>
+                
+                <div class="mt-4">
+                    <div class="row">
+                        <div class="col-6">
+                            <p><strong>Month:</strong> ${month}</p>
+                            <p><strong>Amount:</strong> ${amount}</p>
+                            <p><strong>Status:</strong> ${status}</p>
+                        </div>
+                        <div class="col-6 text-right">
+                            <p><strong>Payment Method:</strong> ${method}</p>
+                            <p><strong>Paid Date:</strong> ${paiddate}</p>
+                            <p><strong>Printed Date:</strong> ${new Date().toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-top">
+                        <p><strong>Notes:</strong></p>
+                        <p class="text-muted">${notes}</p>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-top">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <p class="border-top pt-2 mt-4">Developer Signature</p>
+                            </div>
+                            <div class="col-6 text-center">
+                                <p class="border-top pt-2 mt-4">Accounts Department</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="no-print text-center mt-4">
+                <button onclick="window.print()" class="btn btn-primary">Print</button>
+                <button onclick="window.close()" class="btn btn-secondary">Close</button>
+            </div>
+        </body>
+        </html>
+    `;
+    
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+}
+</script>
+@endif
 <!-- Bootstrap Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

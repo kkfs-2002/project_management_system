@@ -470,6 +470,306 @@
     </div>
     @endif
 </div>
+<!-- Salary Section - Only show on dashboard -->
+@if(request()->routeIs('projectmanager.dashboard'))
+<div class="row mb-4">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-money-bill-wave me-2"></i>My Salary Details
+                </h5>
+            </div>
+            <div class="card-body">
+                @if(isset($salaryDetails) && $salaryDetails->count() > 0)
+                    <div class="row">
+                        <!-- Quick Stats -->
+                        <div class="col-md-4 mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted mb-2">Current Salary</h6>
+                                    <h3 class="text-info mb-0">
+                                        Rs. {{ number_format($currentSalary ?? 0, 2) }}
+                                    </h3>
+                                    <small class="text-muted">per month</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted mb-2">Last Payment</h6>
+                                    <h4 class="text-success mb-0">
+                                        Rs. {{ number_format($lastPayment ?? 0, 2) }}
+                                    </h4>
+                                    <small class="text-muted">
+                                        {{ $lastPaymentDate ? \Carbon\Carbon::parse($lastPaymentDate)->format('d M Y') : 'N/A' }}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="card bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted mb-2">Pending</h6>
+                                    <h4 class="text-warning mb-0">
+                                        Rs. {{ number_format($pendingAmount ?? 0, 2) }}
+                                    </h4>
+                                    <small class="text-muted">to be processed</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Salary Table -->
+                    <div class="table-responsive mt-3">
+                        <table class="table table-hover table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Month</th>
+                                    <th>Basic Salary</th>
+                                    <th>Allowances</th>
+                                    <th>Deductions</th>
+                                    <th>Net Salary</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($salaryDetails as $index => $salary)
+                                    @php
+                                        // Calculate allowances and deductions (you can modify this based on your logic)
+                                        $allowances = $salary->amount * 0.1; // 10% allowance example
+                                        $deductions = $salary->amount * 0.05; // 5% deduction example
+                                        $netSalary = $salary->amount + $allowances - $deductions;
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>
+                                            <strong>{{ \Carbon\Carbon::parse($salary->salary_month)->format('M Y') }}</strong><br>
+                                            <small class="text-muted">{{ \Carbon\Carbon::parse($salary->salary_month)->format('F') }}</small>
+                                        </td>
+                                        <td>Rs. {{ number_format($salary->amount, 2) }}</td>
+                                        <td class="text-success">+ Rs. {{ number_format($allowances, 2) }}</td>
+                                        <td class="text-danger">- Rs. {{ number_format($deductions, 2) }}</td>
+                                        <td class="fw-bold text-primary">Rs. {{ number_format($netSalary, 2) }}</td>
+                                        <td>
+                                            @if($salary->status == 'paid')
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check-circle me-1"></i> Paid
+                                                </span>
+                                                @if($salary->updated_at)
+                                                    <br>
+                                                    <small class="text-muted">
+                                                        {{ \Carbon\Carbon::parse($salary->updated_at)->format('d/m') }}
+                                                    </small>
+                                                @endif
+                                            @else
+                                                <span class="badge bg-warning">
+                                                    <i class="fas fa-clock me-1"></i> Pending
+                                                </span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-outline-info view-slip" 
+                                                        data-salary-id="{{ $salary->id }}">
+                                                    <i class="fas fa-file-invoice"></i>
+                                                </button>
+                                                <a href="javascript:void(0)" 
+                                                   class="btn btn-outline-success download-payslip" 
+                                                   data-month="{{ $salary->salary_month }}">
+                                                    <i class="fas fa-download"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            @if(isset($totalNetSalary))
+                                <tfoot class="table-light">
+                                    <tr>
+                                        <td colspan="5" class="text-end fw-bold">Total Net Salary:</td>
+                                        <td class="fw-bold text-success">Rs. {{ number_format($totalNetSalary, 2) }}</td>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                </tfoot>
+                            @endif
+                        </table>
+                    </div>
+                    
+                    <!-- Chart (Optional) -->
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Salary Trend</h6>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="salaryChart" height="150"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="mb-0">Payment Status</h6>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="paymentChart" height="150"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                @else
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-money-bill-wave fa-4x text-info opacity-50"></i>
+                        </div>
+                        <h5 class="text-muted mb-3">No salary records available</h5>
+                        <p class="text-muted mb-4">Salary information will be displayed here once processed.</p>
+                        <button class="btn btn-outline-info" onclick="requestSalaryInfo()">
+                            <i class="fas fa-paper-plane me-2"></i> Request Salary Information
+                        </button>
+                    </div>
+                @endif
+            </div>
+            <div class="card-footer bg-light">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-info-circle text-info me-2"></i>
+                            <small class="text-muted">
+                                Salary payments are processed between 1st - 5th of each month. 
+                                Contact accounts@netit.lk for queries.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-info" onclick="exportSalaryData()">
+                                <i class="fas fa-file-export me-1"></i> Export
+                            </button>
+                            <button class="btn btn-sm btn-info" onclick="window.print()">
+                                <i class="fas fa-print me-1"></i> Print
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Initialize salary charts
+document.addEventListener('DOMContentLoaded', function() {
+    // View salary slip
+    const viewButtons = document.querySelectorAll('.view-slip');
+    viewButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const salaryId = this.dataset.salaryId;
+            viewSalarySlip(salaryId);
+        });
+    });
+    
+    // Download payslip
+    const downloadButtons = document.querySelectorAll('.download-payslip');
+    downloadButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const month = this.dataset.month;
+            downloadPayslip(month);
+        });
+    });
+    
+    // Initialize charts if data exists
+    @if(isset($salaryChartData))
+    initCharts(@json($salaryChartData));
+    @endif
+});
+
+function viewSalarySlip(salaryId) {
+    // You can implement AJAX call to fetch and display salary slip
+    alert('Viewing salary slip #' + salaryId + '\nThis would open a detailed view in a modal.');
+    // Example AJAX implementation:
+    /*
+    fetch(`/api/salary-slip/${salaryId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Display in modal
+        });
+    */
+}
+
+function downloadPayslip(month) {
+    alert('Downloading payslip for ' + month);
+    // Implement download functionality
+}
+
+function requestSalaryInfo() {
+    const subject = encodeURIComponent('Salary Information Request - Project Manager');
+    const body = encodeURIComponent(`Dear Accounts Department,\n\nI would like to request information about my salary details.\n\nThank you,\nProject Manager`);
+    window.location.href = `mailto:accounts@netit.lk?subject=${subject}&body=${body}`;
+}
+
+function exportSalaryData() {
+    alert('Exporting salary data...');
+    // Implement export functionality (CSV, PDF, etc.)
+}
+
+function initCharts(chartData) {
+    // Salary Trend Chart
+    const ctx1 = document.getElementById('salaryChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: chartData.months || [],
+            datasets: [{
+                label: 'Net Salary',
+                data: chartData.amounts || [],
+                borderColor: '#36a2eb',
+                backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+    
+    // Payment Status Chart
+    const ctx2 = document.getElementById('paymentChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: ['Paid', 'Pending'],
+            datasets: [{
+                data: chartData.status || [70, 30],
+                backgroundColor: ['#4bc0c0', '#ffcd56']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+}
+</script>
+@endif
 <!-- Bootstrap Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>

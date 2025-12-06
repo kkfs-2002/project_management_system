@@ -116,6 +116,13 @@ Route::middleware('auth')->prefix('marketing')->name('marketing.')->group(functi
     // --- DASHBOARD ---
     Route::get('/dashboard', [MarketingClientController::class, 'dashboard'])
         ->name('dashboard');
+        // Marketing manager routes
+Route::get('/marketing/salary', [MarketingClientController::class, 'salaryIndex'])
+    ->name('marketing.salary.index');
+
+// Project manager routes  
+Route::get('/projectmanager/{id}/salary', [ProjectManagerController::class, 'salaryIndex'])
+    ->name('projectmanager.salary.index');
 
     // --- ATTENDANCE ROUTES ---
     Route::post('/attendance/checkin', [AttendanceController::class, 'checkIn'])
@@ -164,7 +171,11 @@ Route::prefix('superadmin/project')->name('superadmin.project.')->group(function
     Route::get('/create', [ProjectController::class, 'create'])->name('create');
     Route::post('/store', [ProjectController::class, 'store'])->name('store');
     
-   
+
+
+// Project manager routes  
+Route::get('/projectmanager/{id}/salary', [ProjectManagerController::class, 'salaryIndex'])
+    ->name('projectmanager.salary.index');
     
     // Monthly Profit Routes (FIXED)
     Route::get('/monthly-profit', [ProjectController::class, 'monthlyProfit'])->name('monthly-profit');
@@ -256,12 +267,18 @@ Route::prefix('developer')->group(function() {
 //Developer Dasboard 
 Route::get('/developer/{id}/dashboard', [DeveloperController::class, 'dashboard'])->name('developer.dashboard');
 
+
+   Route::get('/developer/salary-history', [DeveloperController::class, 'salaryHistory'])
+        ->name('developer.salary.history');  
+
+
 // Developer Routes
 Route::middleware('auth')->prefix('developer')->name('developer.')->group(function () {
     
     // ===== DASHBOARD =====
     Route::get('/dashboard', [DeveloperController::class, 'dashboard'])->name('dashboard');
-    
+
+   
     // ===== ATTENDANCE ROUTES =====
     Route::post('/attendance/checkin', [AttendanceController::class, 'developerCheckIn'])
         ->name('attendance.checkin');
@@ -371,6 +388,7 @@ Route::post('/projectmanager/logout', function (Illuminate\Http\Request $request
 //Project manager dashboard
 Route::get('/projectmanager/{id}/dashboard', [ProjectManagerController::class, 'dashboard'])
     ->name('projectmanager.dashboard');
+    
 
 Route::post('/tasks/{id}/complete', [TaskController::class, 'markAsCompleted']);
 
