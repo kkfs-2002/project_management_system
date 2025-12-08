@@ -263,7 +263,318 @@ me image eka wage ui change wenn oni habi man den code wla details e widihtm thy
       max-width: 150px;
       margin-bottom: 20px;
     }
+/* Blue themed attendance card */
+.attendance-card {
+    background: linear-gradient(135deg, #000015ff, #040441ff); /* deep blue gradient */
+    color: white !important;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    backdrop-filter: blur(10px);
+}
+
+/* Titles, text, icons all turn white */
+.attendance-card h3,
+.attendance-card p,
+.attendance-card .h5,
+.attendance-card strong,
+.attendance-card i {
+    color: white !important;
+}
+
+/* Time + Date display */
+.time-display,
+.attendance-status {
+    font-size: 20px;
+    font-weight: 600;
+    color: #e8f1ff !important;
+}
+
+/* Alerts */
+.attendance-card .alert {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #ffffff !important;
+}
+
+/* Buttons */
+.btn-check-in {
+    background-color: #28a745 !important;
+    border: none;
+    color: white;
+}
+
+.btn-check-out {
+    background-color: #dc3545 !important;
+    border: none;
+    color: white;
+}
+
+/* History button */
+.btn-light.btn-sm {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white !important;
+}
+
+/* Image animation stays same */
+.attendance-illustration {
+    width: 100%;
+    max-width: 380px;
+    opacity: 0;
+    transform: translateX(-40px);
+    animation: fadeSlide 1.2s ease-out forwards;
+}
+
+@keyframes fadeSlide {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+/* ============================
+   SALARY SECTION - BLUE THEME
+   ============================ */
+
+/* Main Card */
+.salary-card {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #f8faff;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.10);
+}
+
+/* Header */
+.salary-card .card-header {
+    background: linear-gradient(135deg, #1e3c72, #2a5298) !important;
+    color: #fff !important;
+    border-bottom: none;
+    padding: 18px 22px;
+}
+
+/* Table Styling */
+.salary-card table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.salary-card thead {
+    background: #e3eefd !important;
+}
+
+.salary-card tbody tr:hover {
+    background: rgba(30, 60, 114, 0.08);
+}
+
+/* Amount */
+.text-salary {
+    color: #0d6efd !important;
+    font-weight: 600;
+}
+
+/* Badges */
+.badge.bg-success {
+    background-color: #03072bff !important;
+}
+.badge.bg-warning {
+    background-color: #f1c40f !important;
+    color: black !important;
+}
+.badge.bg-info {
+    background-color: #3498db !important;
+}
+
+/* Summary Cards */
+.summary-card {
+    border-radius: 14px;
+    background: linear-gradient(135deg, #eef5ff, #d6e4ff);
+    border: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.summary-card h4 {
+    font-weight: bold;
+}
+
+/* Footer */
+.salary-card .card-footer {
+    background: #f0f4ff !important;
+    border-top: none;
+}
+
+/* Contact Button */
+.btn-outline-success {
+    color: #1e3c72 !important;
+    border-color: #1e3c72 !important;
+}
+.btn-outline-success:hover {
+    background: #1e3c72 !important;
+    color: #fff !important;
+}
+
+/* Details Button */
+.btn-outline-success.view-salary {
+    border-color: #2a5298 !important;
+    color: #2a5298 !important;
+}
+.btn-outline-success.view-salary:hover {
+    background: #2a5298 !important;
+    color: white !important;
+}
+
+/* Modal Header */
+#marketingSalaryModal .modal-header {
+    background: linear-gradient(135deg, #1e3c72, #2a5298) !important;
+    color: white !important;
+}
+
+/* Print button */
+#marketingSalaryModal .btn-success {
+    background: #1e3c72 !important;
+    border: none;
+}
+#marketingSalaryModal .btn-success:hover {
+    background: #2a5298 !important;
+}
+  /* Footer */
+    .footer {
+      background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
+      background-size: cover;
+      color: #fff;
+      padding: 50px 0 20px;
+      position: relative;
+      margin-top: auto;
+    }
+
+    .footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 0;
+    }
+
+    .footer > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer a {
+      color: #00c6ff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer a:hover {
+      color: #ffdd00;
+    }
+
+    .footer h5 {
+      color: #A7C7E7;
+      font-weight: 600;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+    }
     
+    .footer p {
+      color: #b0b0b0;
+      line-height: 1.6;
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: #b0b0b0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+    
+    .footer-links a:hover {
+      color: #A7C7E7;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .contact-info {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .contact-info li {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .contact-info i {
+      color: #A7C7E7;
+      margin-right: 10px;
+      margin-top: 3px;
+      font-size: 1rem;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+      background: #A7C7E7;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(167, 199, 231, 0.3);
+    }
+    
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+      margin-top: 40px;
+      text-align: center;
+    }
+    
+    .footer-bottom p {
+      margin: 0;
+      color: #888;
+      font-size: 0.9rem;
+    }
+    
+    .company-logo {
+      max-width: 150px;
+      margin-bottom: 20px;
+    }
+
   </style>
 </head>
 <body>
@@ -345,123 +656,131 @@ me image eka wage ui change wenn oni habi man den code wla details e widihtm thy
   @yield('content')
 
   <!-- Attendance Section - Only show on dashboard -->
-  @if(request()->routeIs('marketing.dashboard'))
-  <div class="row mb-4">
-      <div class="col-lg-6 mx-auto">
-          <div class="attendance-card">
-              <div class="text-center">
-                  <h3 class="mb-3">
-                      <i class="fas fa-clock me-2"></i>My Attendance
-                  </h3>
-                  
-                  <div class="time-display" id="currentTime">
-                      Loading...
-                  </div>
-                  
-                  <div class="attendance-status mb-3" id="currentDate">
-                      Loading...
-                  </div>
+@if(request()->routeIs('marketing.dashboard'))
+<div class="row mb-5 d-flex align-items-center justify-content-center">
 
-                  @if(session('attendance_message'))
-                      <div class="alert alert-success alert-dismissible fade show" role="alert">
-                          <i class="fas fa-check-circle me-2"></i>{{ session('attendance_message') }}
-                          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                      </div>
-                  @endif
+    <!-- LEFT SIDE IMAGE WITH ANIMATION -->
+    <div class="col-lg-5 text-center">
+        <img src="/images/team.jpg" 
+             class="img-fluid attendance-illustration"
+             alt="Attendance Illustration">
+    </div>
 
-                  @if(session('attendance_error'))
-                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                          <i class="fas fa-exclamation-circle me-2"></i>{{ session('attendance_error') }}
-                          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                      </div>
-                  @endif
+    <!-- RIGHT SIDE ATTENDANCE CARD WITH FORM -->
+    <div class="col-lg-5">
+        <div class="attendance-card shadow-lg p-4 rounded-4">
 
-                  @if(isset($todayAttendance))
-                      <div class="attendance-info">
-                          <div class="row">
-                              <div class="col-6">
-                                  <p class="mb-1"><strong>Check In:</strong></p>
-                                  <p class="h5">{{ $todayAttendance->check_in ? \Carbon\Carbon::parse($todayAttendance->check_in)->format('h:i A') : '-' }}</p>
-                              </div>
-                              <div class="col-6">
-                                  <p class="mb-1"><strong>Check Out:</strong></p>
-                                  <p class="h5">{{ $todayAttendance->check_out ? \Carbon\Carbon::parse($todayAttendance->check_out)->format('h:i A') : '-' }}</p>
-                              </div>
-                          </div>
-                          @if($todayAttendance->check_in && $todayAttendance->check_out)
-                              <div class="mt-2">
-                                  <p class="mb-1"><strong>Total Hours:</strong></p>
-                                  <p class="h5">
-                                      @php
-                                          $checkIn = \Carbon\Carbon::parse($todayAttendance->check_in);
-                                          $checkOut = \Carbon\Carbon::parse($todayAttendance->check_out);
-                                          $diff = $checkIn->diff($checkOut);
-                                      @endphp
-                                      {{ $diff->h }}h {{ $diff->i }}m
-                                  </p>
-                              </div>
-                          @endif
-                      </div>
-                  @endif
+            <div class="text-center mb-3">
+                <h3 class="fw-bold">
+                    <i class="fas fa-clock me-2 text-primary"></i>My Attendance
+                </h3>
+            </div>
 
-                  <div class="mt-4">
-                      @if(isset($todayAttendance) && $todayAttendance->check_in && $todayAttendance->check_out)
-                          <!-- Both completed -->
-                          <div class="alert alert-light" role="alert">
-                              <i class="fas fa-check-circle me-2"></i>
-                              You have completed your attendance for today!
-                          </div>
-                      @else
-                          <!-- Show both buttons side by side -->
-                          <div class="d-flex gap-3 justify-content-center">
-                              <!-- Check In Button -->
-                              <form action="{{ route('marketing.attendance.checkin') }}" method="POST" id="checkin-form" onsubmit="showLoader(event, 'Checking in...')">
-                                  @csrf
-                                  <input type="hidden" name="timezone" id="timezone-input">
-                                  <button type="submit" class="btn btn-attendance btn-check-in text-white" id="checkin-btn"
-                                      @if(isset($todayAttendance) && $todayAttendance->check_in) disabled @endif>
-                                      <i class="fas fa-sign-in-alt me-2"></i>Check In
-                                  </button>
-                              </form>
-                              
-                              <!-- Check Out Button -->
-                              <form action="{{ route('marketing.attendance.checkout') }}" method="POST" id="checkout-form" onsubmit="showLoader(event, 'Checking out...')">
-                                  @csrf
-                                  <input type="hidden" name="timezone" id="timezone-input-out">
-                                  <button type="submit" class="btn btn-attendance btn-check-out text-white" id="checkout-btn"
-                                      @if(!isset($todayAttendance) || !$todayAttendance->check_in) disabled @endif>
-                                      <i class="fas fa-sign-out-alt me-2"></i>Check Out
-                                  </button>
-                              </form>
-                          </div>
-                      @endif
-                  </div>
+            <!-- Current Time -->
+            <div class="time-display mb-2 text-center" id="currentTime">Loading...</div>
+            <div class="attendance-status mb-3 text-center" id="currentDate">Loading...</div>
 
-                  <div class="mt-3">
-                      <a href="{{ route('marketing.attendance.history') }}" class="btn btn-light btn-sm">
-                          <i class="fas fa-history me-2"></i>View Attendance History
-                      </a>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+            <!-- Success / Error Alerts -->
+            @if(session('attendance_message'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>{{ session('attendance_message') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
 
-  
+            @if(session('attendance_error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ session('attendance_error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
 
-  @endif
-  
+            <!-- Attendance Details -->
+            @if(isset($todayAttendance))
+                <div class="attendance-info mb-3">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <p class="m-0"><strong>Check In:</strong></p>
+                            <p class="h5">{{ $todayAttendance->check_in ? \Carbon\Carbon::parse($todayAttendance->check_in)->format('h:i A') : '-' }}</p>
+                        </div>
+                        <div class="col-6">
+                            <p class="m-0"><strong>Check Out:</strong></p>
+                            <p class="h5">{{ $todayAttendance->check_out ? \Carbon\Carbon::parse($todayAttendance->check_out)->format('h:i A') : '-' }}</p>
+                        </div>
+                    </div>
+
+                    @if($todayAttendance->check_in && $todayAttendance->check_out)
+                        <div class="text-center mt-2">
+                            <p class="m-0"><strong>Total Hours:</strong></p>
+                            <p class="h5">
+                                @php
+                                    $checkIn = \Carbon\Carbon::parse($todayAttendance->check_in);
+                                    $checkOut = \Carbon\Carbon::parse($todayAttendance->check_out);
+                                    $diff = $checkIn->diff($checkOut);
+                                @endphp
+                                {{ $diff->h }}h {{ $diff->i }}m
+                            </p>
+                        </div>
+                    @endif
+                </div>
+            @endif
+
+            <!-- Buttons -->
+            <div class="text-center mt-3">
+                @if(isset($todayAttendance) && $todayAttendance->check_in && $todayAttendance->check_out)
+                    <div class="alert alert-light">
+                        <i class="fas fa-check-circle me-2"></i>You have completed your attendance today!
+                    </div>
+                @else
+                    <div class="d-flex gap-3 justify-content-center">
+
+                        <!-- Check In -->
+                        <form action="{{ route('marketing.attendance.checkin') }}" method="POST" id="checkin-form">
+                            @csrf
+                            <input type="hidden" name="timezone" id="timezone-input">
+                            <button type="submit" class="btn btn-success px-4"
+                                @if(isset($todayAttendance) && $todayAttendance->check_in) disabled @endif>
+                                <i class="fas fa-sign-in-alt me-2"></i>Check In
+                            </button>
+                        </form>
+
+                        <!-- Check Out -->
+                        <form action="{{ route('marketing.attendance.checkout') }}" method="POST" id="checkout-form">
+                            @csrf
+                            <input type="hidden" name="timezone" id="timezone-input-out">
+                            <button type="submit" class="btn btn-danger px-4"
+                                @if(!isset($todayAttendance) || !$todayAttendance->check_in) disabled @endif>
+                                <i class="fas fa-sign-out-alt me-2"></i>Check Out
+                            </button>
+                        </form>
+
+                    </div>
+                @endif
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="{{ route('marketing.attendance.history') }}" class="btn btn-light btn-sm">
+                    <i class="fas fa-history me-2"></i>View Attendance History
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+@endif
+
 </div>
 <!-- Salary Section - Only show on dashboard -->
 @if(request()->routeIs('marketing.dashboard'))
 <div class="row mb-4">
-    <div class="col-lg-8 mx-auto">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0">
-                    <i class="fas fa-money-bill-wave me-2"></i>My Salary Details
-                </h5>
-            </div>
+   <div class="col-lg-8 mx-auto">
+    <div class="card shadow-sm border-0">
+        <div class="card-header text-white" style="background-color: #020d1eff;">
+            <h5 class="mb-0">
+                <i class="fas fa-money-bill-wave me-2"></i>My Salary Details
+            </h5>
+        </div>
+
             <div class="card-body">
                 @if(isset($salaryDetails) && $salaryDetails->count() > 0)
                     <div class="table-responsive">
@@ -739,7 +1058,7 @@ function printSalarySlip() {
     <div class="row">
       <!-- Company Info -->
       <div class="col-lg-4 col-md-6 mb-4">
-        <img src="{{ asset('NetIT logo.png') }}" alt="NetIT Technology" class="company-logo">
+        <h5>NET IT TECHNOLOGY</h5>
         <p>
           Leading provider of cutting-edge software solutions and digital transformation services. 
           We empower businesses to thrive in the digital age.
@@ -793,14 +1112,14 @@ function printSalarySlip() {
             <i class="fas fa-phone"></i>
             <div>
               <strong>Phone</strong><br>
-              +94 76 151 7778
+              +94 76 151 7778
             </div>
           </li>
           <li>
             <i class="fas fa-envelope"></i>
             <div>
               <strong>Email</strong><br>
-             info@netittechnology.com
+              info@netittechnology.com
             </div>
           </li>
           <li>
@@ -811,8 +1130,6 @@ function printSalarySlip() {
             </div>
           </li>
         </ul>
-        
-        
       </div>
     </div>
     
@@ -821,9 +1138,6 @@ function printSalarySlip() {
       <div class="row">
         <div class="col-md-6">
           <p>&copy; 2025 NetIT Technology. All rights reserved.</p>
-        </div>
-        <div class="col-md-6">
-          
         </div>
       </div>
     </div>
