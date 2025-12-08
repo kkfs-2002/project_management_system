@@ -339,7 +339,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="projectsDropdown">
                 <li><a class="dropdown-item" href="{{ route('superadmin.tasks.add') }}">Add New Projects</a></li>
-            <li><a class="dropdown-item" href="{{ route('superadmin.tasks.create') }}">Assigned projects</a></li>
+            <li><a class="dropdown-item" href="{{ route('superadmin.tasks.create') }}">Assign Projects</a></li>
                         <li><a class="dropdown-item" href="{{ route('superadmin.tasks.index') }}">View projects</a></li>
                     
           </ul>

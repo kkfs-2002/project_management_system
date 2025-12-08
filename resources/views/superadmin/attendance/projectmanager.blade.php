@@ -404,158 +404,8 @@
 @section('scripts')
 <script>
 function viewAttendanceDetails(id) {
-    const modalContent = document.getElementById('attendanceDetailsContent');
-    modalContent.innerHTML = `
-        <div class="text-center py-4">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>`;
-    
-    fetch(`/superadmin/attendance/${id}/details`)
-        .then(response => response.json())
-        .then(data => {
-            const modalContent = `
-                <div class="row">
-                    <div class="col-md-4 text-center mb-4">
-                        <div class="avatar-lg mb-3">
-                            <img src="${data.profile_picture || '{{ asset("assets/img/default-avatar.png") }}'}" 
-                                 class="rounded-circle img-thumbnail" 
-                                 style="width: 150px; height: 150px; object-fit: cover;">
-                        </div>
-                        <h5 class="mb-1">${data.full_name}</h5>
-                        <p class="text-muted mb-0">
-                            <i class="fas fa-id-card me-1"></i>${data.employee_id}
-                        </p>
-                        <p class="text-muted mb-3">
-                            <i class="fas fa-briefcase me-1"></i>Project Manager
-                        </p>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-body">
-                                <div class="row g-3">
-                                    <div class="col-12">
-                                        <h6 class="text-primary mb-3">
-                                            <i class="fas fa-calendar-day me-2"></i>
-                                            Attendance Information
-                                        </h6>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-muted mb-1">Date</label>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-calendar text-primary me-2"></i>
-                                            <span class="fw-semibold">${data.date_formatted}</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-muted mb-1">Day</label>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-clock text-primary me-2"></i>
-                                            <span class="fw-semibold">${data.day}</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-muted mb-1">Check In Time</label>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-sign-in-alt ${data.check_in_status === 'Late' ? 'text-warning' : 'text-success'} me-2"></i>
-                                            <div>
-                                                <div class="fw-semibold">${data.check_in_time}</div>
-                                                ${data.check_in_status ? `<div class="text-xs"><span class="badge ${data.check_in_status === 'Late' ? 'bg-warning' : 'bg-success'}">${data.check_in_status}</span></div>` : ''}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label text-muted mb-1">Check Out Time</label>
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-sign-out-alt ${data.check_out_status === 'Early Leave' ? 'text-info' : 'text-success'} me-2"></i>
-                                            <div>
-                                                <div class="fw-semibold">${data.check_out_time}</div>
-                                                ${data.check_out_status ? `<div class="text-xs"><span class="badge ${data.check_out_status === 'Early Leave' ? 'bg-info' : 'bg-success'}">${data.check_out_status}</span></div>` : ''}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="border-top pt-3 mt-2">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <label class="form-label text-muted mb-1">Total Working Hours</label>
-                                                    <h4 class="text-primary mb-0">${data.total_hours}</h4>
-                                                </div>
-                                                <div class="text-end">
-                                                    <label class="form-label text-muted mb-1">Attendance Status</label>
-                                                    <div>
-                                                        <span class="badge ${data.overall_status === 'Completed' ? 'bg-success' : data.overall_status === 'Checked In' ? 'bg-warning' : 'bg-secondary'} fs-6">
-                                                            ${data.overall_status}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-            document.getElementById('attendanceDetailsContent').innerHTML = modalContent;
-            const modal = new bootstrap.Modal(document.getElementById('attendanceDetailsModal'));
-            modal.show();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            document.getElementById('attendanceDetailsContent').innerHTML = `
-                <div class="text-center py-4">
-                    <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
-                    <h5 class="text-danger">Error Loading Details</h5>
-                    <p class="text-muted">Please try again later</p>
-                </div>`;
-        });
-}
-
-function markAsCheckedOut(id) {
-    if(confirm('Are you sure you want to mark check out for this project manager?')) {
-        fetch(`/superadmin/attendance/${id}/checkout`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success) {
-                alert('Check out marked successfully!');
-                location.reload();
-            } else {
-                alert('Error: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        });
-    }
-}
-
-// Initialize tooltips
-document.addEventListener('DOMContentLoaded', function() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-    
-    // Auto refresh every 5 minutes
-    setInterval(() => {
-        if (!document.getElementById('attendanceDetailsModal').classList.contains('show')) {
-            location.reload();
-        }
-    }, 300000);
-});
-
-function viewAttendanceDetails(id) {
     console.log('Loading attendance details for ID:', id);
-    
+   
     const modalContent = document.getElementById('attendanceDetailsContent');
     modalContent.innerHTML = `
         <div class="text-center py-5">
@@ -564,11 +414,11 @@ function viewAttendanceDetails(id) {
             </div>
             <p class="mt-3 text-muted">Loading attendance details...</p>
         </div>`;
-    
+   
     // Show modal first
     const modal = new bootstrap.Modal(document.getElementById('attendanceDetailsModal'));
     modal.show();
-    
+   
     // Fetch data
     fetch(`/superadmin/attendance/${id}/details`)
         .then(response => {
@@ -579,13 +429,13 @@ function viewAttendanceDetails(id) {
         })
         .then(result => {
             console.log('API Response:', result);
-            
+           
             if (!result.success) {
                 throw new Error(result.message || 'Failed to load details');
             }
-            
+           
             const data = result.data;
-            
+           
             const modalContentHTML = `
                 <div class="attendance-details">
                     <!-- Header -->
@@ -593,8 +443,8 @@ function viewAttendanceDetails(id) {
                         <div class="row align-items-center">
                             <div class="col-auto">
                                 <div class="avatar-lg">
-                                    <img src="${data.profile_picture}" 
-                                         class="rounded-circle border border-3 border-primary" 
+                                    <img src="${data.profile_picture}"
+                                         class="rounded-circle border border-3 border-primary"
                                          style="width: 80px; height: 80px; object-fit: cover;">
                                 </div>
                             </div>
@@ -613,7 +463,7 @@ function viewAttendanceDetails(id) {
                             </div>
                         </div>
                     </div>
-                    
+                   
                     <!-- Date Info -->
                     <div class="p-4 border-bottom">
                         <div class="row">
@@ -632,7 +482,7 @@ function viewAttendanceDetails(id) {
                             </div>
                         </div>
                     </div>
-                    
+                   
                     <!-- Time Details -->
                     <div class="p-4">
                         <div class="row">
@@ -646,7 +496,7 @@ function viewAttendanceDetails(id) {
                                             ${data.check_in_time}
                                         </div>
                                         ${data.check_in_full ? `<p class="text-muted small">${data.check_in_full}</p>` : ''}
-                                        
+                                       
                                         ${data.check_in_status ? `
                                             <div class="mt-3">
                                                 <span class="badge bg-${data.check_in_status === 'Late' ? 'warning' : 'success'}">
@@ -665,7 +515,7 @@ function viewAttendanceDetails(id) {
                                     </div>
                                 </div>
                             </div>
-                            
+                           
                             <div class="col-md-6 mb-4">
                                 <div class="card h-100 border-0 shadow-sm">
                                     <div class="card-body text-center">
@@ -676,7 +526,7 @@ function viewAttendanceDetails(id) {
                                             ${data.check_out_time}
                                         </div>
                                         ${data.check_out_full ? `<p class="text-muted small">${data.check_out_full}</p>` : ''}
-                                        
+                                       
                                         ${data.check_out_status ? `
                                             <div class="mt-3">
                                                 <span class="badge bg-${data.check_out_status === 'Early Leave' ? 'warning' : 'success'}">
@@ -696,7 +546,7 @@ function viewAttendanceDetails(id) {
                                 </div>
                             </div>
                         </div>
-                        
+                       
                         <!-- Summary -->
                         <div class="row mt-3">
                             <div class="col-12">
@@ -708,10 +558,10 @@ function viewAttendanceDetails(id) {
                                         <div class="flex-grow-1 ms-3">
                                             <h5 class="alert-heading">${data.overall_status}</h5>
                                             <p class="mb-0">
-                                                ${data.full_name} ${data.overall_status === 'Completed' ? 
-                                                    'has completed their working day.' : 
-                                                    data.overall_status === 'Checked In' ? 
-                                                    'is currently working.' : 
+                                                ${data.full_name} ${data.overall_status === 'Completed' ?
+                                                    'has completed their working day.' :
+                                                    data.overall_status === 'Checked In' ?
+                                                    'is currently working.' :
                                                     'was absent today.'}
                                             </p>
                                         </div>
@@ -720,7 +570,7 @@ function viewAttendanceDetails(id) {
                             </div>
                         </div>
                     </div>
-                    
+                   
                     <!-- Footer -->
                     <div class="modal-footer bg-light">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -731,9 +581,9 @@ function viewAttendanceDetails(id) {
                         </button>
                     </div>
                 </div>`;
-            
+           
             document.getElementById('attendanceDetailsContent').innerHTML = modalContentHTML;
-            
+           
         })
         .catch(error => {
             console.error('Error loading attendance details:', error);
@@ -753,12 +603,11 @@ function viewAttendanceDetails(id) {
                 </div>`;
         });
 }
-
 function printAttendanceDetails(id) {
     // Simple print functionality
     const printContent = document.getElementById('attendanceDetailsContent').innerHTML;
     const originalContent = document.body.innerHTML;
-    
+   
     document.body.innerHTML = `
         <!DOCTYPE html>
         <html>
@@ -798,31 +647,23 @@ function printAttendanceDetails(id) {
         </body>
         </html>
     `;
-    
+   
     window.print();
     document.body.innerHTML = originalContent;
     location.reload(); // Reload to restore original state
 }
-
-// Initialize Bootstrap tooltips
-document.addEventListener('DOMContentLoaded', function() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-});
-
 function markAsCheckedOut(id, button) {
+    console.log('Mark checkout clicked for ID:', id);  // Debug log
+
     if (confirm('Are you sure you want to mark this project manager as checked out?')) {
-        // Show loading state on the specific button
+        // Show loading on button
         const originalHTML = button.innerHTML;
-        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
         button.disabled = true;
-        
-        // Get CSRF token from meta tag
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        
-        // Make the API call
+
+        // Get CSRF (fallback to meta if needed)
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
         fetch(`/superadmin/attendance/${id}/checkout`, {
             method: 'POST',
             headers: {
@@ -830,38 +671,34 @@ function markAsCheckedOut(id, button) {
                 'X-CSRF-TOKEN': csrfToken,
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({})
+            body: JSON.stringify({})  // Empty body if no extra data
         })
         .then(response => {
+            console.log('Response status:', response.status);  // Debug
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
             return response.json();
         })
         .then(data => {
-            console.log('Response data:', data);
-            
+            console.log('Success data:', data);  // Debug
             if (data.success) {
-                // Show success message
-                showToast('success', data.message);
-                
-                // Update the table row
-                updateAttendanceRow(id, data.data || {});
+                showToast('success', data.message);  // Your toast function
+                updateAttendanceRow(id, data.data);  // Update UI without reload
             } else {
-                showToast('error', data.message || 'Failed to mark check out');
+                showToast('error', data.message || 'Unknown error');
                 button.innerHTML = originalHTML;
                 button.disabled = false;
             }
         })
         .catch(error => {
-            console.error('Error:', error);
-            showToast('error', 'An error occurred. Please try again.');
+            console.error('Fetch error:', error);  // Debug
+            showToast('error', 'Network error: ' + error.message);
             button.innerHTML = originalHTML;
             button.disabled = false;
         });
     }
 }
-
 // Function to update the table row without page reload
 function updateAttendanceRow(id, data) {
     const row = document.querySelector(`tr[data-attendance-id="${id}"]`);
@@ -873,18 +710,18 @@ function updateAttendanceRow(id, data) {
         }, 1500);
         return;
     }
-    
+   
     console.log('Updating row for ID:', id, 'with data:', data);
-    
-    // Update check out cell
+   
+    // Update check-out cell
     const checkOutCell = row.querySelector('.check-out-cell');
     if (checkOutCell) {
-        const checkOutTime = data.check_out_time || new Date().toLocaleTimeString('en-US', { 
-            hour: '2-digit', 
+        const checkOutTime = data.check_out_time || new Date().toLocaleTimeString('en-US', {
+            hour: '2-digit',
             minute: '2-digit',
-            hour12: true 
+            hour12: true
         });
-        
+       
         checkOutCell.innerHTML = `
             <div class="text-sm">
                 <div class="fw-semibold text-dark">
@@ -897,7 +734,7 @@ function updateAttendanceRow(id, data) {
             </div>
         `;
     }
-    
+   
     // Update hours cell
     const hoursCell = row.querySelector('.hours-cell');
     if (hoursCell) {
@@ -909,7 +746,7 @@ function updateAttendanceRow(id, data) {
             </div>
         `;
     }
-    
+   
     // Update status cell
     const statusCell = row.querySelector('.status-cell');
     if (statusCell) {
@@ -919,20 +756,17 @@ function updateAttendanceRow(id, data) {
             </span>
         `;
     }
-    
-    // Remove the checkout button
-    const checkoutButton = row.querySelector('.mark-checkout-btn');
-    if (checkoutButton) {
-        checkoutButton.remove();
-    }
+   
+    // Hide checkout button
+    const checkoutBtn = row.querySelector('.mark-checkout-btn');
+    if (checkoutBtn) checkoutBtn.remove();
 }
-
 // Toast notification function
 function showToast(type, message) {
     // Remove existing toasts
     const existingToasts = document.querySelectorAll('.toast-notification');
     existingToasts.forEach(toast => toast.remove());
-    
+   
     // Create toast
     const toast = document.createElement('div');
     toast.className = `toast-notification alert alert-${type} alert-dismissible fade show`;
@@ -944,15 +778,15 @@ function showToast(type, message) {
         min-width: 300px;
         animation: slideInRight 0.3s ease-out;
     `;
-    
+   
     toast.innerHTML = `
-        <strong>${type === 'success' ? '✓ Success!' : '✗ Error!'}</strong> 
+        <strong>${type === 'success' ? '✓ Success!' : '✗ Error!'}</strong>
         ${message}
         <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
     `;
-    
+   
     document.body.appendChild(toast);
-    
+   
     // Auto remove after 5 seconds
     setTimeout(() => {
         if (toast.parentNode) {
@@ -960,6 +794,36 @@ function showToast(type, message) {
         }
     }, 5000);
 }
+// Add CSS for slide in animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+`;
+document.head.appendChild(style);
+// Initialize Bootstrap tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+   
+    // Auto refresh every 5 minutes
+    setInterval(() => {
+        if (!document.getElementById('attendanceDetailsModal').classList.contains('show')) {
+            location.reload();
+        }
+    }, 300000);
+});
+</script>
 
 // Add CSS for slide in animation
 const style = document.createElement('style');

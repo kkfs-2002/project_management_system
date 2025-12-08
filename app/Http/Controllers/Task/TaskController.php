@@ -55,34 +55,34 @@ class TaskController extends Controller
     }
 
     // Task list visible to Super Admin
-    public function superadminIndex(Request $request)
-    {
-        $query = AssignedTask::query();
+    // In TaskController.php
 
-        // Filter by project
-        if ($request->filled('project_id')) {
-            $query->where('project_id', $request->project_id);
-        }
+public function superadminIndex(Request $request)
+{
+    $query = AssignedTask::query();
 
-        // Filter by month
-        if ($request->filled('month')) {
-            [$year, $month] = explode('-', $request->month);
-            $query->whereYear('deadline', $year)
-                ->whereMonth('deadline', $month);
-        }
-
-        // Filter by status
-        if ($request->filled('status') && in_array($request->status, ['Pending', 'Completed', 'Forwarded'])) {
-            $query->where('status', $request->status);
-        }
-
-        $tasks = $query->orderBy('id', 'asc')->get();
-
-        // Pass projects to the view for the filter dropdown
-        $projects = Project::all();
-
-        return view('superadmin.tasks.index', compact('tasks', 'projects'));
+    // Filter by project
+    if ($request->filled('project_id')) {
+        $query->where('project_id', $request->project_id);
     }
+
+    // Filter by month
+    if ($request->filled('month')) {
+        [$year, $month] = explode('-', $request->month);
+        $query->whereYear('deadline', $year)
+            ->whereMonth('deadline', $month);
+    }
+
+    // Filter by status
+    if ($request->filled('status') && in_array($request->status, ['Pending', 'Ongoing', 'Completed', 'Forwarded'])) {
+        $query->where('status', $request->status);
+    }
+
+    $tasks = $query->orderBy('id', 'asc')->get();
+    $projects = Project::all();
+
+    return view('superadmin.tasks.index', compact('tasks', 'projects'));
+}
 
 // Developer task list (only forwarded tasks)
 public function developerIndex(Request $request)

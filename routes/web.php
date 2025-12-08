@@ -80,7 +80,7 @@ Route::get('/superadmin/attendance/export', [AttendanceController::class, 'expor
 Route::get('/superadmin/attendance/{id}/details', [AttendanceController::class, 'getAttendanceDetails'])
     ->name('attendance.details');
     // Attendance actions routes
-Route::post('/superadmin/attendance/{id}/checkout', [AttendanceController::class, 'markAsCheckedOut'])
+Route::post('/superadmin/attendance/{id}/checkout', [SuperAdminAttendanceController::class, 'markAsCheckedOut'])
     ->name('attendance.mark.checkout');
 // Admin Dashboard Operations
 Route::get('/admin/operations/logbook', [PMOperationsController::class, 'showLogForm'])->name('admin.operations.logbook');

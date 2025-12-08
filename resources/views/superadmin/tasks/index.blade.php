@@ -1172,7 +1172,7 @@
         <div class="page-title">
             <i class="fas fa-tasks"></i>
             <div>
-                <h1>Task Management</h1>
+                <h1>Project Management</h1>
                 <p>Monitor and manage all assigned tasks across projects</p>
             </div>
         </div>
@@ -1199,11 +1199,6 @@
             <i class="fas fa-check-circle tab-icon"></i>
             <span class="tab-title">Completed</span>
             <span class="tab-count" id="completed-count">0</span>
-        </div>
-        <div class="status-tab forwarded" data-status="forwarded">
-            <i class="fas fa-share tab-icon"></i>
-            <span class="tab-title">Forwarded</span>
-            <span class="tab-count" id="forwarded-count">0</span>
         </div>
     </div>
 
@@ -1425,26 +1420,26 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize task counts
         updateTaskCounts();
-        
+       
         // Status tab functionality
         const statusTabs = document.querySelectorAll('.status-tab');
         statusTabs.forEach(tab => {
             tab.addEventListener('click', function() {
                 const status = this.getAttribute('data-status');
-                
+               
                 // Update active tab
                 statusTabs.forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
-                
+               
                 // Filter tasks
                 filterTasksByStatus(status);
             });
         });
-        
+       
         // Close details panel
         document.getElementById('details-close').addEventListener('click', closeDetails);
         document.getElementById('details-overlay').addEventListener('click', closeDetails);
-        
+       
         // Tooltips for truncated descriptions
         const descriptionElements = document.querySelectorAll('.description-text');
         descriptionElements.forEach(element => {
@@ -1452,7 +1447,7 @@
                 element.setAttribute('title', element.textContent);
             }
         });
-        
+       
         // Auto-submit form when certain filters change
         const autoSubmitFilters = ['project_id', 'status'];
         autoSubmitFilters.forEach(filterId => {
@@ -1464,227 +1459,254 @@
             }
         });
     });
-    
-    function updateTaskCounts() {
-        const tasks = document.querySelectorAll('.task-row');
-        const counts = {
-            'all': tasks.length,
-            'ongoing': 0,
-            'pending': 0,
-            'completed': 0,
-            'forwarded': 0
-        };
+   
+   function updateTaskCounts() {
+    const tasks = document.querySelectorAll('.task-row');
+    const counts = {
+        'all': tasks.length,
+        'ongoing': 0,
+        'pending': 0,
+        'completed': 0
+    };
+   
+    tasks.forEach(task => {
+        const status = task.getAttribute('data-status').toLowerCase();
         
-        tasks.forEach(task => {
-            const status = task.getAttribute('data-status');
-            if (counts.hasOwnProperty(status)) {
-                counts[status]++;
-            }
-        });
-        
-        // Update tab counts
-        document.getElementById('all-count').textContent = counts.all;
-        document.getElementById('ongoing-count').textContent = counts.ongoing;
-        document.getElementById('pending-count').textContent = counts.pending;
-        document.getElementById('completed-count').textContent = counts.completed;
-        document.getElementById('forwarded-count').textContent = counts.forwarded;
-    }
-    
+        // Count each status
+        if (status === 'pending') counts['pending']++;
+        if (status === 'completed') counts['completed']++;
+        if (status === 'forwarded') {
+            counts['ongoing']++; // Forwarded tasks are ongoing
+        }
+    });
+   
+    // Update tab counts
+    document.getElementById('all-count').textContent = counts.all;
+    document.getElementById('ongoing-count').textContent = counts.ongoing;
+    document.getElementById('pending-count').textContent = counts.pending;
+    document.getElementById('completed-count').textContent = counts.completed;
+}
+   
     function filterTasksByStatus(status) {
         const tasks = document.querySelectorAll('.task-row');
         let visibleCount = 0;
-        
+       
         tasks.forEach(task => {
-            if (status === 'all' || task.getAttribute('data-status') === status) {
+            const taskStatus = task.getAttribute('data-status').toLowerCase();
+            let shouldShow = false;
+            
+            if (status === 'all') {
+                shouldShow = true;
+            } else if (status === 'ongoing') {
+                // Ongoing shows forwarded tasks (they are the same)
+                shouldShow = (taskStatus === 'forwarded');
+            } else {
+                // Other statuses match exactly
+                shouldShow = (taskStatus === status);
+            }
+            
+            if (shouldShow) {
                 task.style.display = '';
                 visibleCount++;
             } else {
                 task.style.display = 'none';
             }
         });
-        
+       
         // Update counts
         document.getElementById('table-count').textContent = visibleCount;
         document.getElementById('results-count').textContent = visibleCount;
         
-        // Show empty state if no tasks
-        const emptyState = document.querySelector('.empty-state');
-        if (visibleCount === 0 && emptyState) {
-            emptyState.style.display = 'block';
-        } else if (emptyState) {
-            emptyState.style.display = 'none';
+        // Handle empty state
+        const tbody = document.getElementById('tasks-body');
+        const emptyState = tbody.querySelector('.empty-state');
+        
+        if (visibleCount === 0 && !emptyState) {
+            const emptyRow = document.createElement('tr');
+            emptyRow.innerHTML = `
+                <td colspan="10">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <h4>No Tasks Found</h4>
+                        <p>No tasks match the selected filter.</p>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(emptyRow);
+        } else if (visibleCount > 0 && emptyState) {
+            emptyState.closest('tr').remove();
         }
     }
-
+    
     function closeDetails() {
         document.getElementById('details-panel').classList.remove('open');
         document.getElementById('details-overlay').classList.remove('active');
     }
 
-function showTaskDetails(taskId) {
-    const taskRow = document.querySelector(`[data-task-id="${taskId}"]`);
-    if (!taskRow) return;
-
-    // Extract task data from the row
-    const taskData = {
-        id: taskId,
-        title: taskRow.querySelector('td:nth-child(3) strong').textContent,
-        description: taskRow.querySelector('.description-text').textContent,
-        project: taskRow.querySelector('.user-cell h6').textContent,
-        developer: taskRow.querySelector('td:nth-child(5) .user-cell h6').textContent,
-        projectManager: taskRow.querySelector('td:nth-child(6) .user-cell h6').textContent,
-        startDate: taskRow.querySelector('td:nth-child(7) .date-value').textContent,
-        deadline: taskRow.querySelector('td:nth-child(8) .date-value').textContent,
-        status: taskRow.querySelector('.badge').textContent.trim(),
-        statusClass: taskRow.querySelector('.badge').className
-    };
-
-    // Update details panel
-    document.getElementById('task-id-display').textContent = `#TASK-${taskId.toString().padStart(3, '0')}`;
-    document.getElementById('task-priority').textContent = 'High Priority';
-    
-    const detailsBody = document.getElementById('details-body');
-    detailsBody.innerHTML = `
-        <!-- Task Overview -->
-        <div class="task-overview">
-            <div class="task-title-section">
-                <h2 class="task-main-title">${taskData.title}</h2>
-                <p class="task-description">${taskData.description}</p>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">
-                    <i class="fas fa-tag"></i>Current Status
-                </span>
-                <span class="detail-value">
-                    <span class="status-badge-large ${taskData.statusClass}">
-                        <i class="fas fa-${getStatusIcon(taskData.status)}"></i>
-                        ${taskData.status}
+    function showTaskDetails(taskId) {
+        const taskRow = document.querySelector(`[data-task-id="${taskId}"]`);
+        if (!taskRow) return;
+        
+        // Extract task data from the row
+        const taskData = {
+            id: taskId,
+            title: taskRow.querySelector('td:nth-child(3) strong').textContent,
+            description: taskRow.querySelector('.description-text').textContent,
+            project: taskRow.querySelector('.user-cell h6').textContent,
+            developer: taskRow.querySelector('td:nth-child(5) .user-cell h6').textContent,
+            projectManager: taskRow.querySelector('td:nth-child(6) .user-cell h6').textContent,
+            startDate: taskRow.querySelector('td:nth-child(7) .date-value').textContent,
+            deadline: taskRow.querySelector('td:nth-child(8) .date-value').textContent,
+            status: taskRow.querySelector('.badge').textContent.trim(),
+            statusClass: taskRow.querySelector('.badge').className
+        };
+        
+        // Update details panel
+        document.getElementById('task-id-display').textContent = `#TASK-${taskId.toString().padStart(3, '0')}`;
+        document.getElementById('task-priority').textContent = 'High Priority';
+       
+        const detailsBody = document.getElementById('details-body');
+        detailsBody.innerHTML = `
+            <!-- Task Overview -->
+            <div class="task-overview">
+                <div class="task-title-section">
+                    <h2 class="task-main-title">${taskData.title}</h2>
+                    <p class="task-description">${taskData.description}</p>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">
+                        <i class="fas fa-tag"></i>Current Status
                     </span>
-                </span>
-            </div>
-        </div>
-
-        <!-- Information Grid -->
-        <div class="info-grid">
-            <!-- Project Information -->
-            <div class="info-card">
-                <h4><i class="fas fa-project-diagram"></i> Project Details</h4>
-                <div class="detail-item">
-                    <span class="detail-label">Project Name</span>
-                    <span class="detail-value">${taskData.project}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Project Type</span>
-                    <span class="detail-value">Web Application</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Client</span>
-                    <span class="detail-value">ABC Corporation</span>
-                </div>
-            </div>
-
-            <!-- Team Information -->
-            <div class="info-card">
-                <h4><i class="fas fa-users"></i> Team Assignment</h4>
-                <div class="detail-item">
-                    <span class="detail-label">Developer</span>
                     <span class="detail-value">
-                        <div class="user-info-detailed">
-                            <div class="user-avatar-large">
-                                ${taskData.developer.charAt(0)}
-                            </div>
-                            <div class="user-details">
-                                <h5>${taskData.developer}</h5>
-                                <p>Senior Developer</p>
-                            </div>
-                        </div>
-                    </span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Project Manager</span>
-                    <span class="detail-value">
-                        <div class="user-info-detailed">
-                            <div class="user-avatar-large">
-                                ${taskData.projectManager.charAt(0)}
-                            </div>
-                            <div class="user-details">
-                                <h5>${taskData.projectManager}</h5>
-                                <p>Project Lead</p>
-                            </div>
-                        </div>
+                        <span class="status-badge-large ${taskData.statusClass}">
+                            <i class="fas fa-${getStatusIcon(taskData.status)}"></i>
+                            ${taskData.status}
+                        </span>
                     </span>
                 </div>
             </div>
-        </div>
-
-        <!-- Progress Section -->
-        <div class="progress-section">
-            <div class="progress-header">
-                <h4><i class="fas fa-chart-line"></i> Progress Tracking</h4>
-                <div class="progress-percentage">75%</div>
-            </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar" style="width: 75%"></div>
-            </div>
-            <div class="progress-stats">
-                <span>Started: ${taskData.startDate}</span>
-                <span>Deadline: ${taskData.deadline}</span>
-            </div>
-        </div>
-
-        <!-- Timeline Section -->
-        <div class="timeline-section">
-            <h4><i class="fas fa-history"></i> Activity Timeline</h4>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h5>Task Created</h5>
-                        <p>Task was assigned and added to the system</p>
-                        <div class="timeline-date">${taskData.startDate}</div>
+            
+            <!-- Information Grid -->
+            <div class="info-grid">
+                <!-- Project Information -->
+                <div class="info-card">
+                    <h4><i class="fas fa-project-diagram"></i> Project Details</h4>
+                    <div class="detail-item">
+                        <span class="detail-label">Project Name</span>
+                        <span class="detail-value">${taskData.project}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Project Type</span>
+                        <span class="detail-value">Web Application</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Client</span>
+                        <span class="detail-value">ABC Corporation</span>
                     </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h5>Development Started</h5>
-                        <p>Developer began working on the task</p>
-                        <div class="timeline-date">2 days later</div>
+                
+                <!-- Team Information -->
+                <div class="info-card">
+                    <h4><i class="fas fa-users"></i> Team Assignment</h4>
+                    <div class="detail-item">
+                        <span class="detail-label">Developer</span>
+                        <span class="detail-value">
+                            <div class="user-info-detailed">
+                                <div class="user-avatar-large">
+                                    ${taskData.developer.charAt(0)}
+                                </div>
+                                <div class="user-details">
+                                    <h5>${taskData.developer}</h5>
+                                    <p>Senior Developer</p>
+                                </div>
+                            </div>
+                        </span>
                     </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h5>Code Review</h5>
-                        <p>Code submitted for review and testing</p>
-                        <div class="timeline-date">In Progress</div>
+                    <div class="detail-item">
+                        <span class="detail-label">Project Manager</span>
+                        <span class="detail-value">
+                            <div class="user-info-detailed">
+                                <div class="user-avatar-large">
+                                    ${taskData.projectManager.charAt(0)}
+                                </div>
+                                <div class="user-details">
+                                    <h5>${taskData.projectManager}</h5>
+                                    <p>Project Lead</p>
+                                </div>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
-        </div>
-    `;
+            
+            <!-- Progress Section -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <h4><i class="fas fa-chart-line"></i> Progress Tracking</h4>
+                    <div class="progress-percentage">75%</div>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 75%"></div>
+                </div>
+                <div class="progress-stats">
+                    <span>Started: ${taskData.startDate}</span>
+                    <span>Deadline: ${taskData.deadline}</span>
+                </div>
+            </div>
+            
+            <!-- Timeline Section -->
+            <div class="timeline-section">
+                <h4><i class="fas fa-history"></i> Activity Timeline</h4>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h5>Task Created</h5>
+                            <p>Task was assigned and added to the system</p>
+                            <div class="timeline-date">${taskData.startDate}</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h5>Development Started</h5>
+                            <p>Developer began working on the task</p>
+                            <div class="timeline-date">2 days later</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <h5>Code Review</h5>
+                            <p>Code submitted for review and testing</p>
+                            <div class="timeline-date">In Progress</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Show details panel
+        document.getElementById('details-panel').classList.add('open');
+        document.getElementById('details-overlay').classList.add('active');
+        
+        // Animate progress bar
+        setTimeout(() => {
+            const progressBar = document.querySelector('.progress-bar');
+            if (progressBar) progressBar.style.width = '75%';
+        }, 100);
+    }
 
-    // Show details panel
-    document.getElementById('details-panel').classList.add('open');
-    document.getElementById('details-overlay').classList.add('active');
-
-    // Animate progress bar
-    setTimeout(() => {
-        const progressBar = document.querySelector('.progress-bar');
-        progressBar.style.width = '75%';
-    }, 100);
-}
-
-// Helper function for status icons
-function getStatusIcon(status) {
-    const icons = {
-        'Pending': 'clock',
-        'Forwarded': 'share',
-        'Completed': 'check-circle',
-        'Ongoing': 'spinner'
-    };
-    return icons[status] || 'clock';
-}
+    // Helper function for status icons
+    function getStatusIcon(status) {
+        const icons = {
+            'Pending': 'clock',
+            'Forwarded': 'spinner',
+            'Completed': 'check-circle',
+            'Ongoing': 'spinner'
+        };
+        return icons[status] || 'clock';
+    }
 </script>
 
 @endsection

@@ -95,7 +95,6 @@
         box-shadow: var(--shadow);
         border-left: 4px solid var(--primary);
         transition: all 0.3s ease;
-        
     }
     
     .summary-card:hover {
@@ -105,7 +104,7 @@
     
     .summary-card.total { border-left-color: var(--primary); }
     .summary-card.completed { border-left-color: var(--success); }
-    .summary-card.progress { border-left-color: var(--warning); }
+    .summary-card.in-progress { border-left-color: var(--warning); }
     .summary-card.pending { border-left-color: var(--info); }
     
     .summary-content {
@@ -142,7 +141,7 @@
     
     .summary-card.total .summary-icon { background: var(--primary-light); color: var(--primary); }
     .summary-card.completed .summary-icon { background: #e8f5e8; color: var(--success); }
-    .summary-card.progress .summary-icon { background: #fff8e1; color: var(--warning); }
+    .summary-card.in-progress .summary-icon { background: #fff8e1; color: var(--warning); }
     .summary-card.pending .summary-icon { background: #e3f2fd; color: var(--info); }
     
     /* Employee Summary Section */
@@ -757,7 +756,7 @@
             </div>
         </div>
         
-        <div class="summary-card progress">
+        <div class="summary-card in-progress">
             <div class="summary-content">
                 <div class="summary-text">
                     <h3>In Progress</h3>
