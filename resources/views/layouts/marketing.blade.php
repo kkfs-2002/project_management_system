@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+me image eka wage ui change wenn oni habi man den code wla details e widihtm thynn oni code change krnn epa. <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -15,12 +15,12 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* .navbar-custom {
+    .navbar-custom {
       background-color: #000000;
       backdrop-filter: blur(8px);
       box-shadow: 0 4px 6px #000000;
       z-index: 1050;
-    } */
+    }
 
     .navbar-custom .navbar-brand,
     .navbar-custom .nav-link,
@@ -154,39 +154,14 @@
         color: #6c757d;
         font-size: 0.9rem;
     }
-   .footer {
-    background: #000000 url('{{ asset("images/ma.jpg") }}') no-repeat center center;
-    background-size: cover; /* make image cover entire footer */
-    color: #fff;
-    padding: 50px 0 20px;
-    margin-top: auto;
-    position: relative;
-}
-
-.footer::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7); /* dark overlay for text readability */
-    z-index: 0;
-}
-
-.footer > * {
-    position: relative;
-    z-index: 1; /* make text and links appear above overlay */
-}
-
-.footer a {
-    color: #00c6ff;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.footer a:hover {
-    color: #ffdd00;
-}
-
+     /* Footer Styles */
+    .footer {
+      background: #000000;
+      color: #fff;
+      padding: 50px 0 20px;
+      margin-top: auto;
+    }
+    
     .footer h5 {
       color: #A7C7E7;
       font-weight: 600;
@@ -288,92 +263,7 @@
       max-width: 150px;
       margin-bottom: 20px;
     }
-    /* HERO SECTION BASE */
-.netit-hero {
-    position: relative;
-    height: 90vh;
-   background: url('{{ asset("images/ma.jpg") }}') center/cover no-repeat;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0;
-    margin: 0;
-}
-
-/* DARK OVERLAY */
-.netit-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.55);
-}
-
-/* CONTENT */
-.netit-content {
-    position: relative;
-    z-index: 2;
-    max-width: 750px;
-    padding: 20px;
-    color: white;
-}
-
-/* TITLE */
-.netit-title {
-    font-size: 3.8rem;
-    font-weight: 800;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-/* SUBTEXT */
-.netit-subtext {
-    font-size: 1.2rem;
-    font-weight: 300;
-    line-height: 1.6;
-    margin-bottom: 30px;
-}
-
-/* BUTTON */
-.netit-btn {
-    background: #ffffff;
-    padding: 12px 28px;
-    border-radius: 40px;
-    font-size: 1.1rem;
-    color: #000;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.3s ease-in-out;
-}
-
-.netit-btn:hover {
-    background: #A7C7E7;
-    color: #000;
-    transform: translateY(-3px);
-}
-.netit-marketing-icon {
-    font-size: 60px;
-    color: #ffffffff;
-    margin-top: 20px;
-}
-.netit-title {
-    font-family: 'Monotype Corsiva', cursive;
-    font-size: 48px; /* adjust size if needed */
-    color: #ffffffff;     /* text color */
-    font-weight: 20px; /* Monotype Corsiva usually looks better without bold */
-}
-.netit-subtext {
-    font-family: 'Times New Roman', serif;
-    font-size: 30px;       /* adjust as needed */
-    color: #ffffffff;           /* text color */
-    line-height: 1.6;      /* readability */
-    margin-top: 12px;
-}
-
+    
   </style>
 </head>
 <body>
@@ -451,35 +341,11 @@
 </nav>
 
 <!-- Main Content -->
-<div class="container-fluid p-0">
+<div class="container-fluid" style="padding-top: 100px;">
+  @yield('content')
 
-<!-- HERO SECTION -->
-<section class="netit-hero">
-    <div class="netit-overlay"></div>
-
-    <div class="netit-content">
-
-        <!-- 🔥 Logo Above Title -->
-    <i class="fas fa-user-tie netit-marketing-icon"></i>
-
-
-     <h1 class="netit-title">Marketing Manager Dashboard</h1>
-
-<p class="netit-subtext">
-    Welcome to the Marketing Manager Dashboard. 
-    Manage campaigns, track performance, and discover actionable insights to grow your business.
-</p>
-    </div>
-</section>
-
-
-
-
-</div>
-</div>
   <!-- Attendance Section - Only show on dashboard -->
   @if(request()->routeIs('marketing.dashboard'))
-  
   <div class="row mb-4">
       <div class="col-lg-6 mx-auto">
           <div class="attendance-card">
@@ -872,8 +738,8 @@ function printSalarySlip() {
   <div class="container">
     <div class="row">
       <!-- Company Info -->
-      <div class="col-lg-4 col-md-6 mb-4 mt-4">
-        
+      <div class="col-lg-4 col-md-6 mb-4">
+        <img src="{{ asset('NetIT logo.png') }}" alt="NetIT Technology" class="company-logo">
         <p>
           Leading provider of cutting-edge software solutions and digital transformation services. 
           We empower businesses to thrive in the digital age.
