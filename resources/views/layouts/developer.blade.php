@@ -12,7 +12,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .navbar-custom {
-            background-color: rgba(0, 0, 0, .75);
+            background-color: #000000;
             backdrop-filter: blur(8px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, .2);
             z-index: 1050;
@@ -39,7 +39,8 @@
         
         /* Attendance Card Styles */
         .attendance-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: linear-gradient(135deg, #000000 0%, #888888 100%);
+
             border-radius: 15px;
             padding: 25px;
             color: white;
@@ -161,6 +162,165 @@
             height: 8px;
             margin-top: 10px;
         }
+        /* Image animation stays same */
+.attendance-illustration {
+    width: 90%;
+    max-width: 380px;
+    opacity: 0;
+    transform: translateX(-40px) translateY(0) scale(1);
+    animation: fadeSlideFloat 2s ease-out forwards, floatAnim 3s ease-in-out 2s infinite;
+}
+
+@keyframes fadeSlideFloat {
+    to {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1);
+    }
+}
+
+@keyframes floatAnim {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.03); }
+    100% { transform: translateY(0) scale(1); }
+}
+/* Footer */
+    .footer {
+      background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
+      background-size: cover;
+      color: #fff;
+      padding: 50px 0 20px;
+      position: relative;
+      margin-top: auto;
+    }
+
+    .footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 0;
+    }
+
+    .footer > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer a {
+      color: #00c6ff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer a:hover {
+      color: #ffdd00;
+    }
+
+    .footer h5 {
+      color: #A7C7E7;
+      font-weight: 600;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+    }
+    
+    .footer p {
+      color: #b0b0b0;
+      line-height: 1.6;
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: #b0b0b0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+    
+    .footer-links a:hover {
+      color: #A7C7E7;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .contact-info {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .contact-info li {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .contact-info i {
+      color: #A7C7E7;
+      margin-right: 10px;
+      margin-top: 3px;
+      font-size: 1rem;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+      background: #A7C7E7;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(167, 199, 231, 0.3);
+    }
+    
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+      margin-top: 40px;
+      text-align: center;
+    }
+    
+    .footer-bottom p {
+      margin: 0;
+      color: #888;
+      font-size: 0.9rem;
+    }
+    
+    .company-logo {
+      max-width: 150px;
+      margin-bottom: 20px;
+    }
+
     </style>
 </head>
 <body>
@@ -218,28 +378,48 @@
 </nav>
 
 <!-- Main Content Area -->
-<div class="container mt-4" style="padding-top:100px;">
+<div class="mt-3">
     @yield('content')
 
     <!-- Welcome Section - Only show on dashboard -->
     @if(!isset($hideWelcome) || $hideWelcome === false)
     <div class="mb-5 position-relative">
-        <img src="{{ asset('images/company-bg.jpeg') }}" class="img-fluid w-100" style="max-height:350px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
-        <div class="position-absolute top-50 start-50 translate-middle bg-white bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
-            <h3 id="typingText" class="fw-bold mb-2 text-primary"></h3>
-            <p class="mb-0 text-dark">We specialize in delivering cutting-edge software and digital solutions that drive results. From enterprise web apps to mobile platforms, we empower businesses to scale and succeed.</p>
-        </div>
+        <img src="{{ asset('images/de.jpg') }}" class="img-fluid w-100" style="max-height:650px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
+       <div class="position-absolute top-50 start-50 translate-middle bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
+
+    <!-- MAIN TITLE -->
+    <h3 id="typingText" class="fw-bold mb-2 text-white">
+        Developer Dashboard
+    </h3>
+
+    <!-- DESCRIPTION TEXT -->
+    <p class="mb-0 text-white">
+      Track tasks, monitor progress, and manage your team's workflow seamlessly. 
+        Your Developer Dashboard keeps everything organized in one place
+  </p>
+
+</div>
+
     </div>
 
      <!-- Attendance Section -->
     @if(request()->routeIs('developer.dashboard'))
-    <div class="row mb-4">
+     <div class="row mb-5 mt-5 d-flex align-items-center justify-content-center">
+          <!-- LEFT SIDE IMAGE WITH ANIMATION -->
+    <div class="col-lg-5 text-center">
+        <img src="/images/de.png" 
+             class="img-fluid attendance-illustration"
+             alt="Attendance Illustration">
+    </div>
+
+ 
         <div class="col-lg-6 mx-auto">
             <div class="attendance-card">
                 <div class="text-center">
                     <h3 class="mb-3">
                         <i class="fas fa-clock me-2"></i>My Attendance
                     </h3>
+                  
                     
                     <div class="time-display" id="currentTime">
                         Loading...
@@ -481,10 +661,12 @@
 <div class="row mb-4">
     <div class="col-lg-10 mx-auto">
         <div class="card shadow-sm border-0">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">
-                    <i class="fas fa-money-bill-wave me-2"></i>My Salary Details
-                </h5>
+         <div class="card-header" style="background: linear-gradient(135deg, #000000 0%, #4f4f4f 100%); color: white;">
+    <h5 class="mb-0">
+        <i class="fas fa-money-bill-wave me-2"></i>My Salary Details
+    </h5>
+</div>
+
             </div>
             <div class="card-body">
                 @if(isset($salaryDetails) && $salaryDetails->count() > 0)
@@ -656,7 +838,97 @@
         </div>
     </div>
 </div>
-
+<!-- Footer Section -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <!-- Company Info -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <h5>NET IT TECHNOLOGY</h5>
+        <p>
+          Leading provider of cutting-edge software solutions and digital transformation services. 
+          We empower businesses to thrive in the digital age.
+        </p>
+        <div class="social-links">
+          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h5>Quick Links</h5>
+        <ul class="footer-links">
+          <li><a href="{{ route('superadmin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+          <li><a href="{{ route('superadmin.employee.index') }}"><i class="fas fa-users"></i> Employees</a></li>
+          <li><a href="{{ route('superadmin.tasks.index') }}"><i class="fas fa-tasks"></i> Tasks</a></li>
+          <li><a href="{{ route('superadmin.project.transactions') }}"><i class="fas fa-chart-line"></i> Finance</a></li>
+          <li><a href="{{ route('superadmin.clients.index') }}"><i class="fas fa-bullhorn"></i> Marketing</a></li>
+        </ul>
+      </div>
+      
+      <!-- Services -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h5>Our Services</h5>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-code"></i> Web Development</a></li>
+          <li><a href="#"><i class="fas fa-mobile-alt"></i> Mobile Apps</a></li>
+          <li><a href="#"><i class="fas fa-cloud"></i> Cloud Solutions</a></li>
+          <li><a href="#"><i class="fas fa-chart-bar"></i> Data Analytics</a></li>
+          <li><a href="#"><i class="fas fa-shield-alt"></i> Cybersecurity</a></li>
+        </ul>
+      </div>
+      
+      <!-- Contact Info -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <h5>Contact Us</h5>
+        <ul class="contact-info">
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <strong>Head Office</strong><br>
+              10/20, Kandy Road, Ampitiya, Kandy<br>
+              Sri Lanka
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-phone"></i>
+            <div>
+              <strong>Phone</strong><br>
+              +94 76 151 7778
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-envelope"></i>
+            <div>
+              <strong>Email</strong><br>
+              info@netittechnology.com
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-clock"></i>
+            <div>
+              <strong>Business Hours</strong><br>
+              Mon - Fri: 9:00 AM - 5:00 PM
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="row">
+        <div class="col-md-6">
+          <p>&copy; 2025 NetIT Technology. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const viewButtons = document.querySelectorAll('.view-salary-details');

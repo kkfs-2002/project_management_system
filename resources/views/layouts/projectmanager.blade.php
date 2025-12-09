@@ -12,7 +12,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .navbar-custom {
-            background-color: rgba(0, 0, 0, .75);
+            background-color: #000000;
             backdrop-filter: blur(8px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, .2);
             z-index: 1050;
@@ -36,10 +36,45 @@
             padding: 10px 20px;
             font-size: .95rem;
         }
-      
+      /* Image animation stays same */
+.attendance-illustration {
+    width: 100%;
+    max-width: 580px;
+    opacity: 0;
+    transform: translateX(-40px) translateY(0) scale(1);
+    animation: fadeSlideFloat 2s ease-out forwards, floatAnim 3s ease-in-out 2s infinite;
+}
+
+@keyframes fadeSlideFloat {
+    to {
+        opacity: 1;
+        transform: translateX(0) translateY(0) scale(1);
+    }
+}
+
+@keyframes floatAnim {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.03); }
+    100% { transform: translateY(0) scale(1); }
+}
+.stat-number {
+    font-size: 3.5rem; /* increase size */
+    font-weight: bold;
+    margin-bottom: 0;
+}
+    .task-card {
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .task-card.active {
+        background-color: #000917ff; /* Dark Blue */
+        color: white;
+    }
+
         /* Attendance Card Styles */
         .attendance-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #000826ff;
             border-radius: 15px;
             padding: 25px;
             color: white;
@@ -91,76 +126,266 @@
             margin-top: 20px;
         }
       
-        /* Task Card Styles */
-        .task-card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-            margin-bottom: 20px;
-            border: none;
-        }
-        .task-card:hover {
-            transform: translateY(-2px);
-        }
-        .priority-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.75em;
-            font-weight: 600;
-        }
-        .priority-low { background-color: #6c757d; color: white; }
-        .priority-medium { background-color: #17a2b8; color: white; }
-        .priority-high { background-color: #ffc107; color: black; }
-        .priority-urgent { background-color: #dc3545; color: white; }
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.75em;
-            font-weight: 600;
-        }
-        .status-pending {
-            background-color: #e2e3e5;
-            color: #383d41;
-            border: 1px solid #d6d8db;
-        }
-        .status-in-progress {
-            background-color: #cce7ff;
-            color: #004085;
-            border: 1px solid #b3d7ff;
-        }
-        .status-completed {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .dashboard-stats {
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-left: 4px solid;
-        }
-        .stat-total { border-left-color: #007bff; }
-        .stat-completed { border-left-color: #28a745; }
-        .stat-in-progress { border-left-color: #17a2b8; }
-        .stat-pending { border-left-color: #6c757d; }
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 0;
-        }
-        .stat-label {
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-        .progress {
-            height: 8px;
-            margin-top: 10px;
-        }
+  .task-card {
+    background-color: white; /* default color */
+    transition: background-color 0.3s, color 0.3s, background-image 0.3s;
+    cursor: pointer; /* hand pointer on hover */
+    position: relative; /* needed for overlay */
+    color: black; /* default text color */
+}
+
+/* Hover effect: show background image and change text color */
+.task-card:hover {
+    background-image: url('/images/po.jpg'); /* your image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white; /* text turns white */
+}
+
+/* Optional semi-transparent overlay for readability */
+.task-card:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4); /* overlay */
+    border-radius: 0.25rem;
+    z-index: 0;
+}
+
+/* Ensure card content stays above overlay */
+.task-card:hover > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Make badges visible on hover */
+.task-card:hover .priority-badge,
+.task-card:hover .status-badge {
+    color: white;
+    border-color: white;
+}
+
+      .stat-card {
+    background: white; /* or your background image if used */
+    border-radius: 10px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-left: 4px solid;
+    color: white; /* Make all text inside white */
+}
+
+.stat-card .stat-number,
+.stat-card .stat-label {
+    color: white; /* ensures numbers and labels are white */
+}
+
+/* Optional: override icon colors */
+.stat-card i {
+    color: white !important;
+}
+
+  /* Footer */
+    .footer {
+      background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
+      background-size: cover;
+      color: #fff;
+      padding: 50px 0 20px;
+      position: relative;
+      margin-top: auto;
+    }
+
+    .footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 0;
+    }
+
+    .footer > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer a {
+      color: #00c6ff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer a:hover {
+      color: #ffdd00;
+    }
+
+    .footer h5 {
+      color: #A7C7E7;
+      font-weight: 600;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+    }
+    
+    .footer p {
+      color: #b0b0b0;
+      line-height: 1.6;
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: #b0b0b0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+    
+    .footer-links a:hover {
+      color: #A7C7E7;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .contact-info {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .contact-info li {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .contact-info i {
+      color: #A7C7E7;
+      margin-right: 10px;
+      margin-top: 3px;
+      font-size: 1rem;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+      background: #A7C7E7;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(167, 199, 231, 0.3);
+    }
+    
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+      margin-top: 40px;
+      text-align: center;
+    }
+    
+    .footer-bottom p {
+      margin: 0;
+      color: #888;
+      font-size: 0.9rem;
+    }
+    
+    .company-logo {
+      max-width: 150px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+    position: relative;
+    padding: 20px;
+    border-radius: 12px;
+    color: white; /* text color */
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Optional: Overlay for better text visibility */
+.stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4); /* semi-transparent overlay */
+    z-index: 0;
+}
+
+.stat-card p,
+.stat-card i {
+    position: relative;
+    z-index: 1; /* bring text/icons above overlay */
+}
+
+/* Specific backgrounds for each type */
+.stat-total {
+    background-image: url('/images/po2.avif');
+}
+
+.stat-completed {
+    background-image: url('/images/po2.avif');
+}
+
+.stat-in-progress {
+    background-image: url('/images/po2.avif');
+}
+
+.stat-pending {
+    background-image: url('/images/po2.avif');
+}
+.custom-badge {
+    color: #000000; /* Black color */
+    font-weight: bold; /* Bold text */
+}
+.custom-text {
+    color: #6c757d; /* Gray color */
+    font-weight: bold; /* Bold text */
+    font-size: 1.1rem; /* Slightly bigger text */
+}
+
     </style>
 </head>
 <body>
@@ -215,23 +440,43 @@
     </div>
 </nav>
 <!-- Main Content Area -->
-<div class="container mt-4" style="padding-top:100px;">
+
+<div class="mt-3">
     @yield('content')
    
     
     <!-- Welcome Section -->
     @if(!isset($hideWelcome) || $hideWelcome === false)
     <div class="mb-5 position-relative">
-        <img src="{{ asset('images/company-bg.jpeg') }}" class="img-fluid w-100" style="max-height:350px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
-        <div class="position-absolute top-50 start-50 translate-middle bg-white bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
-            <h3 id="typingText" class="fw-bold mb-2 text-primary"></h3>
-            <p class="mb-0 text-dark">We specialize in delivering cutting-edge software and digital solutions that drive results. From enterprise web apps to mobile platforms, we empower businesses to scale and succeed.</p>
-        </div>
+        <img src="{{ asset('images/po.avif') }}" class="img-fluid w-100" style="max-height:650px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
+       <div class="position-absolute top-50 start-50 translate-middle bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
+
+    <!-- MAIN TITLE -->
+    <h3 id="typingText" class="fw-bold mb-2 text-white">
+        Project Manager Dashboard
+    </h3>
+
+    <!-- DESCRIPTION TEXT -->
+    <p class="mb-0 text-white">
+       Track tasks, monitor progress, and manage your team's workflow seamlessly. 
+Your Project Manager Dashboard keeps everything organized in one place.
+  </p>
+
+</div>
+
     </div>
+
 
     <!-- Attendance Section -->
     @if(\Route::currentRouteName() === 'projectmanager.dashboard')
-    <div class="row mb-4">
+   <div class="row mb-5 mt-5 d-flex align-items-center justify-content-center">
+          <!-- LEFT SIDE IMAGE WITH ANIMATION -->
+    <div class="col-lg-5 text-center">
+        <img src="/images/team.png" 
+             class="img-fluid attendance-illustration"
+             alt="Attendance Illustration">
+    </div>
+
         <div class="col-lg-6 mx-auto">
             <div class="attendance-card">
                 <div class="text-center">
@@ -362,58 +607,67 @@
         </div>
     </div>
     <!-- Recent Tasks Section -->
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="text-primary">
-                    <i class="fas fa-clock me-2"></i>Recent Daily Tasks
-                </h4>
-            </div>
+  <div class="row mt-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-center mb-4">
+       <h4 style="color: #000917ff; font-size: 2rem; font-weight: bold;">
+    <i class="fas fa-clock me-2"></i>Recent Daily Tasks
+</h4>
+
+        </div>
+    </div>
+</div>
+
             @if(isset($recentTasks) && $recentTasks->count() > 0)
                 <div class="row">
                     @foreach($recentTasks as $task)
                         <div class="col-md-6 col-lg-4">
                             <div class="card task-card h-100">
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h6 class="mb-0 text-truncate">{{ $task->task_name }}</h6>
+                                  <h6 class="mb-0 text-truncate" style="color: black; font-weight: bold;">
+    {{ $task->task_name }}
+</h6>
+
                                     <div class="d-flex gap-1">
-                                        <span class="priority-badge priority-{{ $task->priority }}">
-                                            {{ ucfirst($task->priority) }}
-                                        </span>
-                                        <span class="status-badge status-{{ str_replace(' ', '-', strtolower($task->status)) }}">
-                                            {{ ucfirst($task->status) }}
-                                        </span>
+                                        <span class="priority-badge priority-{{ $task->priority }} custom-badge">
+    {{ ucfirst($task->priority) }}
+</span>
+<span class="status-badge status-{{ str_replace(' ', '-', strtolower($task->status)) }} custom-badge">
+    {{ ucfirst($task->status) }}
+</span>
+
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="mb-2">
-                                        <small class="text-muted">
-                                            <i class="fas fa-user me-1"></i>
-                                            {{ $task->profile->full_name ?? 'N/A' }}
-                                        </small>
-                                    </div>
-                                    <div class="mb-2">
-                                        <small class="text-muted">
-                                            <i class="fas fa-calendar me-1"></i>
-                                            {{ \Carbon\Carbon::parse($task->task_date)->format('M d, Y') }}
-                                        </small>
-                                    </div>
-                                    <div class="mb-2">
-                                        <small class="text-muted">
-                                            <i class="fas fa-clock me-1"></i>
-                                            @if($task->start_time && $task->end_time)
-                                                {{ \Carbon\Carbon::parse($task->start_time)->format('h:i A') }} -
-                                                {{ \Carbon\Carbon::parse($task->end_time)->format('h:i A') }}
-                                            @else
-                                                Time not set
-                                            @endif
-                                        </small>
-                                    </div>
-                                    @if($task->description)
-                                        <p class="card-text small text-muted mb-2">
-                                            {{ Str::limit($task->description, 100) }}
-                                        </p>
-                                    @endif
+                              <div class="card-body">
+    <div class="mb-2">
+        <small class="text-muted custom-text">
+            <i class="fas fa-user me-1"></i>
+            {{ $task->profile->full_name ?? 'N/A' }}
+        </small>
+    </div>
+    <div class="mb-2">
+        <small class="text-muted custom-text">
+            <i class="fas fa-calendar me-1"></i>
+            {{ \Carbon\Carbon::parse($task->task_date)->format('M d, Y') }}
+        </small>
+    </div>
+    <div class="mb-2">
+        <small class="text-muted custom-text">
+            <i class="fas fa-clock me-1"></i>
+            @if($task->start_time && $task->end_time)
+                {{ \Carbon\Carbon::parse($task->start_time)->format('h:i A') }} -
+                {{ \Carbon\Carbon::parse($task->end_time)->format('h:i A') }}
+            @else
+                Time not set
+            @endif
+        </small>
+    </div>
+    @if($task->description)
+        <p class="card-text custom-text mb-2">
+            {{ Str::limit($task->description, 100) }}
+        </p>
+    @endif
+
                                   
                                     <!-- Progress Bar -->
                                     <div class="mb-2">
@@ -455,7 +709,7 @@
                 @if($recentTasks->count() >= 6)
                     <div class="text-center mt-4">
                         <a href="{{ route('projectmanager.daily-tasks.index', $pm->id ?? 1) }}" class="btn btn-outline-primary">
-                            View All My Tasks <i class="fas fa-arrow-right ms-1"></i>
+                            View All My Daily Tasks <i class="fas fa-arrow-right ms-1"></i>
                         </a>
                     </div>
                 @endif
@@ -472,14 +726,15 @@
 </div>
 <!-- Salary Section - Only show on dashboard -->
 @if(request()->routeIs('projectmanager.dashboard'))
-<div class="row mb-4">
+<div class="row mb-4 mt-4">
     <div class="col-lg-8 mx-auto">
         <div class="card shadow-sm border-0">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0">
-                    <i class="fas fa-money-bill-wave me-2"></i>My Salary Details
-                </h5>
-            </div>
+            <div class="card-header" style="background-color: #021128ff; color: white;">
+    <h5 class="mb-0">
+        <i class="fas fa-money-bill-wave me-2"></i>My Salary Details
+    </h5>
+</div>
+
             <div class="card-body">
                 @if(isset($salaryDetails) && $salaryDetails->count() > 0)
                     <div class="row">
@@ -600,30 +855,7 @@
                             @endif
                         </table>
                     </div>
-                    
-                    <!-- Chart (Optional) -->
-                    <div class="row mt-4">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h6 class="mb-0">Salary Trend</h6>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="salaryChart" height="150"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h6 class="mb-0">Payment Status</h6>
-                                </div>
-                                <div class="card-body">
-                                    <canvas id="paymentChart" height="150"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                   
                     
                 @else
                     <div class="text-center py-5">
@@ -665,6 +897,97 @@
     </div>
 </div>
 
+<!-- Footer Section -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <!-- Company Info -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <h5>NET IT TECHNOLOGY</h5>
+        <p>
+          Leading provider of cutting-edge software solutions and digital transformation services. 
+          We empower businesses to thrive in the digital age.
+        </p>
+        <div class="social-links">
+          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h5>Quick Links</h5>
+        <ul class="footer-links">
+          <li><a href="{{ route('superadmin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+          <li><a href="{{ route('superadmin.employee.index') }}"><i class="fas fa-users"></i> Employees</a></li>
+          <li><a href="{{ route('superadmin.tasks.index') }}"><i class="fas fa-tasks"></i> Tasks</a></li>
+          <li><a href="{{ route('superadmin.project.transactions') }}"><i class="fas fa-chart-line"></i> Finance</a></li>
+          <li><a href="{{ route('superadmin.clients.index') }}"><i class="fas fa-bullhorn"></i> Marketing</a></li>
+        </ul>
+      </div>
+      
+      <!-- Services -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h5>Our Services</h5>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-code"></i> Web Development</a></li>
+          <li><a href="#"><i class="fas fa-mobile-alt"></i> Mobile Apps</a></li>
+          <li><a href="#"><i class="fas fa-cloud"></i> Cloud Solutions</a></li>
+          <li><a href="#"><i class="fas fa-chart-bar"></i> Data Analytics</a></li>
+          <li><a href="#"><i class="fas fa-shield-alt"></i> Cybersecurity</a></li>
+        </ul>
+      </div>
+      
+      <!-- Contact Info -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <h5>Contact Us</h5>
+        <ul class="contact-info">
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <strong>Head Office</strong><br>
+              10/20, Kandy Road, Ampitiya, Kandy<br>
+              Sri Lanka
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-phone"></i>
+            <div>
+              <strong>Phone</strong><br>
+              +94 76 151 7778
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-envelope"></i>
+            <div>
+              <strong>Email</strong><br>
+              info@netittechnology.com
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-clock"></i>
+            <div>
+              <strong>Business Hours</strong><br>
+              Mon - Fri: 9:00 AM - 5:00 PM
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="row">
+        <div class="col-md-6">
+          <p>&copy; 2025 NetIT Technology. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 // Initialize salary charts
@@ -839,6 +1162,21 @@ document.addEventListener('DOMContentLoaded', () => {
     typeWriter("Welcome to NetIT Technology....!", "typingText");
 });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const taskCards = document.querySelectorAll('.task-card');
+
+        taskCards.forEach(card => {
+            card.addEventListener('click', function () {
+                // Remove active class from all cards
+                taskCards.forEach(c => c.classList.remove('active'));
+                // Add active class to clicked card
+                this.classList.add('active');
+            });
+        });
+    });
+</script>
+
 @yield('scripts')
 </body>
 </html>

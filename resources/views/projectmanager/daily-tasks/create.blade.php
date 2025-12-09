@@ -8,15 +8,15 @@
 
 @section('content')
 <style>
-    .form-container {
-        background: white;
-        border-radius: 10px;
-        padding: 30px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        max-width: 800px;
-        margin: 0 auto;
-    }
-    
+   .form-container {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 60px auto 0 auto; /* 50px top margin, auto left/right, 0 bottom */
+}
+
     .time-inputs {
         display: flex;
         gap: 15px;
@@ -30,7 +30,7 @@
     .priority-badges {
         display: flex;
         gap: 10px;
-        margin-top: 10px;
+        margin-top: 20px;
     }
     
     .priority-badge {
@@ -92,6 +92,144 @@
         margin-right: 15px;
         cursor: pointer;
     }
+        /* Footer */
+    .footer {
+      background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
+      background-size: cover;
+      color: #fff;
+      padding: 50px 0 20px;
+      position: relative;
+      margin-top: auto;
+    }
+
+    .footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 0;
+    }
+
+    .footer > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer a {
+      color: #00c6ff;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer a:hover {
+      color: #ffdd00;
+    }
+
+    .footer h5 {
+      color: #A7C7E7;
+      font-weight: 600;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+    }
+    
+    .footer p {
+      color: #b0b0b0;
+      line-height: 1.6;
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: #b0b0b0;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+    
+    .footer-links a:hover {
+      color: #A7C7E7;
+      transform: translateX(5px);
+    }
+    
+    .footer-links a i {
+      margin-right: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .contact-info {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .contact-info li {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+    }
+    
+    .contact-info i {
+      color: #A7C7E7;
+      margin-right: 10px;
+      margin-top: 3px;
+      font-size: 1rem;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+      background: #A7C7E7;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(167, 199, 231, 0.3);
+    }
+    
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+      margin-top: 40px;
+      text-align: center;
+    }
+    
+    .footer-bottom p {
+      margin: 0;
+      color: #888;
+      font-size: 0.9rem;
+    }
+    
+    .company-logo {
+      max-width: 150px;
+      margin-bottom: 20px;
+    }
+
 </style>
 
 <div class="container-fluid">
@@ -344,6 +482,97 @@
         </div>
     </div>
 </div>
+<!-- Footer Section -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <!-- Company Info -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <h5>NET IT TECHNOLOGY</h5>
+        <p>
+          Leading provider of cutting-edge software solutions and digital transformation services. 
+          We empower businesses to thrive in the digital age.
+        </p>
+        <div class="social-links">
+          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h5>Quick Links</h5>
+        <ul class="footer-links">
+          <li><a href="{{ route('superadmin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+          <li><a href="{{ route('superadmin.employee.index') }}"><i class="fas fa-users"></i> Employees</a></li>
+          <li><a href="{{ route('superadmin.tasks.index') }}"><i class="fas fa-tasks"></i> Tasks</a></li>
+          <li><a href="{{ route('superadmin.project.transactions') }}"><i class="fas fa-chart-line"></i> Finance</a></li>
+          <li><a href="{{ route('superadmin.clients.index') }}"><i class="fas fa-bullhorn"></i> Marketing</a></li>
+        </ul>
+      </div>
+      
+      <!-- Services -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h5>Our Services</h5>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-code"></i> Web Development</a></li>
+          <li><a href="#"><i class="fas fa-mobile-alt"></i> Mobile Apps</a></li>
+          <li><a href="#"><i class="fas fa-cloud"></i> Cloud Solutions</a></li>
+          <li><a href="#"><i class="fas fa-chart-bar"></i> Data Analytics</a></li>
+          <li><a href="#"><i class="fas fa-shield-alt"></i> Cybersecurity</a></li>
+        </ul>
+      </div>
+      
+      <!-- Contact Info -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <h5>Contact Us</h5>
+        <ul class="contact-info">
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <strong>Head Office</strong><br>
+              10/20, Kandy Road, Ampitiya, Kandy<br>
+              Sri Lanka
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-phone"></i>
+            <div>
+              <strong>Phone</strong><br>
+              +94 76 151 7778
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-envelope"></i>
+            <div>
+              <strong>Email</strong><br>
+              info@netittechnology.com
+            </div>
+          </li>
+          <li>
+            <i class="fas fa-clock"></i>
+            <div>
+              <strong>Business Hours</strong><br>
+              Mon - Fri: 9:00 AM - 5:00 PM
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="row">
+        <div class="col-md-6">
+          <p>&copy; 2025 NetIT Technology. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
