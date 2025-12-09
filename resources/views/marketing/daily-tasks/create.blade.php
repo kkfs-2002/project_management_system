@@ -90,7 +90,7 @@
     }
 </style>
 
-<div class="container-fluid">
+<div class="container-fluid mt-5">
     <div class="row justify-content-center">
         <div class="col-12 col-lg-10">
             <div class="form-container">
@@ -102,6 +102,7 @@
                         <i class="fas fa-arrow-left me-1"></i> Back to Tasks
                     </a>
                 </div>
+
 
                 @if($errors->any())
                     <div class="alert alert-danger">

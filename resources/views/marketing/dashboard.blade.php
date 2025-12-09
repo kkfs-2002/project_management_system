@@ -5,11 +5,13 @@
 @section('content')
 
 <style>
+    
 /* ========= Overall Section Styling ========= */
 
 .stats-section {
     width: 100%;
     margin-top: 20px;
+    
 }
 
 /* Left Panel */
@@ -92,10 +94,16 @@
 
 
 <!-- ===================== MAIN DASHBOARD SECTION ===================== -->
+     <form action="{{ route('marketing.clients.store') }}" method="POST" 
+      class="p-4 mt-0" style="background-color: #e2e1e1ff;">
+    @csrf
 
+
+                    
 <section class="stats-section">
     <div class="container-fluid">
-        <div class="row py-4">
+      <div class="row" style="margin-top: 0px;">
+
 
             <!-- LEFT SIDE -->
             <div class="col-md-4 left-panel text-white p-5">
@@ -134,5 +142,5 @@
         </div>
     
 </section>
-
+</form>
 @endsection

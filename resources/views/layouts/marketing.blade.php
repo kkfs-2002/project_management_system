@@ -320,18 +320,25 @@ me image eka wage ui change wenn oni habi man den code wla details e widihtm thy
 /* Image animation stays same */
 .attendance-illustration {
     width: 100%;
-    max-width: 380px;
+    max-width: 580px;
     opacity: 0;
-    transform: translateX(-40px);
-    animation: fadeSlide 1.2s ease-out forwards;
+    transform: translateX(-40px) translateY(0) scale(1);
+    animation: fadeSlideFloat 2s ease-out forwards, floatAnim 3s ease-in-out 2s infinite;
 }
 
-@keyframes fadeSlide {
+@keyframes fadeSlideFloat {
     to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateX(0) translateY(0) scale(1);
     }
 }
+
+@keyframes floatAnim {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.03); }
+    100% { transform: translateY(0) scale(1); }
+}
+
 /* ============================
    SALARY SECTION - BLUE THEME
    ============================ */
@@ -652,16 +659,18 @@ me image eka wage ui change wenn oni habi man den code wla details e widihtm thy
 </nav>
 
 <!-- Main Content -->
-<div class="container-fluid" style="padding-top: 100px;">
-  @yield('content')
+<div style="margin-top: 40px;">
+    @yield('content')
+</div>
+
 
   <!-- Attendance Section - Only show on dashboard -->
 @if(request()->routeIs('marketing.dashboard'))
-<div class="row mb-5 d-flex align-items-center justify-content-center">
+<div class="row mb-5 mt-5 d-flex align-items-center justify-content-center">
 
     <!-- LEFT SIDE IMAGE WITH ANIMATION -->
     <div class="col-lg-5 text-center">
-        <img src="/images/team.jpg" 
+        <img src="/images/team.png" 
              class="img-fluid attendance-illustration"
              alt="Attendance Illustration">
     </div>
