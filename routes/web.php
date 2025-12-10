@@ -427,6 +427,36 @@ Route::prefix('developer/daily-tasks')->group(function () {
     Route::delete('/{task}', [DailyTaskController::class, 'destroy'])->name('developer.daily-tasks.destroy');
     Route::get('/{dailyTask}', [DailyTaskController::class, 'developerShow'])->name('developer.daily-tasks.show');
 });
+// Test if view can be rendered
+Route::get('/test-render-view', function() {
+    try {
+        $employees = \App\Models\Profile::whereIn('role', [
+            'Super Admin',
+            'Admin', 
+            'Developer',
+            'Senior Developer', 
+            'Junior Developer', 
+            'Intern/Trainee', 
+            'Marketing Manager', 
+            'Project Manager'
+        ])->get();
+        
+        echo "<h2>Testing View Render</h2>";
+        echo "Employees count: " . $employees->count() . "<br>";
+        
+        // Try to render the view
+        return view('developer.daily-tasks.create', compact('employees'));
+        
+    } catch (\Exception $e) {
+        echo "<h2>Error Details:</h2>";
+        echo "Message: " . $e->getMessage() . "<br>";
+        echo "File: " . $e->getFile() . "<br>";
+        echo "Line: " . $e->getLine() . "<br>";
+        echo "Trace: <pre>" . $e->getTraceAsString() . "</pre>";
+        
+        return '';
+    }
+});
 
 // Project Manager Daily Tasks Routes
 Route::prefix('projectmanager/daily-tasks')->group(function () {

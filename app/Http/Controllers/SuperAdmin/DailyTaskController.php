@@ -172,24 +172,26 @@ class DailyTaskController extends Controller
         ));
     }
     
-    public function developercreate()
-    {
-        $allRoles = Profile::select('role')->distinct()->get();
-        logger('All roles in database: ' . $allRoles->pluck('role'));
-        
-        $employees = Profile::whereIn('role', [
-            'Super Admin',
-            'Admin', 
-            'Developer',
-            'Senior Developer', 
-            'Junior Developer', 
-            'Intern/Trainee', 
-            'Marketing Manager', 
-            'Project Manager'
-        ])->get();
-        
-        return view('developer.daily-tasks.create', compact('employees'));
-    }
+ public function developerCreate() 
+{
+    $allRoles = Profile::select('role')->distinct()->get();
+    logger('All roles in database: ' . $allRoles->pluck('role'));
+    
+    $employees = Profile::whereIn('role', [
+        'Super Admin',
+        'Admin', 
+        'Developer',
+        'Senior Developer', 
+        'Junior Developer', 
+        'Intern/Trainee', 
+        'Marketing Manager', 
+        'Project Manager'
+    ])->get();
+    
+    // ❌ WRONG: return view('daily-tasks.create', compact('employees'));
+    // ✅ CORRECT: 
+    return view('developer.daily-tasks.create', compact('employees'));
+}
 
     public function developerstore(Request $request)
     {
