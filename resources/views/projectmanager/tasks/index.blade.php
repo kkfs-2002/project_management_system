@@ -36,176 +36,305 @@
             padding: 10px 20px;
             font-size: .95rem;
         }
-          /* Footer */
-    .footer {
-      background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
-      background-size: cover;
-      color: #fff;
-      padding: 50px 0 20px;
-      position: relative;
-      margin-top: auto;
-    }
+        .dropdown-item:hover {
+            background-color: #222;
+            color: #FFD700;
+        }
 
-    .footer::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      z-index: 0;
-    }
+        /* Task Table Styles */
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .task-table th, .task-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        .task-table th {
+            background: linear-gradient(135deg, #020d1fff 0%, #010e21ff 100%);
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        .task-table tbody tr:hover {
+            background-color: #f1faff;
+        }
+        .badge {
+            padding: 0.35em 0.65em;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
+            color: #fff;
+            display: inline-block;
+            text-align: center;
+            min-width: 80px;
+        }
+        .badge.bg-success { background-color: #28a745; }
+        .badge.bg-info { background-color: #00c6ff; }
+        .badge.bg-warning { background-color: #FFD700; color: #212529; }
+        
+        .btn-forward {
+            padding: 6px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #FFD700; 
+            border: none;
+            border-radius: 4px;
+            color: #212529;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-forward:hover { 
+            background-color: #020d1fff; 
+            color: #fff; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 215, 0, 0.3);
+        }
+        
+        .alert-success {
+            color: #155724;
+            background: #d4edda;
+            padding: 12px 20px;
+            border-left: 4px solid #28a745;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
 
-    .footer > * {
-      position: relative;
-      z-index: 1;
-    }
+        .btn-primary {
+            background: linear-gradient(135deg, #020d1fff 0%, #010e21ff 100%);
+            border: none;
+            font-weight: 600;
+            padding: 8px 20px;
+            transition: all 0.3s ease;
+        }
 
-    .footer a {
-      color: #00c6ff;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #010e21ff 0%, #00c6ff 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 198, 255, 0.3);
+        }
 
-    .footer a:hover {
-      color: #ffdd00;
-    }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            font-weight: 600;
+            padding: 8px 20px;
+            transition: all 0.3s ease;
+        }
 
-    .footer h5 {
-      color: #A7C7E7;
-      font-weight: 600;
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-    }
-    
-    .footer p {
-      color: #b0b0b0;
-      line-height: 1.6;
-    }
-    
-    .footer-links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .footer-links li {
-      margin-bottom: 10px;
-    }
-    
-    .footer-links a {
-      color: #b0b0b0;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-    }
-    
-    .footer-links a:hover {
-      color: #A7C7E7;
-      transform: translateX(5px);
-    }
-    
-    .footer-links a i {
-      margin-right: 8px;
-      font-size: 0.9rem;
-    }
-    
-    .contact-info {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .contact-info li {
-      margin-bottom: 15px;
-      display: flex;
-      align-items: flex-start;
-    }
-    
-    .contact-info i {
-      color: #A7C7E7;
-      margin-right: 10px;
-      margin-top: 3px;
-      font-size: 1rem;
-    }
-    
-    .social-links {
-      display: flex;
-      gap: 15px;
-      margin-top: 20px;
-    }
-    
-    .social-links a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      color: #fff;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-    
-    .social-links a:hover {
-      background: #A7C7E7;
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(167, 199, 231, 0.3);
-    }
-    
-    .footer-bottom {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 20px;
-      margin-top: 40px;
-      text-align: center;
-    }
-    
-    .footer-bottom p {
-      margin: 0;
-      color: #888;
-      font-size: 0.9rem;
-    }
-    
-    .company-logo {
-      max-width: 150px;
-      margin-bottom: 20px;
-    }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
 
+        h3 {
+            color: #020d1fff;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #FFD700;
+        }
+
+        h3 strong {
+            color: #00c6ff;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-select, .form-control {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus, .form-control:focus {
+            border-color: #00c6ff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 198, 255, 0.25);
+        }
+
+        .text-muted {
+            color: #888 !important;
+        }
+
+        /* Footer */
+        .footer {
+            background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
+            background-size: cover;
+            color: #fff;
+            padding: 50px 0 20px;
+            position: relative;
+            margin-top: 60px;
+        }
+
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 0;
+        }
+
+        .footer > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer a {
+            color: #00c6ff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #ffdd00;
+        }
+
+        .footer h5 {
+            color: #A7C7E7;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .footer p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: #A7C7E7;
+            transform: translateX(5px);
+        }
+        
+        .footer-links a i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .contact-info {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .contact-info li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-info i {
+            color: #A7C7E7;
+            margin-right: 10px;
+            margin-top: 3px;
+            font-size: 1rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: #A7C7E7;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(167, 199, 231, 0.3);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .footer-bottom p {
+            margin: 0;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .company-logo {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
     <div class="container-fluid">
-        <!-- Left: Logo + Welcome -->
-        <a class="navbar-brand d-flex align-items-center" href="{{ route('layouts.projectmanager', $pm->id ?? 1) }}">
+          <a class="navbar-brand d-flex align-items-center" href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
             <img src="{{ asset('NetIT logo.png') }}" alt="PM" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
             <span>Welcome, {{ 'Project Manager' }}</span>
         </a>
 
-        <!-- Toggler for Mobile View -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#pmNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Navigation Items -->
         <div class="collapse navbar-collapse" id="pmNavbar">
-            <!-- Center Navigation -->
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
+                   <a class="nav-link" href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
                         <i class="fa fa-home me-1"></i> Dashboard
                     </a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('projectmanager.tasks.index', $pm->id ?? 1) }}">
                         <i class="fa fa-tasks me-1"></i> Tasks
                     </a>
                 </li>
-                \   <li class="nav-item dropdown">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="tasksDropdown" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-target me-1"></i> Day Updates Tasks
                     </a>
@@ -215,15 +344,14 @@
                 </li>
             </ul>
 
-            <!-- Right-Aligned: Account Dropdown -->
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="pmDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <a class="nav-link dropdown-toggle" href="#" id="pmDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-user me-1"></i> {{ 'Account' }}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="pmDropdown">
                         <li>
-                            <form method="POST" action="{{ route('projectmanager.logout') }}">
+                             <form method="POST" action="{{ route('projectmanager.logout') }}">
                                 @csrf
                                 <button type="submit" class="dropdown-item text-danger">
                                     <i class="fa fa-sign-out-alt me-2"></i> Logout
@@ -239,72 +367,6 @@
 
 <!-- Main Content Area -->
 <div class="container mt-4" style="padding-top:100px;">
-    @yield('content')
-
-</div>
-
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-@yield('scripts')
-</body>
-</html>
-
-<style>
-    .task-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    .task-table th, .task-table td {
-        padding: 12px 15px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-    }
-    .task-table th {
-        background-color: #e6f2fa;
-        color: rgba(0, 0, 0, 0.75);
-        text-transform: uppercase;
-        font-weight: 600;
-    }
-    .task-table tbody tr:hover {
-        background-color: #f1faff;
-    }
-    .badge {
-        padding: 0.35em 0.65em;
-        font-size: 0.75rem;
-        font-weight: 600;
-        border-radius: 0.375rem;
-        color: #fff;
-        display: inline-block;
-        text-align: center;
-        min-width: 80px;
-    }
-    .badge.bg-success { background-color: #28a745; }
-    .badge.bg-info { background-color: #17a2b8; }
-    .badge.bg-warning { background-color: #ffc107; color: #212529; }
-    .btn-forward {
-        padding: 5px 12px;
-        font-size: 14px;
-        cursor: pointer;
-        background-color: #ffc107; 
-        border: none;
-        border-radius: 4px;
-        color: #212529;
-        transition: background-color 0.3s ease;
-    }
-    .btn-forward:hover { background-color: #e0a800; color: #fff; }
-    .alert-success {
-        color: green;
-        background: #e6ffed;
-        padding: 10px;
-        border-left: 4px solid green;
-        margin-bottom: 15px;
-        border-radius: 4px;
-    }
-</style>
-
-<div class="container">
     <h3>Tasks for Project: <strong>{{ $project->name }}</strong></h3>
 
     @if(session('success'))
@@ -340,7 +402,6 @@
     <table class="task-table">
         <thead>
             <tr>
-                
                 <th>Title</th>
                 <th>Description</th>
                 <th>Developer</th>
@@ -353,7 +414,6 @@
         <tbody>
         @forelse($tasks as $task)
             <tr>
-                
                 <td>{{ $task->title }}</td>
                 <td>{{ $task->description }}</td>
                 <td>{{ $task->developer_name }}</td>
@@ -368,7 +428,7 @@
                     @if($task->status === 'Pending')
                         <form method="POST" action="{{ route('projectmanager.tasks.forward', $task->id) }}" style="display:inline;">
                             @csrf
-                            <button type="submit" class="btn-forward" >
+                            <button type="submit" class="btn-forward">
                                 Forward to Developer
                             </button>
                         </form>
@@ -378,7 +438,7 @@
                 </td>
             </tr>
         @empty
-            <tr><td colspan="8" class="text-center">No tasks found for this project.</td></tr>
+            <tr><td colspan="7" class="text-center">No tasks found for this project.</td></tr>
         @endforelse
         </tbody>
     </table>
@@ -475,3 +535,7 @@
     </div>
   </div>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

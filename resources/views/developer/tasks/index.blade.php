@@ -36,161 +36,282 @@
             padding: 10px 20px;
             font-size: .95rem;
         }
+        .dropdown-item:hover {
+            background-color: #222;
+            color: #FFD700;
+        }
+
+        /* Task Table Styles */
+        .task-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .task-table th, .task-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        .task-table th {
+            background: linear-gradient(135deg, #020d1fff 0%, #010e21ff 100%);
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        .task-table tbody tr:hover {
+            background-color: #f1faff;
+        }
+
+        .badge {
+            padding: 0.35em 0.65em;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 0.375rem;
+            color: #fff;
+            display: inline-block;
+            text-align: center;
+            min-width: 80px;
+        }
+        .badge.bg-success { background-color: #28a745; }
+        .badge.bg-info { background-color: #00c6ff; }
+        .badge.bg-warning { background-color: #FFD700; color: #212529; }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #020d1fff 0%, #010e21ff 100%);
+            border: none;
+            font-weight: 600;
+            padding: 8px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #010e21ff 0%, #00c6ff 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 198, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            font-weight: 600;
+            padding: 8px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        h3 {
+            color: #020d1fff;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #FFD700;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            border-left: 4px solid #28a745;
+            font-weight: 500;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-select, .form-control {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 8px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus, .form-control:focus {
+            border-color: #00c6ff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 198, 255, 0.25);
+        }
+
+        .text-muted {
+            color: #888 !important;
+        }
+
         /* Footer */
-    .footer {
-      background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
-      background-size: cover;
-      color: #fff;
-      padding: 50px 0 20px;
-      position: relative;
-      margin-top: auto;
-    }
+        .footer {
+            background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
+            background-size: cover;
+            color: #fff;
+            padding: 50px 0 20px;
+            position: relative;
+            margin-top: 60px;
+        }
 
-    .footer::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.7);
-      z-index: 0;
-    }
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 0;
+        }
 
-    .footer > * {
-      position: relative;
-      z-index: 1;
-    }
+        .footer > * {
+            position: relative;
+            z-index: 1;
+        }
 
-    .footer a {
-      color: #00c6ff;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
+        .footer a {
+            color: #00c6ff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
 
-    .footer a:hover {
-      color: #ffdd00;
-    }
+        .footer a:hover {
+            color: #ffdd00;
+        }
 
-    .footer h5 {
-      color: #A7C7E7;
-      font-weight: 600;
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-    }
-    
-    .footer p {
-      color: #b0b0b0;
-      line-height: 1.6;
-    }
-    
-    .footer-links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .footer-links li {
-      margin-bottom: 10px;
-    }
-    
-    .footer-links a {
-      color: #b0b0b0;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-    }
-    
-    .footer-links a:hover {
-      color: #A7C7E7;
-      transform: translateX(5px);
-    }
-    
-    .footer-links a i {
-      margin-right: 8px;
-      font-size: 0.9rem;
-    }
-    
-    .contact-info {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .contact-info li {
-      margin-bottom: 15px;
-      display: flex;
-      align-items: flex-start;
-    }
-    
-    .contact-info i {
-      color: #A7C7E7;
-      margin-right: 10px;
-      margin-top: 3px;
-      font-size: 1rem;
-    }
-    
-    .social-links {
-      display: flex;
-      gap: 15px;
-      margin-top: 20px;
-    }
-    
-    .social-links a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      color: #fff;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-    
-    .social-links a:hover {
-      background: #A7C7E7;
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(167, 199, 231, 0.3);
-    }
-    
-    .footer-bottom {
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 20px;
-      margin-top: 40px;
-      text-align: center;
-    }
-    
-    .footer-bottom p {
-      margin: 0;
-      color: #888;
-      font-size: 0.9rem;
-    }
-    
-    .company-logo {
-      max-width: 150px;
-      margin-bottom: 20px;
-    }
-
+        .footer h5 {
+            color: #A7C7E7;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .footer p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: #A7C7E7;
+            transform: translateX(5px);
+        }
+        
+        .footer-links a i {
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .contact-info {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .contact-info li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-info i {
+            color: #A7C7E7;
+            margin-right: 10px;
+            margin-top: 3px;
+            font-size: 1rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: #A7C7E7;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(167, 199, 231, 0.3);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .footer-bottom p {
+            margin: 0;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .company-logo {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
     <div class="container-fluid">
-        <!-- Left: Logo and Welcome -->
         <a class="navbar-brand d-flex align-items-center" href="{{ route('layouts.developer', $dev->id ?? 1) }}">
             <img src="{{ asset('NetIT logo.png') }}" alt="Dev" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
             <span>Welcome, {{ $dev->full_name ?? 'Developer' }}</span>
         </a>
 
-        <!-- Navbar toggler for mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#devNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Center: Navigation Links -->
         <div class="collapse navbar-collapse" id="devNavbar">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
@@ -203,7 +324,7 @@
                         <i class="fa fa-tasks me-1"></i> My Tasks
                     </a>
                 </li>
-                  <li class="nav-item dropdown">
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="tasksDropdown" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-target me-1"></i> Day Updates Tasks 
                     </a>
@@ -212,8 +333,6 @@
                     </ul>
                 </li>
             </ul>
-
-            <!-- Right: User Dropdown with Logout -->
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="devDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -237,53 +356,6 @@
 
 <!-- Main content -->
 <div class="container mt-4" style="padding-top:100px;">
-    @yield('content')
-    </div>
-
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-@yield('scripts')
-</body>
-</html>
-
-<style>
-    .task-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    .task-table th, .task-table td {
-        padding: 12px 15px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-    }
-    .task-table th {
-        background-color: #e6f2fa;
-        color: rgba(0, 0, 0, 0.75);
-        text-transform: uppercase;
-        font-weight: 600;
-    }
-    .task-table tbody tr:hover {
-        background-color: #f1faff;
-    }
-
-    .badge {
-        padding: 0.35em 0.65em;
-        font-size: 0.75rem;
-        font-weight: 600;
-        border-radius: 0.375rem;
-        color: #fff;
-        display: inline-block;
-        text-align: center;
-        min-width: 80px;
-    }
-    .badge.bg-success { background-color: #28a745; }
-    .badge.bg-info { background-color: #17a2b8; }
-    .badge.bg-warning { background-color: #ffc107; color: #212529; }
-</style>
-
-<div class="container">
     <h3>Tasks</h3>
 
     {{-- Success Message --}}
@@ -296,7 +368,6 @@
     <!-- Filter Form -->
     <form method="GET" action="{{ route('developer.tasks.index') }}" class="mb-4">
         <div class="row g-3 align-items-end">
-
             <div class="col-md-3">
                 <label for="project_id" class="form-label">Filter by Project</label>
                 <select name="project_id" id="project_id" class="form-select">
@@ -334,7 +405,6 @@
     <table class="task-table">
         <thead>
             <tr>
-                
                 <th>Project</th>
                 <th>Title</th>
                 <th>Start Date</th>
@@ -346,7 +416,6 @@
         <tbody>
             @forelse($tasks as $task)
                 <tr>
-                    
                     <td>{{ $task->project->name ?? 'N/A' }}</td>
                     <td>{{ $task->title }}</td>
                     <td>{{ \Carbon\Carbon::parse($task->start_date)->format('Y-m-d') }}</td>
@@ -371,7 +440,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center">No tasks found.</td>
+                    <td colspan="6" class="text-center">No tasks found.</td>
                 </tr>
             @endforelse
         </tbody>
@@ -469,3 +538,7 @@
     </div>
   </div>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
