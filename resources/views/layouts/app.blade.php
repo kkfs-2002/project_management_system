@@ -404,11 +404,10 @@
           We empower businesses to thrive in the digital age.
         </p>
         <div class="social-links">
-          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-          <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+          <a href="https://www.facebook.com/share/1BqiRiXiP5/" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://netittechnology.com/" target="_blank" title="Website">
+    <i class="fas fa-globe"></i>
+</a>
         </div>
       </div>
       
@@ -457,10 +456,13 @@
           </li>
           <li>
             <i class="fas fa-envelope"></i>
-            <div>
-              <strong>Email</strong><br>
-             info@netittechnology.com
-            </div>
+              <div>
+    <strong>Email</strong><br>
+    <a href="mailto:info@netittechnology.com">
+        info@netittechnology.com
+    </a>
+</div>
+
           </li>
           <li>
             <i class="fas fa-clock"></i>

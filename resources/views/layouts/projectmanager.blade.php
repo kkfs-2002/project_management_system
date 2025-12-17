@@ -909,11 +909,10 @@ Your Project Manager Dashboard keeps everything organized in one place.
           We empower businesses to thrive in the digital age.
         </p>
         <div class="social-links">
-          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-          <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+          <a href="https://www.facebook.com/share/1BqiRiXiP5/" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://netittechnology.com/" target="_blank" title="Website">
+    <i class="fas fa-globe"></i>
+</a>
         </div>
       </div>
       
@@ -922,10 +921,8 @@ Your Project Manager Dashboard keeps everything organized in one place.
         <h5>Quick Links</h5>
         <ul class="footer-links">
           <li><a href="{{ route('superadmin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
-          <li><a href="{{ route('superadmin.employee.index') }}"><i class="fas fa-users"></i> Employees</a></li>
-          <li><a href="{{ route('superadmin.tasks.index') }}"><i class="fas fa-tasks"></i> Tasks</a></li>
-          <li><a href="{{ route('superadmin.project.transactions') }}"><i class="fas fa-chart-line"></i> Finance</a></li>
-          <li><a href="{{ route('superadmin.clients.index') }}"><i class="fas fa-bullhorn"></i> Marketing</a></li>
+          <li><a href="{{ route('superadmin.employee.index') }}"><i class="fas fa-tasks"></i> Tasks</a></li>
+          <li><a href="{{ route('projectmanager.daily-tasks.index') }}"><i class="fas fa-clipboard-check"></i> Day Updates Tasks</a></li>
         </ul>
       </div>
       
@@ -963,9 +960,12 @@ Your Project Manager Dashboard keeps everything organized in one place.
           <li>
             <i class="fas fa-envelope"></i>
             <div>
-              <strong>Email</strong><br>
-              info@netittechnology.com
-            </div>
+    <strong>Email</strong><br>
+    <a href="mailto:info@netittechnology.com">
+        info@netittechnology.com
+    </a>
+</div>
+
           </li>
           <li>
             <i class="fas fa-clock"></i>

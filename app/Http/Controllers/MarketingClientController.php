@@ -3,77 +3,92 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Client;
 use App\Models\Salary; // Fix: Capital 'S' for Salary model
+use App\Models\MarketingProject;
 use Carbon\Carbon;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 class MarketingClientController extends Controller
 {
-    public function dashboard()
-    {
-        // Get authenticated marketing manager
-        $marketing = Auth::user();
-         
-        if (!$marketing) {
-            return redirect()->route('login')->with('error', 'Please login first');
-        }
-        // Client statistics
-        $totalClients = Client::count();
-        $activeClients = Client::where('status', 'active')->count();
-        $inactiveClients = Client::where('status', 'inactive')->count();
-        $upcomingReminders = Client::whereNotNull('reminder_date')
-            ->whereDate('reminder_date', '>=', now())
-            ->count();
-        // Get today's attendance
-        $todayAttendance = Attendance::where('profile_id', $marketing->id)
-            ->whereDate('date', Carbon::today())
-            ->first();
-        // SALARY SECTION - FIXED
-        $salaryDetails = Salary::where('profile_id', $marketing->id)
-            ->orderBy('salary_month', 'desc')
-            ->take(6)
-            ->get();
-        // Convert salary summary values to floats
-        $salarySummary = [
-            'current_month' => (float) Salary::where('profile_id', $marketing->id)
-                ->whereYear('salary_month', Carbon::now()->year)
-                ->whereMonth('salary_month', Carbon::now()->month)
-                ->sum('amount'),
-            'last_month' => (float) Salary::where('profile_id', $marketing->id)
-                ->whereYear('salary_month', Carbon::now()->subMonth()->year)
-                ->whereMonth('salary_month', Carbon::now()->subMonth()->month)
-                ->sum('amount'),
-            'year_total' => (float) Salary::where('profile_id', $marketing->id)
-                ->whereYear('salary_month', Carbon::now()->year)
-                ->where('status', 'paid')
-                ->sum('amount'),
-            'pending' => (float) Salary::where('profile_id', $marketing->id)
-                ->where('status', 'pending')
-                ->sum('amount')
-        ];
-        // Get current month salary record
-        $currentMonthSalary = Salary::where('profile_id', $marketing->id)
+ public function dashboard()
+{
+    // Get authenticated marketing manager
+    $marketing = Auth::user();
+     
+    if (!$marketing) {
+        return redirect()->route('login')->with('error', 'Please login first');
+    }
+    
+    // Client statistics
+    $totalClients = Client::count();
+    $activeClients = Client::where('status', 'active')->count();
+    $inactiveClients = Client::where('status', 'inactive')->count();
+    $upcomingReminders = Client::whereNotNull('reminder_date')
+        ->whereDate('reminder_date', '>=', now())
+        ->count();
+    
+    // Get today's attendance
+    $todayAttendance = Attendance::where('profile_id', $marketing->id)
+        ->whereDate('date', Carbon::today())
+        ->first();
+    
+    // SALARY SECTION - FIXED
+    $salaryDetails = Salary::where('profile_id', $marketing->id)
+        ->orderBy('salary_month', 'desc')
+        ->take(6)
+        ->get();
+    
+    // Convert salary summary values to floats
+    $salarySummary = [
+        'current_month' => (float) Salary::where('profile_id', $marketing->id)
             ->whereYear('salary_month', Carbon::now()->year)
             ->whereMonth('salary_month', Carbon::now()->month)
-            ->first();
-        // Get last paid salary record
-        $lastPaidSalary = Salary::where('profile_id', $marketing->id)
+            ->sum('amount'),
+        'last_month' => (float) Salary::where('profile_id', $marketing->id)
+            ->whereYear('salary_month', Carbon::now()->subMonth()->year)
+            ->whereMonth('salary_month', Carbon::now()->subMonth()->month)
+            ->sum('amount'),
+        'year_total' => (float) Salary::where('profile_id', $marketing->id)
+            ->whereYear('salary_month', Carbon::now()->year)
             ->where('status', 'paid')
-            ->latest('updated_at')
-            ->first();
-        return view('marketing.dashboard', compact(
-            'marketing',
-            'totalClients',
-            'activeClients',
-            'inactiveClients',
-            'upcomingReminders',
-            'todayAttendance',
-            'salaryDetails',
-            'salarySummary',
-            'currentMonthSalary',
-            'lastPaidSalary'
-        ));
-    }
+            ->sum('amount'),
+        'pending' => (float) Salary::where('profile_id', $marketing->id)
+            ->where('status', 'pending')
+            ->sum('amount')
+    ];
+    
+    // Get current month salary record
+    $currentMonthSalary = Salary::where('profile_id', $marketing->id)
+        ->whereYear('salary_month', Carbon::now()->year)
+        ->whereMonth('salary_month', Carbon::now()->month)
+        ->first();
+    
+    // Get last paid salary record
+    $lastPaidSalary = Salary::where('profile_id', $marketing->id)
+        ->where('status', 'paid')
+        ->latest('updated_at')
+        ->first();
+    
+    // NEW: Get marketing projects for this manager
+    $marketingProjects = MarketingProject::where('marketing_manager_id', $marketing->employee_id)
+        ->orderBy('created_at', 'desc')
+        ->take(10) // Show last 10 projects
+        ->get();
+    
+    return view('marketing.dashboard', compact(
+        'marketing',
+        'totalClients',
+        'activeClients',
+        'inactiveClients',
+        'upcomingReminders',
+        'todayAttendance',
+        'salaryDetails',
+        'salarySummary',
+        'currentMonthSalary',
+        'lastPaidSalary',
+        'marketingProjects' // NEW: Add this
+    ));
+}
     // SALARY HISTORY METHOD - FIXED
     public function salaryHistory(Request $request)
     {
@@ -436,4 +451,43 @@ public function index(Request $request)
         $pdf = Pdf::loadView('marketing.clients.index_pdf', compact('clients', 'month'));
         return $pdf->download('Client_List_' . ($month ?? now()->format('Y_m')) . '.pdf');
     }
+    public function getProjectDetails($id)
+{
+    try {
+        // Get authenticated marketing manager
+        $marketing = Auth::user();
+        
+        // Find the project - first check if project exists
+        $project = MarketingProject::find($id);
+        
+        if (!$project) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Project not found'
+            ], 404);
+        }
+        
+        // Optional: Check if project belongs to current user
+        // Uncomment this if you want to restrict access
+        /*
+        if ($project->marketing_manager_id != $marketing->employee_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Access denied'
+            ], 403);
+        }
+        */
+        
+        return response()->json([
+            'success' => true,
+            'project' => $project
+        ]);
+        
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error loading project details'
+        ], 500);
+    }
+}
 }
