@@ -6,6 +6,7 @@ use App\Models\Client;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Profile;
+use App\Models\MarketingProject;
 use Illuminate\Support\Facades\Http;
 
 class ClientController extends Controller
