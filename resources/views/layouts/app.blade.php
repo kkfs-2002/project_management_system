@@ -366,6 +366,8 @@
   </a>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="marketingDropdown">
     <li><a class="dropdown-item" href="{{ route('superadmin.clients.index') }}">Client List</a></li>
+     <li><a class="dropdown-item" href="{{ route('superadmin.clients.add') }}">Add Project</a></li>
+     <li><a class="dropdown-item" href="{{ route('superadmin.marketing.projects.index') }}">View Marketing Details</a></li>
   </ul>
 </li>
         <!-- Admin Tools -->

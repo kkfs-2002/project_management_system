@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
@@ -14,13 +13,10 @@ class ClientController extends Controller
     // Show clients grouped by month-year, with pending requests
     public function index(Request $request)
     {
-       
         // Correct role string (adjust this to match your DB)
         $managers = Profile::where('role', 'Marketing Manager')->with('user')->get();
-
     
         $query = Client::whereIn('payment_status', ['Advance', 'Full']);
-
     
         // Filter by selected month if provided
         if ($request->filled('month')) {
@@ -54,52 +50,58 @@ class ClientController extends Controller
         // Get all pending requests regardless of filter
         $pendingRequests = Client::where('edit_permission', 'pending')->get();
     
-        
-    
         // Return view with all necessary data
         return view('superadmin.clients.index', compact('clientsByMonth', 'pendingRequests', 'managers'));
     }
 
+    // Show the add client/marketing project form
     public function create()
     {
-        $managers = Profile::all(); // or however you get marketing managers
+        // Get all marketing managers
+        $managers = Profile::where('role', 'Marketing Manager')->with('user')->get();
     
-        return view('superadmin.clients.create', compact('managers'));
+        return view('superadmin.clients.add', compact('managers'));
     }
     
+    // Store new marketing project
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'marketing_manager_id' => 'required|string|exists:profiles,employee_id',
-        'name' => 'required|string|max:255',
-        'contact_number' => 'nullable|string',
-        'project_name' => 'nullable|string',
-        'project_type' => 'nullable|string',
-        'technology' => 'nullable|string',
-        'reminder_date' => 'nullable|date',
-        'note' => 'nullable|string',
-        'amount' => 'nullable|numeric',
-        'payment_status' => 'nullable|string',
-    ]);
+    {
+        $validated = $request->validate([
+            'client_name' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:20',
+            'date' => 'required|date',
+            'project_type' => 'required|string',
+            'project_category' => 'required|string',
+            'contact_method' => 'required|string',
+            'call_sequence' => 'required|string',
+            'comments' => 'required|string',
+            'project_price' => 'required|numeric',
+            'marketing_manager_id' => 'required|string|exists:profiles,employee_id',
+        ]);
 
-    $client = new Client($validated);
-    $client->marketing_manager_id = $request->marketing_manager_id;
-    $client->save();
+        // Create new client record
+        $client = new Client();
+        $client->name = $validated['client_name'];
+        $client->contact_number = $validated['phone_number'];
+        $client->project_name = $validated['project_category']; // Category as project name
+        $client->project_type = $validated['project_type'];
+        $client->technology = $validated['contact_method']; // Using technology field for contact method
+        $client->reminder_date = $validated['date'];
+        $client->note = $validated['comments'] . "\n\nCall Sequence: " . $validated['call_sequence'];
+        $client->amount = $validated['project_price'];
+        $client->payment_status = 'Pending'; // Default status
+        $client->marketing_manager_id = $validated['marketing_manager_id'];
+        $client->edit_permission = 'approved'; // Auto-approve since it's from superadmin
+        $client->save();
 
-    return redirect()->route('superadmin.clients.index')->with('success', 'Client sent to manager.');
-}
-
+        return redirect()->route('superadmin.clients.add')->with('success', 'Marketing project added successfully!');
+    }
     
-    
-    
-    
-
     // Approve permission request
     public function approvePermission(Client $client)
     {
         $client->edit_permission = 'approved';
         $client->save();
-
         return back()->with('success', 'Permission approved.');
     }
 
@@ -108,7 +110,6 @@ class ClientController extends Controller
     {
         $client->edit_permission = 'rejected';
         $client->save();
-
         return back()->with('success', 'Permission rejected.');
     }
 }

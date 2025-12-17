@@ -10,6 +10,7 @@ use App\Http\Controllers\SuperAdmin\SuperAdminAttendanceController;
 use App\Http\Controllers\MarketingClientController;
 use App\Http\Controllers\SuperAdmin\ProjectController;
 use App\Http\Controllers\SuperAdmin\ClientController;
+use App\Http\Controllers\SuperAdmin\MarketingProjectController;
 use App\Http\Controllers\SuperAdmin\SuperDashController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Task\TaskController;
@@ -200,19 +201,28 @@ Route::get('/projectmanager/{id}/salary', [ProjectManagerController::class, 'sal
 });
 
 
-//superadmin client details
-Route::prefix('superadmin/marketing/clients')->group(function () {
-    Route::get('/', [ClientController::class, 'index'])->name('superadmin.clients.index');
 
-    Route::post('/{client}/approve-permission', [ClientController::class, 'approvePermission'])->name('superadmin.clients.approve-permission');
-    Route::post('/{client}/reject-permission', [ClientController::class, 'rejectPermission'])->name('superadmin.clients.reject-permission');
+
+// Superadmin Client routes (existing clients system)
+Route::prefix('superadmin/marketing')->name('superadmin.')->group(function () {
     
+    // Clients list
+    Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
+    
+    // Approve/Reject permissions
+    Route::post('/clients/{client}/approve-permission', [ClientController::class, 'approvePermission'])->name('clients.approve-permission');
+    Route::post('/clients/{client}/reject-permission', [ClientController::class, 'rejectPermission'])->name('clients.reject-permission');
 });
 
-// routes/web.php
-Route::get('superadmin/clients/create', [ClientController::class, 'create'])->name('superadmin.clients.create');
-// routes/web.php
-Route::post('superadmin/clients/store', [ClientController::class, 'store'])->name('superadmin.clients.store');
+// Superadmin Marketing Projects routes (new marketing projects system)
+Route::prefix('superadmin/marketing')->group(function () {
+    
+    // Marketing Projects
+    Route::get('/projects', [MarketingProjectController::class, 'index'])->name('superadmin.marketing.projects.index');
+    Route::get('/projects/add', [MarketingProjectController::class, 'create'])->name('superadmin.clients.add');
+    Route::post('/projects/store', [MarketingProjectController::class, 'store'])->name('superadmin.clients.store');
+    Route::put('/projects/{id}/status', [MarketingProjectController::class, 'updateStatus'])->name('superadmin.marketing.projects.updateStatus');
+});
 
 
 
