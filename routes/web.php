@@ -222,6 +222,9 @@ Route::prefix('superadmin/marketing')->group(function () {
     Route::get('/projects/add', [MarketingProjectController::class, 'create'])->name('superadmin.clients.add');
     Route::post('/projects/store', [MarketingProjectController::class, 'store'])->name('superadmin.clients.store');
     Route::put('/projects/{id}/status', [MarketingProjectController::class, 'updateStatus'])->name('superadmin.marketing.projects.updateStatus');
+    // Check phone (added here, nested under marketing for organization; points to MarketingProjectController since method is there)
+    Route::get('/projects/check-phone', [MarketingProjectController::class, 'checkPhone'])->name('clients.check-phone');  // Kept name for consistency
+
 });
 
 
@@ -409,10 +412,13 @@ Route::post('/marketing/clients/{client}/cancel', [MarketingClientController::cl
 Route::post('/marketing/clients/{client}/hide', [MarketingClientController::class, 'hide'])
      ->name('marketing.clients.hide');
 Route::get('/marketing/clients/cancelled', [MarketingClientController::class, 'cancelled'])->name('marketing.clients.cancelled');
+ Route::get('/marketing/projects/{id}/details', [MarketingClientController::class, 'getProjectDetails'])
+        ->name('marketing.projects.details');
 
 Route::get('/clients/summary', [MarketingClientController::class, 'summary'])->name('marketing.clients.summary');
 Route::get('/clients/summary/pdf', [MarketingClientController::class, 'downloadSummaryPdf'])->name('marketing.clients.summary.pdf');
 Route::get('/clients/pdf', [MarketingClientController::class, 'exportPdf'])->name('marketing.clients.index.pdf');
+
 
 // ==================== DAILY TASKS ROUTES - SEPARATED BY ROLE ====================
 

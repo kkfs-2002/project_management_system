@@ -779,6 +779,477 @@ me image eka wage ui change wenn oni habi man den code wla details e widihtm thy
 @endif
 
 </div>
+<!-- Marketing Projects Table - Show only to Marketing Managers -->
+@if(auth()->check() && auth()->user()->role === 'Marketing Manager')
+<div class="row mb-5 mt-5">
+    <div class="col-lg-10 mx-auto">
+        <div class="card shadow-lg border-0" style="background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);">
+            <div class="card-header py-3" style="background: linear-gradient(135deg, #020d1eff, #1a237e); border-radius: 15px 15px 0 0;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 text-white">
+                        <i class="fas fa-briefcase me-3"></i>My Marketing Projects
+                        @if(isset($marketingProjects) && $marketingProjects->count() > 0)
+                            <span class="badge bg-light text-dark ms-2">{{ $marketingProjects->count() }}</span>
+                        @endif
+                    </h4>
+                    <div>
+                        <button class="btn btn-sm btn-outline-light" id="refreshProjects">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-body p-4">
+                @if(isset($marketingProjects) && $marketingProjects->count() > 0)
+                    <!-- Stats Summary -->
+                    <div class="row mb-4">
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="stat-card stat-total">
+                                <div class="stat-number text-primary">
+                                    {{ $marketingProjects->count() }}
+                                </div>
+                                <div class="stat-label">Total Projects</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="stat-card stat-active">
+                                <div class="stat-number text-success">
+                                    {{ $marketingProjects->where('status', 'active')->count() }}
+                                </div>
+                                <div class="stat-label">Active</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="stat-card stat-inactive">
+                                <div class="stat-number text-warning">
+                                    {{ $marketingProjects->where('status', 'hold')->count() }}
+                                </div>
+                                <div class="stat-label">On Hold</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="stat-card stat-reminders">
+                                <div class="stat-number text-info">
+                                    {{ $marketingProjects->where('status', 'completed')->count() }}
+                                </div>
+                                <div class="stat-label">Completed</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Projects Table -->
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="ps-4">Client</th>
+                                    <th>Contact</th>
+                                    <th>Project Details</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($marketingProjects as $project)
+                                <tr class="hover-shadow">
+                                    <td class="ps-4">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-circle bg-primary text-white me-3">
+                                                {{ substr($project->client_name, 0, 1) }}
+                                            </div>
+                                            <div>
+                                                <strong class="d-block">{{ $project->client_name }}</strong>
+                                                <small class="text-muted">{{ \Carbon\Carbon::parse($project->date)->format('d M Y') }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <i class="fas fa-phone text-success me-2"></i>
+                                            <span>{{ $project->phone_number }}</span>
+                                        </div>
+                                        <small class="text-muted">
+                                            <i class="fas fa-comment-alt me-1"></i>{{ $project->contact_method }}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <div class="project-info">
+                                            <div class="mb-1">
+                                                <span class="badge bg-info-subtle text-info me-2">{{ $project->project_type }}</span>
+                                                <span class="badge bg-light text-dark">{{ $project->project_category }}</span>
+                                            </div>
+                                            <div class="text-success fw-bold">
+                                                <i class="fas fa-money-bill-wave me-1"></i>
+                                                Rs. {{ number_format($project->project_price, 2) }}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if($project->status === 'active')
+                                            <span class="badge bg-success rounded-pill px-3 py-2">
+                                                <i class="fas fa-play-circle me-1"></i> Active
+                                            </span>
+                                        @elseif($project->status === 'hold')
+                                            <span class="badge bg-warning rounded-pill px-3 py-2">
+                                                <i class="fas fa-pause-circle me-1"></i> Hold
+                                            </span>
+                                        @elseif($project->status === 'completed')
+                                            <span class="badge bg-primary rounded-pill px-3 py-2">
+                                                <i class="fas fa-check-circle me-1"></i> Completed
+                                            </span>
+                                        @else
+                                            <span class="badge bg-secondary rounded-pill px-3 py-2">
+                                                <i class="fas fa-clock me-1"></i> Pending
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-info view-project-details" 
+                                                data-project-id="{{ $project->id }}"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#projectDetailsModal"
+                                                title="View Details">
+                                            <i class="fas fa-eye"></i> View
+                                        </button>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Projects Summary Footer -->
+                    <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                        <div class="text-muted">
+                            <small>
+                                <i class="fas fa-info-circle me-1"></i>
+                                Showing {{ $marketingProjects->count() }} project(s) assigned to you
+                            </small>
+                        </div>
+                        <div class="btn-group">
+                           
+                        </div>
+                    </div>
+                    
+                @else
+                    <!-- No Projects Found -->
+                    <div class="text-center py-5">
+                        <div class="no-projects-illustration mb-4">
+                            <i class="fas fa-folder-open fa-4x text-muted opacity-25"></i>
+                        </div>
+                        <h4 class="text-muted mb-3">No Marketing Projects Found</h4>
+                        <p class="text-muted mb-4">You haven't been assigned any marketing projects yet.</p>
+                        <button class="btn btn-primary btn-lg px-4" onclick="window.location='{{ url('/superadmin/clients/add') }}'">
+                            <i class="fas fa-plus-circle me-2"></i> Create Your First Project
+                        </button>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Project Details Modal -->
+<div class="modal fade" id="projectDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, #020d1eff, #1a237e);">
+                <h5 class="modal-title">
+                    <i class="fas fa-file-alt me-2"></i>Project Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="p-4" id="projectDetailsContent">
+                    <!-- Content will be loaded by JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Close
+                </button>
+                <button type="button" class="btn btn-primary" id="printProjectDetails">
+                    <i class="fas fa-print me-1"></i> Print
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Additional Styles for Projects Section */
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.hover-shadow:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.bg-info-subtle {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+}
+
+.no-projects-illustration {
+    opacity: 0.5;
+}
+
+/* Project Details Modal Styles */
+#projectDetailsContent .project-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+#projectDetailsContent .detail-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+#projectDetailsContent .detail-item:last-child {
+    border-bottom: none;
+}
+
+#projectDetailsContent .call-timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+#projectDetailsContent .call-timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #007bff;
+}
+
+#projectDetailsContent .timeline-item {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+#projectDetailsContent .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -25px;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #007bff;
+    border: 2px solid white;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Refresh projects button
+    document.getElementById('refreshProjects')?.addEventListener('click', function() {
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        setTimeout(() => {
+            location.reload();
+        }, 500);
+    });
+    
+    // Load more projects button
+    document.getElementById('loadMoreProjects')?.addEventListener('click', function() {
+        this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Loading...';
+        setTimeout(() => {
+            alert('Loading more projects...');
+            this.innerHTML = '<i class="fas fa-plus-circle me-1"></i> Load More';
+        }, 1000);
+    });
+    
+    // View project details
+    const viewButtons = document.querySelectorAll('.view-project-details');
+    
+    viewButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const projectId = this.dataset.projectId;
+            
+            // Show loading animation
+            document.getElementById('projectDetailsContent').innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Loading project details...</p>
+                </div>
+            `;
+            
+            // Fetch project details via AJAX
+            fetch(`/marketing/projects/${projectId}/details`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if(data.success) {
+                        const project = data.project;
+                        const content = `
+                            <div class="project-header">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h4 class="mb-1">${project.client_name}</h4>
+                                        <div class="d-flex align-items-center">
+                                            <span class="badge ${project.status === 'active' ? 'bg-success' : project.status === 'hold' ? 'bg-warning' : project.status === 'completed' ? 'bg-primary' : 'bg-secondary'} me-2">
+                                                ${project.status?.charAt(0).toUpperCase() + project.status?.slice(1)}
+                                            </span>
+                                            <span class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                ${new Date(project.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <h3 class="text-success mb-0">
+                                            Rs. ${Number(project.project_price).toLocaleString('en-US', {minimumFractionDigits: 2})}
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <h6><i class="fas fa-user text-primary me-2"></i>Client Information</h6>
+                                        <p class="mb-1"><strong>Name:</strong> ${project.client_name}</p>
+                                        <p class="mb-1"><strong>Phone:</strong> ${project.phone_number}</p>
+                                        <p><strong>Contact Method:</strong> ${project.contact_method}</p>
+                                    </div>
+                                    
+                                    <div class="detail-item">
+                                        <h6><i class="fas fa-project-diagram text-primary me-2"></i>Project Details</h6>
+                                        <p class="mb-1"><strong>Type:</strong> ${project.project_type}</p>
+                                        <p class="mb-1"><strong>Category:</strong> ${project.project_category}</p>
+                                        <p><strong>Call Sequence:</strong> ${project.call_sequence}</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="detail-item">
+                                        <h6><i class="fas fa-history text-primary me-2"></i>Call Timeline</h6>
+                                        <div class="call-timeline mt-3">
+                                            ${project.first_call_date ? `
+                                                <div class="timeline-item">
+                                                    <strong>1st Call:</strong><br>
+                                                    <small>${new Date(project.first_call_date).toLocaleDateString()}</small>
+                                                </div>
+                                            ` : ''}
+                                            ${project.second_call_date ? `
+                                                <div class="timeline-item">
+                                                    <strong>2nd Call:</strong><br>
+                                                    <small>${new Date(project.second_call_date).toLocaleDateString()}</small>
+                                                </div>
+                                            ` : ''}
+                                            ${project.third_call_date ? `
+                                                <div class="timeline-item">
+                                                    <strong>3rd Call:</strong><br>
+                                                    <small>${new Date(project.third_call_date).toLocaleDateString()}</small>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            ${project.comments ? `
+                                <div class="detail-item mt-3">
+                                    <h6><i class="fas fa-comment-dots text-primary me-2"></i>Comments</h6>
+                                    <div class="alert alert-light border">
+                                        <i class="fas fa-quote-left text-muted me-2"></i>
+                                        ${project.comments}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <small class="text-muted">
+                                        <i class="fas fa-user-cog me-1"></i>
+                                        Assigned to: You
+                                    </small>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <small class="text-muted">
+                                        <i class="fas fa-clock me-1"></i>
+                                        Last updated: ${new Date(project.updated_at).toLocaleDateString()}
+                                    </small>
+                                </div>
+                            </div>
+                        `;
+                        document.getElementById('projectDetailsContent').innerHTML = content;
+                    } else {
+                        document.getElementById('projectDetailsContent').innerHTML = `
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                Failed to load project details. Please try again.
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('projectDetailsContent').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Error loading project details. Please check your connection.
+                        </div>
+                    `;
+                });
+        });
+    });
+    
+    // Print project details
+    document.getElementById('printProjectDetails')?.addEventListener('click', function() {
+        const modalContent = document.getElementById('projectDetailsContent').innerHTML;
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Project Details</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 20px; }
+                    .print-header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+                    .detail-section { margin-bottom: 20px; }
+                    .detail-section h4 { color: #007bff; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+                    .timeline-item { margin-left: 20px; position: relative; padding-left: 15px; }
+                    .timeline-item::before { content: '•'; position: absolute; left: 0; color: #007bff; font-size: 20px; }
+                    @media print {
+                        .no-print { display: none; }
+                        body { font-size: 12pt; }
+                    }
+                </style>
+            </head>
+            <body>
+                ${modalContent}
+                <div class="no-print text-center mt-4">
+                    <button onclick="window.print()" class="btn btn-primary">Print</button>
+                    <button onclick="window.close()" class="btn btn-secondary">Close</button>
+                </div>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+    });
+});
+</script>
+@endif
 <!-- Salary Section - Only show on dashboard -->
 @if(request()->routeIs('marketing.dashboard'))
 <div class="row mb-4">
@@ -1073,11 +1544,12 @@ function printSalarySlip() {
           We empower businesses to thrive in the digital age.
         </p>
         <div class="social-links">
-          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-          <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" title="GitHub"><i class="fab fa-github"></i></a>
+          <a href="https://www.facebook.com/share/1BqiRiXiP5/" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+       <a href="https://netittechnology.com/" target="_blank" title="Website">
+    <i class="fas fa-globe"></i>
+</a>
+
+        
         </div>
       </div>
       
@@ -1085,11 +1557,10 @@ function printSalarySlip() {
       <div class="col-lg-2 col-md-6 mb-4">
         <h5>Quick Links</h5>
         <ul class="footer-links">
-          <li><a href="{{ route('superadmin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
-          <li><a href="{{ route('superadmin.employee.index') }}"><i class="fas fa-users"></i> Employees</a></li>
-          <li><a href="{{ route('superadmin.tasks.index') }}"><i class="fas fa-tasks"></i> Tasks</a></li>
-          <li><a href="{{ route('superadmin.project.transactions') }}"><i class="fas fa-chart-line"></i> Finance</a></li>
-          <li><a href="{{ route('superadmin.clients.index') }}"><i class="fas fa-bullhorn"></i> Marketing</a></li>
+          <li><a href="{{ route('marketing.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+          <li><a href="{{ route('marketing.clients.index') }}"><i class="fas fa-user-tie"></i> Clients</a></li>
+          <li><a href="{{ route('marketing.clients.report') }}"><i class="fas fa-chart-line"></i> Reports</a></li>
+          <li><a href="{{ route('marketing.daily-tasks.index') }}"><i class="fas fa-clipboard-check"></i> Day Updates Tasks</a></li>
         </ul>
       </div>
       
@@ -1127,9 +1598,12 @@ function printSalarySlip() {
           <li>
             <i class="fas fa-envelope"></i>
             <div>
-              <strong>Email</strong><br>
-              info@netittechnology.com
-            </div>
+    <strong>Email</strong><br>
+    <a href="mailto:info@netittechnology.com">
+        info@netittechnology.com
+    </a>
+</div>
+
           </li>
           <li>
             <i class="fas fa-clock"></i>
