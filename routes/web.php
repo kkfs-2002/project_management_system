@@ -163,6 +163,20 @@ Route::get('/projectmanager/{id}/salary', [ProjectManagerController::class, 'sal
     Route::get('/clients/report', [MarketingClientController::class, 'report'])
         ->name('clients.report');
 
+                // --- PROJECT MANAGEMENT ROUTES ---
+        Route::get('/projects/create', [MarketingClientController::class, 'createProject'])
+            ->name('projects.create');
+
+        Route::post('/projects', [MarketingClientController::class, 'storeProject'])
+            ->name('projects.store');
+
+        // Existing edit/update routes (from before)
+        Route::get('/projects/{project}/edit', [MarketingClientController::class, 'editProject'])
+            ->name('projects.edit');
+
+        Route::put('/projects/{project}', [MarketingClientController::class, 'updateProject'])
+            ->name('projects.update');
+
 });
 
 
@@ -212,17 +226,24 @@ Route::prefix('superadmin/marketing')->name('superadmin.')->group(function () {
     // Approve/Reject permissions (using ClientController if separate)
     Route::post('/clients/{client}/approve-permission', [ClientController::class, 'approvePermission'])->name('clients.approve-permission');
     Route::post('/clients/{client}/reject-permission', [ClientController::class, 'rejectPermission'])->name('clients.reject-permission');
-
-    // Marketing Projects (using MarketingProjectController)
-    Route::get('/projects', [MarketingProjectController::class, 'index'])->name('marketing.projects.index');
-    Route::get('/projects/add', [MarketingProjectController::class, 'create'])->name('clients.add');  // Kept name for consistency
-    Route::post('/projects/store', [MarketingProjectController::class, 'store'])->name('clients.store');  // Kept name for consistency
-    Route::put('/projects/{id}/status', [MarketingProjectController::class, 'updateStatus'])->name('marketing.projects.updateStatus');
-   
-    // Check phone (added here, nested under marketing for organization; points to MarketingProjectController since method is there)
-    Route::get('/projects/check-phone', [MarketingProjectController::class, 'checkPhone'])->name('clients.check-phone');  // Kept name for consistency
+});
+    // Superadmin Marketing Projects routes (new marketing projects system)
+Route::prefix('superadmin/marketing')->group(function () {
+    
+    // Marketing Projects
+    Route::get('/projects', [MarketingProjectController::class, 'index'])->name('superadmin.marketing.projects.index');
+    Route::get('/projects/add', [MarketingProjectController::class, 'create'])->name('superadmin.clients.add');
+    Route::post('/projects/store', [MarketingProjectController::class, 'store'])->name('superadmin.clients.store');
+    Route::get('/projects/{id}/edit', [MarketingProjectController::class, 'edit'])->name('superadmin.marketing.projects.edit');
+    Route::put('/projects/{id}', [MarketingProjectController::class, 'update'])->name('superadmin.marketing.projects.update');
+    Route::delete('/projects/{id}', [MarketingProjectController::class, 'destroy'])->name('superadmin.marketing.projects.destroy');
+    Route::put('/projects/{id}/status', [MarketingProjectController::class, 'updateStatus'])->name('superadmin.marketing.projects.updateStatus');
+    
+    // Check phone
+    Route::get('/projects/check-phone', [MarketingProjectController::class, 'checkPhone'])->name('clients.check-phone');
 
 });
+
 
 
 

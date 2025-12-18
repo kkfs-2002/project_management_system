@@ -21,6 +21,7 @@ class MarketingProject extends Model
         'first_call_date',
         'second_call_date',
         'third_call_date',
+          'reminder_date',
         'comments',
         'marketing_manager_id',
         'status',
@@ -31,6 +32,7 @@ class MarketingProject extends Model
         'first_call_date' => 'date',
         'second_call_date' => 'date',
         'third_call_date' => 'date',
+        'reminder_date' => 'date',
         'project_price' => 'decimal:2',
     ];
 

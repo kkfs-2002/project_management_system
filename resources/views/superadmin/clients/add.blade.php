@@ -375,7 +375,15 @@
                             <label for="third_call_date">3rd Call Date</label>
                             <input type="date" id="third_call_date" name="third_call_date" class="form-control">
                         </div>
-                      
+
+    <div class="form-group">
+        <label for="reminder_date">Reminder Date</label>
+        <input type="date" id="reminder_date" name="reminder_date" class="form-control">
+        <small class="text-muted" style="display: block; margin-top: 5px; font-size: 12px; color: #6c757d;">
+            Set a reminder for follow-up actions
+        </small>
+    </div>
+
                         <div class="form-group">
                             <label for="comments" class="required">Comments / Notes</label>
                             <textarea id="comments" name="comments" class="form-control" placeholder="Add any relevant notes, discussion points, or follow-up requirements..." required></textarea>

@@ -59,6 +59,41 @@
         font-size: 16px;
     }
 
+    .reminder-alert {
+        background: linear-gradient(135deg, #ff9966, #ff5e62);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 4px 12px rgba(255, 94, 98, 0.2);
+        border-left: 5px solid #dc3545;
+    }
+    .reminder-alert i {
+        font-size: 24px;
+        margin-right: 15px;
+    }
+    .reminder-alert-content {
+        flex: 1;
+    }
+    .reminder-alert h4 {
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+    .reminder-alert p {
+        margin-bottom: 0;
+        font-size: 14px;
+    }
+    .reminder-count {
+        display: inline-block;
+        background: rgba(255,255,255,0.2);
+        padding: 2px 8px;
+        border-radius: 10px;
+        margin: 0 3px;
+        font-weight: bold;
+    }
+
     .filters-card {
         background: white;
         border-radius: 10px;
@@ -527,6 +562,108 @@
     .alert-success.show {
         display: block;
     }
+
+    .btn-delete {
+    background-color: var(--danger);
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+/* Confirmation Modal Styles */
+.confirm-modal {
+    display: none;
+    position: fixed;
+    z-index: 1100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s;
+}
+
+.confirm-modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.confirm-modal-content {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 450px;
+    width: 90%;
+    animation: slideUp 0.3s;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.confirm-modal-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.confirm-modal-header i {
+    font-size: 24px;
+    color: var(--danger);
+    margin-right: 15px;
+}
+
+.confirm-modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--danger);
+}
+
+.confirm-modal-body {
+    margin-bottom: 25px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.confirm-modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.btn-cancel {
+    padding: 10px 25px;
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.btn-confirm-delete {
+    padding: 10px 25px;
+    background-color: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-confirm-delete:hover {
+    background-color: #c82333;
+}
 </style>
 
 <div class="container">
@@ -538,6 +675,52 @@
     @if(session('success'))
     <div class="alert-success show">
         <i class="fas fa-check-circle"></i> {{ session('success') }}
+    </div>
+    @endif
+
+    <!-- Reminder Alert Section -->
+    @php
+        use Carbon\Carbon;
+        $today = Carbon::today();
+        
+        // Count reminders
+        $passedReminders = 0;
+        $todayReminders = 0;
+        $upcomingReminders = 0;
+        
+        foreach($projects as $project) {
+            if($project->reminder_date) {
+                $reminderDate = Carbon::parse($project->reminder_date);
+                if($reminderDate->lt($today)) {
+                    $passedReminders++;
+                } elseif($reminderDate->eq($today)) {
+                    $todayReminders++;
+                } else {
+                    $upcomingReminders++;
+                }
+            }
+        }
+        
+        $totalReminders = $passedReminders + $todayReminders + $upcomingReminders;
+    @endphp
+
+    @if($totalReminders > 0)
+    <div class="reminder-alert">
+        <i class="fas fa-bell"></i>
+        <div class="reminder-alert-content">
+            <h4><i class="fas fa-calendar-day"></i> Reminder Alerts</h4>
+            <p>
+                @if($passedReminders > 0)
+                <span class="reminder-count" style="background: rgba(220,53,69,0.3);">{{ $passedReminders }}</span> reminder(s) passed | 
+                @endif
+                @if($todayReminders > 0)
+                <span class="reminder-count" style="background: rgba(255,193,7,0.3);">{{ $todayReminders }}</span> reminder(s) today | 
+                @endif
+                @if($upcomingReminders > 0)
+                <span class="reminder-count" style="background: rgba(23,162,184,0.3);">{{ $upcomingReminders }}</span> upcoming reminder(s)
+                @endif
+            </p>
+        </div>
     </div>
     @endif
 
@@ -635,6 +818,7 @@
                         <th>Status</th>
                         <th>Call Info</th>
                         <th>Date</th>
+                        <th>Reminder</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -661,12 +845,45 @@
                         </td>
                         <td>{{ $project->date->format('d M Y') }}</td>
                         <td>
-                            <div class="action-buttons">
-                                <button class="btn-action btn-view" onclick="viewProject({{ $project->id }})">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                            </div>
+                            @if($project->reminder_date)
+                                @php
+                                    $reminderDate = \Carbon\Carbon::parse($project->reminder_date);
+                                    $today = \Carbon\Carbon::today();
+                                @endphp
+                                
+                                @if($reminderDate->lt($today))
+                                    <span style="color: #dc3545; font-size: 11px; background: #f8d7da; padding: 3px 8px; border-radius: 10px;">
+                                        <i class="fas fa-exclamation-circle"></i> {{ $reminderDate->format('d M') }}
+                                    </span>
+                                @elseif($reminderDate->eq($today))
+                                    <span style="color: #ffc107; font-size: 11px; background: #fff3cd; padding: 3px 8px; border-radius: 10px;">
+                                        <i class="fas fa-bell"></i> Today
+                                    </span>
+                                @else
+                                    <span style="color: #17a2b8; font-size: 11px; background: #d1ecf1; padding: 3px 8px; border-radius: 10px;">
+                                        <i class="fas fa-clock"></i> {{ $reminderDate->format('d M') }}
+                                    </span>
+                                @endif
+                            @else
+                                <span style="color: #6c757d; font-size: 11px; background: #e2e3e5; padding: 3px 8px; border-radius: 10px;">
+                                    <i class="fas fa-ban"></i> None
+                                </span>
+                            @endif
                         </td>
+                       <td>
+    <div class="action-buttons">
+        <button class="btn-action btn-view" onclick="viewProject({{ $project->id }})">
+            <i class="fas fa-eye"></i> View
+        </button>
+        <a href="{{ route('superadmin.marketing.projects.edit', $project->id) }}" 
+           class="btn-action btn-edit">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <button class="btn-action btn-delete" onclick="confirmDelete({{ $project->id }})">
+            <i class="fas fa-trash"></i> Delete
+        </button>
+    </div>
+</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -693,7 +910,12 @@
         </div>
     </div>
 </div>
-
+<!-- Delete Confirmation Modal -->
+<div id="confirmDeleteModal" class="confirm-modal">
+    <div class="confirm-modal-content" id="confirmModalBody">
+        <!-- Content will be loaded here -->
+    </div>
+</div>
 <script>
     const projects = @json($projects);
 
@@ -747,6 +969,22 @@
             <div class="detail-row">
                 <div class="detail-label">3rd Call Date:</div>
                 <div class="detail-value">${project.third_call_date || 'Not set'}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Reminder Date:</div>
+                <div class="detail-value">
+                    ${project.reminder_date 
+                        ? new Date(project.reminder_date).toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'}) 
+                        : 'Not set'}
+                    ${project.reminder_date 
+                        ? (new Date(project.reminder_date) < new Date() 
+                            ? '<br><span style="color: #dc3545; font-size: 12px;"><i class="fas fa-exclamation-circle"></i> Reminder date has passed</span>' 
+                            : new Date(project.reminder_date).toDateString() === new Date().toDateString()
+                                ? '<br><span style="color: #ffc107; font-size: 12px;"><i class="fas fa-bell"></i> Reminder is today!</span>'
+                                : '<br><span style="color: #17a2b8; font-size: 12px;"><i class="fas fa-clock"></i> Reminder pending</span>'
+                          )
+                        : ''}
+                </div>
             </div>
             <div class="detail-row">
                 <div class="detail-label">Marketing Manager:</div>
@@ -813,6 +1051,161 @@
             alert.classList.remove('show');
         }
     }, 5000);
+
+    // Function to show reminder details
+    function showReminderDetails() {
+        const projectsWithReminders = projects.filter(p => p.reminder_date);
+        
+        if (projectsWithReminders.length === 0) {
+            alert('No projects with reminders found.');
+            return;
+        }
+        
+        const today = new Date();
+        
+        // Categorize reminders
+        const passedReminders = projectsWithReminders.filter(p => new Date(p.reminder_date) < today);
+        const todayReminders = projectsWithReminders.filter(p => {
+            const reminderDate = new Date(p.reminder_date);
+            return reminderDate.toDateString() === today.toDateString();
+        });
+        const upcomingReminders = projectsWithReminders.filter(p => new Date(p.reminder_date) > today);
+        
+        let modalContent = `
+            <div class="modal-header">
+                <h2 class="modal-title"><i class="fas fa-bell"></i> Reminder Details</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div style="padding: 20px; max-height: 400px; overflow-y: auto;">
+        `;
+        
+        // Passed reminders
+        if (passedReminders.length > 0) {
+            modalContent += `
+                <h4 style="color: #dc3545; margin: 15px 0 10px 0; padding-bottom: 5px; border-bottom: 1px solid #eee;">
+                    <i class="fas fa-exclamation-circle"></i> Passed Reminders (${passedReminders.length})
+                </h4>
+            `;
+            
+            passedReminders.forEach(project => {
+                const reminderDate = new Date(project.reminder_date);
+                modalContent += `
+                    <div style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                        <strong>${project.client_name}</strong>
+                        <div style="font-size: 12px; color: #666;">
+                            ${project.project_type.replace(/_/g, ' ')} • 
+                            ${reminderDate.toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}
+                            <button onclick="viewProject(${project.id}); closeModal();" 
+                                    style="float: right; padding: 3px 8px; background: #dc3545; color: white; border: none; border-radius: 3px; font-size: 11px; cursor: pointer;">
+                                View
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        // Today's reminders
+        if (todayReminders.length > 0) {
+            modalContent += `
+                <h4 style="color: #ffc107; margin: 15px 0 10px 0; padding-bottom: 5px; border-bottom: 1px solid #eee;">
+                    <i class="fas fa-bell"></i> Today's Reminders (${todayReminders.length})
+                </h4>
+            `;
+            
+            todayReminders.forEach(project => {
+                modalContent += `
+                    <div style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                        <strong>${project.client_name}</strong>
+                        <div style="font-size: 12px; color: #666;">
+                            ${project.project_type.replace(/_/g, ' ')} • Today
+                            <button onclick="viewProject(${project.id}); closeModal();" 
+                                    style="float: right; padding: 3px 8px; background: #ffc107; color: #000; border: none; border-radius: 3px; font-size: 11px; cursor: pointer;">
+                                View
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        // Upcoming reminders
+        if (upcomingReminders.length > 0) {
+            modalContent += `
+                <h4 style="color: #17a2b8; margin: 15px 0 10px 0; padding-bottom: 5px; border-bottom: 1px solid #eee;">
+                    <i class="fas fa-clock"></i> Upcoming Reminders (${upcomingReminders.length})
+                </h4>
+            `;
+            
+            upcomingReminders.forEach(project => {
+                const reminderDate = new Date(project.reminder_date);
+                modalContent += `
+                    <div style="padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                        <strong>${project.client_name}</strong>
+                        <div style="font-size: 12px; color: #666;">
+                            ${project.project_type.replace(/_/g, ' ')} • 
+                            ${reminderDate.toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}
+                            <button onclick="viewProject(${project.id}); closeModal();" 
+                                    style="float: right; padding: 3px 8px; background: #17a2b8; color: white; border: none; border-radius: 3px; font-size: 11px; cursor: pointer;">
+                                View
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        modalContent += `</div>`;
+        
+        document.getElementById('modalBody').innerHTML = modalContent;
+        document.getElementById('projectModal').classList.add('active');
+    }
+
+    // Delete Confirmation
+function confirmDelete(id) {
+    const project = projects.find(p => p.id === id);
+    if (!project) return;
+    
+    const modal = document.getElementById('confirmDeleteModal');
+    const modalBody = document.getElementById('confirmModalBody');
+    
+    modalBody.innerHTML = `
+        <div class="confirm-modal-header">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h2 class="confirm-modal-title">Confirm Deletion</h2>
+        </div>
+        <div class="confirm-modal-body">
+            <p>Are you sure you want to delete the project for <strong>${project.client_name}</strong>?</p>
+            <p style="color: #dc3545; font-size: 14px; margin-top: 10px;">
+                <i class="fas fa-exclamation-circle"></i> This action cannot be undone.
+            </p>
+        </div>
+        <div class="confirm-modal-buttons">
+            <button class="btn-cancel" onclick="closeConfirmModal()">Cancel</button>
+            <form id="deleteForm${id}" action="/superadmin/marketing/projects/${id}" method="POST" style="display: inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-confirm-delete">
+                    <i class="fas fa-trash"></i> Delete Project
+                </button>
+            </form>
+        </div>
+    `;
+    
+    modal.classList.add('active');
+}
+
+function closeConfirmModal() {
+    document.getElementById('confirmDeleteModal').classList.remove('active');
+}
+
+// Close confirm modal when clicking outside
+document.addEventListener('click', function(event) {
+    const modal = document.getElementById('confirmDeleteModal');
+    if (event.target === modal) {
+        closeConfirmModal();
+    }
+});
 </script>
 
 @endsection
