@@ -1,6 +1,7 @@
 @extends('layouts.marketing')
 @section('content')
-<div class="container mt-4">
+<div class="container" style="margin-top: 120px;">
+
     <h4 class="mb-4">📊 Client Summary Report - {{ \Carbon\Carbon::parse($month)->format('F Y') }}</h4>
     
     {{-- Toggle for All Clients vs My Clients --}}

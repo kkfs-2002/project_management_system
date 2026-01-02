@@ -11,6 +11,7 @@
         box-shadow: 0 0 20px rgba(0,0,0,0.1);
         max-width: 800px;
         margin: 0 auto;
+        margin-top: 80px;
     }
     
     .time-inputs {

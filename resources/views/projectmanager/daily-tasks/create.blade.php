@@ -502,18 +502,17 @@
         </div>
       </div>
       
-      <!-- Quick Links -->
-      <div class="col-lg-2 col-md-6 mb-4">
+        <!-- Quick Links -->
+      <div class="col-lg-2 col-md-6 col-12 mb-4">
         <h5>Quick Links</h5>
         <ul class="footer-links">
-          <li><a href="{{ route('superadmin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
-          <li><a href="{{ route('superadmin.employee.index') }}"><i class="fas fa-users"></i> Employees</a></li>
-          <li><a href="{{ route('superadmin.tasks.index') }}"><i class="fas fa-tasks"></i> Tasks</a></li>
-          <li><a href="{{ route('superadmin.project.transactions') }}"><i class="fas fa-chart-line"></i> Finance</a></li>
-          <li><a href="{{ route('superadmin.clients.index') }}"><i class="fas fa-bullhorn"></i> Marketing</a></li>
+          <li><a href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
+                          <i class="fa fa-home me-1"></i> Dashboard</a></li>
+          <li><a href="{{ route('projectmanager.tasks.index', $pm->id ?? 1) }}">
+                          <i class="fa fa-tasks me-1"></i>Tasks</a></li>
+          <li><a href="{{ route('projectmanager.daily-tasks.index') }}"><i class="fas fa-clipboard-check"></i> Day Updates Tasks</a></li>
         </ul>
       </div>
-      
       <!-- Services -->
       <div class="col-lg-2 col-md-6 mb-4">
         <h5>Our Services</h5>

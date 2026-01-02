@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card shadow-sm border-0">
-                <div class="card-header" style="background-color: #001f3f; color: white;">
+                <div class="card-header" style="background-color: #001f3f; color: white;  margin-top: 10px;">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 text-white">
                             <i class="fas fa-plus-circle me-2"></i>Create New Marketing Project

@@ -862,7 +862,7 @@
         <h5>Quick Links</h5>
         <ul class="footer-links">
           <li><a href="{{ route('developer.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
-          <li><a href="{{ route('superadmin.employee.index') }}"><i class="fas fa-tasks"></i>My Tasks</a></li>
+          <li><a href="{{ route('developer.tasks.index') }}"><i class="fas fa-tasks"></i>My Tasks</a></li>
           <li><a href="{{ route('developer.daily-tasks.index') }}"><i class="fas fa-clipboard-check"></i> Day Updates Tasks</a></li>
    
         </ul>

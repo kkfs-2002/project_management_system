@@ -44,14 +44,12 @@
     transform: translateX(-40px) translateY(0) scale(1);
     animation: fadeSlideFloat 2s ease-out forwards, floatAnim 3s ease-in-out 2s infinite;
 }
-
 @keyframes fadeSlideFloat {
     to {
         opacity: 1;
         transform: translateX(0) translateY(0) scale(1);
     }
 }
-
 @keyframes floatAnim {
     0% { transform: translateY(0) scale(1); }
     50% { transform: translateY(-10px) scale(1.03); }
@@ -66,12 +64,10 @@
         cursor: pointer;
         transition: background-color 0.3s;
     }
-
     .task-card.active {
         background-color: #000917ff; /* Dark Blue */
         color: white;
     }
-
         /* Attendance Card Styles */
         .attendance-card {
             background: #000826ff;
@@ -125,15 +121,14 @@
             padding: 15px;
             margin-top: 20px;
         }
-      
-  .task-card {
+     
+ .task-card {
     background-color: white; /* default color */
     transition: background-color 0.3s, color 0.3s, background-image 0.3s;
     cursor: pointer; /* hand pointer on hover */
     position: relative; /* needed for overlay */
     color: black; /* default text color */
 }
-
 /* Hover effect: show background image and change text color */
 .task-card:hover {
     background-image: url('/images/po.jpg'); /* your image path */
@@ -142,7 +137,6 @@
     background-repeat: no-repeat;
     color: white; /* text turns white */
 }
-
 /* Optional semi-transparent overlay for readability */
 .task-card:hover::before {
     content: '';
@@ -155,21 +149,18 @@
     border-radius: 0.25rem;
     z-index: 0;
 }
-
 /* Ensure card content stays above overlay */
 .task-card:hover > * {
     position: relative;
     z-index: 1;
 }
-
 /* Make badges visible on hover */
 .task-card:hover .priority-badge,
 .task-card:hover .status-badge {
     color: white;
     border-color: white;
 }
-
-      .stat-card {
+  .stat-card {
     background: white; /* or your background image if used */
     border-radius: 10px;
     padding: 25px;
@@ -178,18 +169,15 @@
     border-left: 4px solid;
     color: white; /* Make all text inside white */
 }
-
 .stat-card .stat-number,
 .stat-card .stat-label {
     color: white; /* ensures numbers and labels are white */
 }
-
 /* Optional: override icon colors */
 .stat-card i {
     color: white !important;
 }
-
-  /* Footer */
+ /* Footer */
     .footer {
       background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
       background-size: cover;
@@ -198,7 +186,6 @@
       position: relative;
       margin-top: auto;
     }
-
     .footer::before {
       content: "";
       position: absolute;
@@ -209,44 +196,40 @@
       background: rgba(0,0,0,0.7);
       z-index: 0;
     }
-
     .footer > * {
       position: relative;
       z-index: 1;
     }
-
     .footer a {
       color: #00c6ff;
       text-decoration: none;
       transition: color 0.3s;
     }
-
     .footer a:hover {
       color: #ffdd00;
     }
-
     .footer h5 {
       color: #A7C7E7;
       font-weight: 600;
       margin-bottom: 20px;
       font-size: 1.1rem;
     }
-    
+   
     .footer p {
       color: #b0b0b0;
       line-height: 1.6;
     }
-    
+   
     .footer-links {
       list-style: none;
       padding: 0;
       margin: 0;
     }
-    
+   
     .footer-links li {
       margin-bottom: 10px;
     }
-    
+   
     .footer-links a {
       color: #b0b0b0;
       text-decoration: none;
@@ -254,42 +237,42 @@
       display: flex;
       align-items: center;
     }
-    
+   
     .footer-links a:hover {
       color: #A7C7E7;
       transform: translateX(5px);
     }
-    
+   
     .footer-links a i {
       margin-right: 8px;
       font-size: 0.9rem;
     }
-    
+   
     .contact-info {
       list-style: none;
       padding: 0;
       margin: 0;
     }
-    
+   
     .contact-info li {
       margin-bottom: 15px;
       display: flex;
       align-items: flex-start;
     }
-    
+   
     .contact-info i {
       color: #A7C7E7;
       margin-right: 10px;
       margin-top: 3px;
       font-size: 1rem;
     }
-    
+   
     .social-links {
       display: flex;
       gap: 15px;
       margin-top: 20px;
     }
-    
+   
     .social-links a {
       display: flex;
       align-items: center;
@@ -302,31 +285,30 @@
       text-decoration: none;
       transition: all 0.3s ease;
     }
-    
+   
     .social-links a:hover {
       background: #A7C7E7;
       transform: translateY(-3px);
       box-shadow: 0 5px 15px rgba(167, 199, 231, 0.3);
     }
-    
+   
     .footer-bottom {
       border-top: 1px solid rgba(255, 255, 255, 0.1);
       padding-top: 20px;
       margin-top: 40px;
       text-align: center;
     }
-    
+   
     .footer-bottom p {
       margin: 0;
       color: #888;
       font-size: 0.9rem;
     }
-    
+   
     .company-logo {
       max-width: 150px;
       margin-bottom: 20px;
     }
-
     .stat-card {
     position: relative;
     padding: 20px;
@@ -341,7 +323,6 @@
     flex-direction: column;
     justify-content: center;
 }
-
 /* Optional: Overlay for better text visibility */
 .stat-card::before {
     content: "";
@@ -353,26 +334,21 @@
     background-color: rgba(0,0,0,0.4); /* semi-transparent overlay */
     z-index: 0;
 }
-
 .stat-card p,
 .stat-card i {
     position: relative;
     z-index: 1; /* bring text/icons above overlay */
 }
-
 /* Specific backgrounds for each type */
 .stat-total {
     background-image: url('/images/po2.avif');
 }
-
 .stat-completed {
     background-image: url('/images/po2.avif');
 }
-
 .stat-in-progress {
     background-image: url('/images/po2.avif');
 }
-
 .stat-pending {
     background-image: url('/images/po2.avif');
 }
@@ -385,7 +361,196 @@
     font-weight: bold; /* Bold text */
     font-size: 1.1rem; /* Slightly bigger text */
 }
+    </style>
+    <!-- Mobile-Specific Styles -->
+    <style>
+        /* Mobile Responsiveness (≤576px for xs, ≤768px for sm) */
+        @media (max-width: 768px) {
+            /* Navbar adjustments */
+            .navbar-brand span {
+                font-size: 0.9rem;
+            }
+            .navbar-nav .nav-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            .navbar-collapse {
+                background-color: #000000;
+                margin-top: 0.5rem;
+                padding: 1rem;
+                border-radius: 0.375rem;
+            }
 
+            /* Welcome section */
+            .welcome-overlay {
+                max-width: 90vw !important;
+                padding: 1.5rem !important;
+                text-align: center;
+            }
+            #typingText {
+                font-size: 1.5rem;
+            }
+            .welcome-overlay p {
+                font-size: 0.95rem;
+            }
+
+            /* Attendance section */
+            .attendance-illustration {
+                margin-bottom: 2rem;
+                transform: translateX(0) !important;
+                animation: fadeSlideFloat 1.5s ease-out forwards;
+            }
+            .attendance-card {
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            .time-display {
+                font-size: 1.5rem;
+            }
+            .btn-attendance {
+                padding: 10px 20px;
+                font-size: 1rem;
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            .d-flex.gap-3.justify-content-center {
+                flex-direction: column;
+            }
+
+            /* Stats cards */
+            .stat-card {
+                margin-bottom: 1rem;
+                padding: 1.5rem;
+                min-height: auto;
+            }
+            .stat-number {
+                font-size: 2rem;
+            }
+            .stat-label {
+                font-size: 0.9rem;
+            }
+
+            /* Recent tasks */
+            .task-card .card-header h6 {
+                font-size: 1rem;
+                white-space: normal;
+            }
+            .task-card .card-body {
+                padding: 1rem;
+            }
+            .custom-text {
+                font-size: 0.85rem;
+            }
+            .progress {
+                height: 0.5rem;
+            }
+
+            /* Salary section */
+            .salary-quick-stats .col-md-4 {
+                margin-bottom: 1rem;
+            }
+            .salary-table th,
+            .salary-table td {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+                white-space: nowrap;
+            }
+            .salary-table .btn-group {
+                flex-direction: column;
+            }
+            .salary-table .btn-group .btn {
+                margin-bottom: 0.25rem;
+                width: 100%;
+            }
+
+            /* Footer */
+            .footer {
+                padding: 2rem 0 1rem;
+            }
+            .footer h5 {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+            .footer p,
+            .footer-links a,
+            .contact-info div {
+                font-size: 0.85rem;
+            }
+            .social-links {
+                justify-content: center;
+            }
+            .footer-bottom {
+                margin-top: 2rem;
+                padding-top: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            /* Extra small screens */
+            body {
+                font-size: 0.875rem;
+            }
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            #typingText {
+                font-size: 1.25rem;
+            }
+            .stat-number {
+                font-size: 1.75rem;
+            }
+            .btn-attendance {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+            .salary-table {
+                font-size: 0.75rem;
+            }
+            .footer-links li,
+            .contact-info li {
+                margin-bottom: 0.75rem;
+            }
+        }
+
+        /* Table responsiveness for salary */
+        .salary-table {
+            border-collapse: collapse;
+        }
+        .salary-table thead {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .salary-table tr {
+                display: block;
+                margin-bottom: 1rem;
+                border: 1px solid #dee2e6;
+                border-radius: 0.375rem;
+                padding: 1rem;
+                background: white;
+            }
+            .salary-table td {
+                display: block;
+                text-align: right;
+                padding: 0.5rem 0;
+                border: none;
+                position: relative;
+                padding-left: 50%;
+            }
+            .salary-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 45%;
+                padding-right: 1rem;
+                white-space: nowrap;
+                font-weight: bold;
+                text-align: left;
+            }
+            .salary-table .btn-group {
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -440,54 +605,47 @@
     </div>
 </nav>
 <!-- Main Content Area -->
-
 <div class="mt-3">
     @yield('content')
    
-    
-    <!-- Welcome Section -->
-    @if(!isset($hideWelcome) || $hideWelcome === false)
-    <div class="mb-5 position-relative">
-        <img src="{{ asset('images/po.avif') }}" class="img-fluid w-100" style="max-height:650px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
-       <div class="position-absolute top-50 start-50 translate-middle bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
-
-    <!-- MAIN TITLE -->
-    <h3 id="typingText" class="fw-bold mb-2 text-white">
-        Project Manager Dashboard
-    </h3>
-
-    <!-- DESCRIPTION TEXT -->
-    <p class="mb-0 text-white">
-       Track tasks, monitor progress, and manage your team's workflow seamlessly. 
-Your Project Manager Dashboard keeps everything organized in one place.
-  </p>
-
+   
+   
+ <!-- Welcome Section -->
+@if(!isset($hideWelcome) || $hideWelcome === false)
+<div class="mb-5 position-relative">
+    <img src="{{ asset('images/po.avif') }}" class="img-fluid w-100" style="height: 650px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
+    <div class="position-absolute top-50 start-50 translate-middle bg-dark bg-opacity-75 p-4 rounded shadow welcome-overlay">
+        <!-- MAIN TITLE -->
+        <h3 id="typingText" class="fw-bold mb-2 text-white">
+            Project Manager Dashboard
+        </h3>
+        <!-- DESCRIPTION TEXT -->
+        <p class="mb-0 text-white">
+            Track tasks, monitor progress, and manage your team's workflow seamlessly.
+            Your Project Manager Dashboard keeps everything organized in one place.
+        </p>
 </div>
-
     </div>
-
-
     <!-- Attendance Section -->
     @if(\Route::currentRouteName() === 'projectmanager.dashboard')
    <div class="row mb-5 mt-5 d-flex align-items-center justify-content-center">
-          <!-- LEFT SIDE IMAGE WITH ANIMATION -->
+            <!-- LEFT SIDE IMAGE WITH ANIMATION -->
     <div class="col-lg-5 text-center">
-        <img src="/images/team.png" 
+        <img src="/images/team.png"
              class="img-fluid attendance-illustration"
              alt="Attendance Illustration">
     </div>
-
         <div class="col-lg-6 mx-auto">
             <div class="attendance-card">
                 <div class="text-center">
                     <h3 class="mb-3">
                         <i class="fas fa-clock me-2"></i>My Attendance
                     </h3>
-                  
+                
                     <div class="time-display" id="currentTime">
                         Loading...
                     </div>
-                  
+                
                     <div class="attendance-status mb-3" id="currentDate">
                         Loading...
                     </div>
@@ -549,7 +707,7 @@ Your Project Manager Dashboard keeps everything organized in one place.
                                         <i class="fas fa-sign-in-alt me-2"></i>Check In
                                     </button>
                                 </form>
-                              
+                            
                                 <!-- Check Out Button -->
                                 <form action="{{ route('projectmanager.attendance.checkout') }}" method="POST" id="checkout-form">
                                     @csrf
@@ -607,17 +765,15 @@ Your Project Manager Dashboard keeps everything organized in one place.
         </div>
     </div>
     <!-- Recent Tasks Section -->
-  <div class="row mt-4">
+ <div class="row mt-4">
     <div class="col-12">
         <div class="d-flex justify-content-center mb-4">
        <h4 style="color: #000917ff; font-size: 2rem; font-weight: bold;">
-    <i class="fas fa-clock me-2"></i>Recent Daily Tasks
+<i class="fas fa-clock me-2"></i>Recent Daily Tasks
 </h4>
-
         </div>
     </div>
 </div>
-
             @if(isset($recentTasks) && $recentTasks->count() > 0)
                 <div class="row">
                     @foreach($recentTasks as $task)
@@ -627,7 +783,6 @@ Your Project Manager Dashboard keeps everything organized in one place.
                                   <h6 class="mb-0 text-truncate" style="color: black; font-weight: bold;">
     {{ $task->task_name }}
 </h6>
-
                                     <div class="d-flex gap-1">
                                         <span class="priority-badge priority-{{ $task->priority }} custom-badge">
     {{ ucfirst($task->priority) }}
@@ -635,10 +790,9 @@ Your Project Manager Dashboard keeps everything organized in one place.
 <span class="status-badge status-{{ str_replace(' ', '-', strtolower($task->status)) }} custom-badge">
     {{ ucfirst($task->status) }}
 </span>
-
                                     </div>
-                                </div>
-                              <div class="card-body">
+                            </div>
+                          <div class="card-body">
     <div class="mb-2">
         <small class="text-muted custom-text">
             <i class="fas fa-user me-1"></i>
@@ -667,31 +821,30 @@ Your Project Manager Dashboard keeps everything organized in one place.
             {{ Str::limit($task->description, 100) }}
         </p>
     @endif
-
-                                  
-                                    <!-- Progress Bar -->
-                                    <div class="mb-2">
-                                        <div class="d-flex justify-content-between small text-muted mb-1">
-                                            <span>Progress</span>
-                                            <span>{{ $task->completed_count }}/{{ $task->target_count }}</span>
-                                        </div>
-                                        <div class="progress">
-                                            <div class="progress-bar
-                                                @if($task->completion_percentage >= 100) bg-success
-                                                @elseif($task->completion_percentage > 0) bg-info
-                                                @else bg-secondary @endif"
-                                                role="progressbar"
-                                                style="width: {{ min($task->completion_percentage, 100) }}%"
-                                                aria-valuenow="{{ $task->completion_percentage }}"
-                                                aria-valuemin="0"
-                                                aria-valuemax="100">
-                                            </div>
-                                        </div>
-                                        <small class="text-muted d-block text-center mt-1">
-                                            {{ number_format(min($task->completion_percentage, 100), 1) }}%
-                                        </small>
+                            
+                                <!-- Progress Bar -->
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between small text-muted mb-1">
+                                        <span>Progress</span>
+                                        <span>{{ $task->completed_count }}/{{ $task->target_count }}</span>
                                     </div>
+                                    <div class="progress">
+                                        <div class="progress-bar
+                                            @if($task->completion_percentage >= 100) bg-success
+                                            @elseif($task->completion_percentage > 0) bg-info
+                                            @else bg-secondary @endif"
+                                            role="progressbar"
+                                            style="width: {{ min($task->completion_percentage, 100) }}%"
+                                            aria-valuenow="{{ $task->completion_percentage }}"
+                                            aria-valuemin="0"
+                                            aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                    <small class="text-muted d-block text-center mt-1">
+                                        {{ number_format(min($task->completion_percentage, 100), 1) }}%
+                                    </small>
                                 </div>
+                            </div>
                                 <div class="card-footer bg-transparent">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <small class="text-muted">
@@ -734,10 +887,9 @@ Your Project Manager Dashboard keeps everything organized in one place.
         <i class="fas fa-money-bill-wave me-2"></i>My Salary Details
     </h5>
 </div>
-
             <div class="card-body">
                 @if(isset($salaryDetails) && $salaryDetails->count() > 0)
-                    <div class="row">
+                    <div class="row salary-quick-stats">
                         <!-- Quick Stats -->
                         <div class="col-md-4 mb-3">
                             <div class="card bg-light">
@@ -750,7 +902,7 @@ Your Project Manager Dashboard keeps everything organized in one place.
                                 </div>
                             </div>
                         </div>
-                        
+                      
                         <div class="col-md-4 mb-3">
                             <div class="card bg-light">
                                 <div class="card-body text-center">
@@ -764,7 +916,7 @@ Your Project Manager Dashboard keeps everything organized in one place.
                                 </div>
                             </div>
                         </div>
-                        
+                      
                         <div class="col-md-4 mb-3">
                             <div class="card bg-light">
                                 <div class="card-body text-center">
@@ -777,10 +929,10 @@ Your Project Manager Dashboard keeps everything organized in one place.
                             </div>
                         </div>
                     </div>
-                    
+                  
                     <!-- Salary Table -->
                     <div class="table-responsive mt-3">
-                        <table class="table table-hover table-striped">
+                        <table class="table table-hover table-striped salary-table">
                             <thead class="table-dark">
                                 <tr>
                                     <th>#</th>
@@ -802,16 +954,16 @@ Your Project Manager Dashboard keeps everything organized in one place.
                                         $netSalary = $salary->amount + $allowances - $deductions;
                                     @endphp
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>
+                                        <td data-label="#">{{ $index + 1 }}</td>
+                                        <td data-label="Month">
                                             <strong>{{ \Carbon\Carbon::parse($salary->salary_month)->format('M Y') }}</strong><br>
                                             <small class="text-muted">{{ \Carbon\Carbon::parse($salary->salary_month)->format('F') }}</small>
                                         </td>
-                                        <td>Rs. {{ number_format($salary->amount, 2) }}</td>
-                                        <td class="text-success">+ Rs. {{ number_format($allowances, 2) }}</td>
-                                        <td class="text-danger">- Rs. {{ number_format($deductions, 2) }}</td>
-                                        <td class="fw-bold text-primary">Rs. {{ number_format($netSalary, 2) }}</td>
-                                        <td>
+                                        <td data-label="Basic Salary">Rs. {{ number_format($salary->amount, 2) }}</td>
+                                        <td data-label="Allowances" class="text-success">+ Rs. {{ number_format($allowances, 2) }}</td>
+                                        <td data-label="Deductions" class="text-danger">- Rs. {{ number_format($deductions, 2) }}</td>
+                                        <td data-label="Net Salary" class="fw-bold text-primary">Rs. {{ number_format($netSalary, 2) }}</td>
+                                        <td data-label="Status">
                                             @if($salary->status == 'paid')
                                                 <span class="badge bg-success">
                                                     <i class="fas fa-check-circle me-1"></i> Paid
@@ -828,14 +980,14 @@ Your Project Manager Dashboard keeps everything organized in one place.
                                                 </span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td data-label="Action">
                                             <div class="btn-group btn-group-sm">
-                                                <button class="btn btn-outline-info view-slip" 
+                                                <button class="btn btn-outline-info view-slip"
                                                         data-salary-id="{{ $salary->id }}">
                                                     <i class="fas fa-file-invoice"></i>
                                                 </button>
-                                                <a href="javascript:void(0)" 
-                                                   class="btn btn-outline-success download-payslip" 
+                                                <a href="javascript:void(0)"
+                                                   class="btn btn-outline-success download-payslip"
                                                    data-month="{{ $salary->salary_month }}">
                                                     <i class="fas fa-download"></i>
                                                 </a>
@@ -855,8 +1007,8 @@ Your Project Manager Dashboard keeps everything organized in one place.
                             @endif
                         </table>
                     </div>
-                   
-                    
+                  
+                  
                 @else
                     <div class="text-center py-5">
                         <div class="mb-4">
@@ -876,7 +1028,7 @@ Your Project Manager Dashboard keeps everything organized in one place.
                         <div class="d-flex align-items-center">
                             <i class="fas fa-info-circle text-info me-2"></i>
                             <small class="text-muted">
-                                Salary payments are processed between 1st - 5th of each month. 
+                                Salary payments are processed between 1st - 5th of each month.
                                 Contact accounts@netit.lk for queries.
                             </small>
                         </div>
@@ -896,7 +1048,6 @@ Your Project Manager Dashboard keeps everything organized in one place.
         </div>
     </div>
 </div>
-
 <!-- Footer Section -->
 <footer class="footer">
   <div class="container">
@@ -905,7 +1056,7 @@ Your Project Manager Dashboard keeps everything organized in one place.
       <div class="col-lg-4 col-md-6 mb-4">
         <h5>NET IT TECHNOLOGY</h5>
         <p>
-          Leading provider of cutting-edge software solutions and digital transformation services. 
+          Leading provider of cutting-edge software solutions and digital transformation services.
           We empower businesses to thrive in the digital age.
         </p>
         <div class="social-links">
@@ -920,8 +1071,10 @@ Your Project Manager Dashboard keeps everything organized in one place.
       <div class="col-lg-2 col-md-6 mb-4">
         <h5>Quick Links</h5>
         <ul class="footer-links">
-          <li><a href="{{ route('superadmin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
-          <li><a href="{{ route('superadmin.employee.index') }}"><i class="fas fa-tasks"></i> Tasks</a></li>
+          <li><a href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
+                        <i class="fa fa-home me-1"></i> Dashboard</a></li>
+          <li><a href="{{ route('projectmanager.tasks.index', $pm->id ?? 1) }}">
+                        <i class="fa fa-tasks me-1"></i>Tasks</a></li>
           <li><a href="{{ route('projectmanager.daily-tasks.index') }}"><i class="fas fa-clipboard-check"></i> Day Updates Tasks</a></li>
         </ul>
       </div>
@@ -965,7 +1118,6 @@ Your Project Manager Dashboard keeps everything organized in one place.
         info@netittechnology.com
     </a>
 </div>
-
           </li>
           <li>
             <i class="fas fa-clock"></i>
@@ -977,7 +1129,7 @@ Your Project Manager Dashboard keeps everything organized in one place.
         </ul>
       </div>
     </div>
-    
+   
     <!-- Footer Bottom -->
     <div class="footer-bottom">
       <div class="row">
@@ -1000,7 +1152,7 @@ document.addEventListener('DOMContentLoaded', function() {
             viewSalarySlip(salaryId);
         });
     });
-    
+   
     // Download payslip
     const downloadButtons = document.querySelectorAll('.download-payslip');
     downloadButtons.forEach(button => {
@@ -1009,13 +1161,12 @@ document.addEventListener('DOMContentLoaded', function() {
             downloadPayslip(month);
         });
     });
-    
+   
     // Initialize charts if data exists
     @if(isset($salaryChartData))
     initCharts(@json($salaryChartData));
     @endif
 });
-
 function viewSalarySlip(salaryId) {
     // You can implement AJAX call to fetch and display salary slip
     alert('Viewing salary slip #' + salaryId + '\nThis would open a detailed view in a modal.');
@@ -1028,23 +1179,19 @@ function viewSalarySlip(salaryId) {
         });
     */
 }
-
 function downloadPayslip(month) {
     alert('Downloading payslip for ' + month);
     // Implement download functionality
 }
-
 function requestSalaryInfo() {
     const subject = encodeURIComponent('Salary Information Request - Project Manager');
     const body = encodeURIComponent(`Dear Accounts Department,\n\nI would like to request information about my salary details.\n\nThank you,\nProject Manager`);
     window.location.href = `mailto:accounts@netit.lk?subject=${subject}&body=${body}`;
 }
-
 function exportSalaryData() {
     alert('Exporting salary data...');
     // Implement export functionality (CSV, PDF, etc.)
 }
-
 function initCharts(chartData) {
     // Salary Trend Chart
     const ctx1 = document.getElementById('salaryChart').getContext('2d');
@@ -1069,7 +1216,7 @@ function initCharts(chartData) {
             }
         }
     });
-    
+   
     // Payment Status Chart
     const ctx2 = document.getElementById('paymentChart').getContext('2d');
     new Chart(ctx2, {
@@ -1165,7 +1312,6 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const taskCards = document.querySelectorAll('.task-card');
-
         taskCards.forEach(card => {
             card.addEventListener('click', function () {
                 // Remove active class from all cards
@@ -1176,7 +1322,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 </script>
-
 @yield('scripts')
 </body>
 </html>

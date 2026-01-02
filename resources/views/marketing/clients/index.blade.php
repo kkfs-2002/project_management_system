@@ -30,6 +30,7 @@
         margin-bottom: 30px;
         box-shadow: 0 4px 20px rgba(0, 102, 204, 0.08);
         border: 1px solid var(--border-color);
+        margin-top: 60px;
     }
 
     .header-title {

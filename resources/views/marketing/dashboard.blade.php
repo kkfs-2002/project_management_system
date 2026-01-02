@@ -75,18 +75,68 @@
     max-width: 700px;
     width: 90%;
 }
+
+/* Image zoom */
+.banner-img {
+    animation: zoomIn 8s ease-in-out forwards;
+}
+
+/* H3 animation */
+.banner-title {
+    opacity: 0;
+    animation: fadeDown 1.2s ease-out forwards;
+}
+
+/* P animation (delay) */
+.banner-desc {
+    opacity: 0;
+    animation: fadeUp 1.2s ease-out forwards;
+    animation-delay: 0.4s;
+}
+
+/* Keyframes */
+@keyframes zoomIn {
+    from { transform: scale(1); }
+    to   { transform: scale(1.1); }
+}
+
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 </style>
 
 
 <!-- ===================== BANNER ===================== -->
 
-<div class="position-relative banner-wrapper">
-    <img src="{{ asset('images/ma1.avif') }}" class="img-fluid w-100 h-100"
+<div class="position-relative banner-wrapper overflow-hidden">
+    <img src="{{ asset('images/ma1.avif') }}"
+         class="img-fluid w-100 h-100 banner-img"
          style="object-fit: cover; filter: brightness(0.5);">
 
-    <div class="position-absolute top-50 start-50 translate-middle  bg-opacity-75 p-4 rounded text-center banner-text">
-        <h3 class="fw-bold text-white">Marketing Manager Dashboard</h3>
-        <p class="text-white mb-0">
+    <div class="position-absolute top-50 start-50 translate-middle bg-opacity-75 p-4 rounded text-center">
+        <h3 class="fw-bold text-white banner-title">
+            Marketing Manager Dashboard
+        </h3>
+        <p class="text-white mb-0 banner-desc">
             Manage campaigns, track performance, and discover actionable insights.
         </p>
     </div>

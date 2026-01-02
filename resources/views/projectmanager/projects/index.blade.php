@@ -49,13 +49,11 @@
             background-color: #222;
             color: #FFD700;
         }
-
         .main-content {
             flex: 1;
             padding-top: 100px;
             padding-bottom: 40px;
         }
-
         .welcome-card {
             background: linear-gradient(135deg, #020d1fff 0%, #010e21ff 100%);
             color: white;
@@ -64,19 +62,16 @@
             margin-bottom: 30px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
-
         .welcome-card h1 {
             font-size: 2.2rem;
             font-weight: 600;
             margin-bottom: 10px;
         }
-
         .welcome-card p {
             font-size: 1.1rem;
             opacity: 0.9;
             margin-bottom: 0;
         }
-
         .date-info {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -84,57 +79,47 @@
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
         .date-info span {
             font-size: 0.9rem;
             opacity: 0.8;
         }
-
         #currentTime {
             color: #FFD700;
             font-size: 2rem !important;
             margin-top: 5px;
         }
-
         .card {
             border: none;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
-
         .card-header {
             background: linear-gradient(135deg, #020d1fff 0%, #010e21ff 100%);
             color: white;
             border-radius: 12px 12px 0 0 !important;
             padding: 20px 30px;
         }
-
         .card-title {
             font-size: 1.4rem;
             font-weight: 600;
             display: flex;
             align-items: center;
         }
-
         .card-title i {
             color: #FFD700;
         }
-
         .badge {
             padding: 6px 12px;
             font-weight: 500;
         }
-
         .bg-primary {
             background-color: #00c6ff !important;
         }
-
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 16px;
         }
-
         .project-card {
             border: 1px solid #ddd;
             border-radius: 6px;
@@ -147,12 +132,10 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 200px;
         }
-
         .project-card:hover {
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
             border-color: #00c6ff;
         }
-
         .status-badge {
             display: inline-block;
             padding: 4px 10px;
@@ -162,20 +145,17 @@
             margin-bottom: 10px;
             width: fit-content;
         }
-
         .status-active {
             background: rgba(0, 198, 255, 0.1);
             color: #00c6ff;
             border: 1px solid rgba(0, 198, 255, 0.3);
         }
-
         .project-title {
             font-size: 1rem;
             font-weight: 600;
             color: #333;
             margin-bottom: 8px;
         }
-
         .project-description {
             flex-grow: 1;
             color: #555;
@@ -183,7 +163,6 @@
             margin-bottom: 12px;
             line-height: 1.4;
         }
-
         .date-info-project {
             display: flex;
             justify-content: space-between;
@@ -193,18 +172,15 @@
             border-radius: 4px;
             font-size: 0.75rem;
         }
-
         .date-info-project > div span {
             display: block;
             color: #888;
             margin-bottom: 3px;
         }
-
         .date-info-project .date {
             font-weight: 600;
             color: #020d1fff;
         }
-
         .btn-view-tasks {
             background-color: #0b0c21ff;
             border: none;
@@ -218,33 +194,27 @@
             text-decoration: none;
             cursor: pointer;
         }
-
         .btn-view-tasks:hover {
             background-color: #0c2b30ff;
             color: #fff;
         }
-
         /* Empty State */
         .empty-state {
             text-align: center;
             padding: 80px 20px;
         }
-
         .empty-state i {
             color: #d0d0d0;
             margin-bottom: 20px;
         }
-
         .empty-state h4 {
             color: #666;
             font-weight: 600;
             margin-bottom: 10px;
         }
-
         .empty-state p {
             color: #888;
         }
-
         /* Footer */
         .footer {
             background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
@@ -254,7 +224,6 @@
             position: relative;
             margin-top: auto;
         }
-
         .footer::before {
             content: "";
             position: absolute;
@@ -265,22 +234,18 @@
             background: rgba(0,0,0,0.7);
             z-index: 0;
         }
-
         .footer > * {
             position: relative;
             z-index: 1;
         }
-
         .footer a {
             color: #00c6ff;
             text-decoration: none;
             transition: color 0.3s;
         }
-
         .footer a:hover {
             color: #ffdd00;
         }
-
         .footer h5 {
             color: #A7C7E7;
             font-weight: 600;
@@ -382,18 +347,182 @@
             max-width: 150px;
             margin-bottom: 20px;
         }
-
         @media (max-width: 768px) {
             .projects-grid {
                 grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             }
-
             .welcome-card h1 {
                 font-size: 1.6rem;
             }
-
             .welcome-card {
                 padding: 25px;
+            }
+            /* Navbar adjustments */
+            .navbar-brand span {
+                font-size: 0.9rem;
+            }
+            .navbar-nav .nav-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            .navbar-collapse {
+                background-color: #000000;
+                margin-top: 0.5rem;
+                padding: 1rem;
+                border-radius: 0.375rem;
+            }
+
+            /* Main content */
+            .main-content {
+                padding-top: 70px;
+                padding-bottom: 2rem;
+            }
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            /* Welcome card */
+            .welcome-card {
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            .welcome-card h1 {
+                font-size: 1.5rem;
+            }
+            .welcome-card p {
+                font-size: 1rem;
+            }
+            #currentTime {
+                font-size: 1.5rem !important;
+            }
+
+            /* Projects grid */
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .project-card {
+                min-height: auto;
+                padding: 1rem;
+            }
+            .project-title {
+                font-size: 1.1rem;
+            }
+            .project-description {
+                font-size: 0.9rem;
+            }
+            .date-info-project {
+                flex-direction: column;
+                gap: 0.5rem;
+                font-size: 0.8rem;
+            }
+            .btn-view-tasks {
+                font-size: 0.9rem;
+                padding: 0.5rem;
+            }
+
+            /* Card header */
+            .card-header {
+                padding: 1rem 1.5rem;
+            }
+            .card-title {
+                font-size: 1.2rem;
+            }
+
+            /* Empty state */
+            .empty-state {
+                padding: 3rem 1rem;
+            }
+            .empty-state i {
+                font-size: 3rem;
+            }
+
+            /* Footer */
+            .footer {
+                padding: 2rem 0 1rem;
+                margin-top: 2rem;
+            }
+            .footer h5 {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+            .footer p,
+            .footer-links a,
+            .contact-info div {
+                font-size: 0.85rem;
+            }
+            .footer-links li,
+            .contact-info li {
+                margin-bottom: 0.75rem;
+            }
+            .social-links {
+                justify-content: center;
+                gap: 10px;
+            }
+            .social-links a {
+                width: 35px;
+                height: 35px;
+            }
+            .footer-bottom {
+                margin-top: 2rem;
+                padding-top: 1rem;
+            }
+            .footer-bottom p {
+                font-size: 0.8rem;
+            }
+        }
+        @media (max-width: 576px) {
+            body {
+                padding-top: 60px;
+            }
+            .main-content {
+                padding-top: 60px;
+            }
+            .welcome-card h1 {
+                font-size: 1.3rem;
+            }
+            .welcome-card p {
+                font-size: 0.95rem;
+            }
+            #currentTime {
+                font-size: 1.25rem !important;
+            }
+            .projects-grid {
+                gap: 0.75rem;
+            }
+            .project-card {
+                padding: 0.75rem;
+            }
+            .project-title {
+                font-size: 1rem;
+            }
+            .project-description {
+                font-size: 0.85rem;
+            }
+            .card-header {
+                padding: 0.75rem 1rem;
+            }
+            .card-title {
+                font-size: 1.1rem;
+            }
+            .empty-state {
+                padding: 2rem 0.5rem;
+            }
+            .footer {
+                padding: 1.5rem 0 0.5rem;
+            }
+            .footer h5 {
+                font-size: 0.95rem;
+            }
+            .footer p,
+            .footer-links a,
+            .contact-info div {
+                font-size: 0.8rem;
+            }
+            .social-links a {
+                width: 30px;
+                height: 30px;
             }
         }
     </style>
@@ -401,19 +530,17 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
     <div class="container-fluid">
-       <a class="navbar-brand d-flex align-items-center" href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
+         <a class="navbar-brand d-flex align-items-center" href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
             <img src="{{ asset('NetIT logo.png') }}" alt="PM" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:10px;">
             <span>Welcome, {{ 'Project Manager' }}</span>
         </a>
-
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#pmNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="pmNavbar">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                   <a class="nav-link" href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
+                     <a class="nav-link" href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
                         <i class="fa fa-home me-1"></i> Dashboard
                     </a>
                 </li>
@@ -426,12 +553,11 @@
                     <a class="nav-link dropdown-toggle" href="#" id="tasksDropdown" role="button" data-bs-toggle="dropdown">
                         <i class="fas fa-target me-1"></i> Day Updates Tasks
                     </a>
-                   <ul class="dropdown-menu">
+                 <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('projectmanager.daily-tasks.index', $pm->id ?? 1) }}">Daily Tasks</a></li>      
                     </ul>
                 </li>
             </ul>
-
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                      <a class="nav-link dropdown-toggle" href="#" id="pmDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -452,7 +578,6 @@
         </div>
     </div>
 </nav>
-
 <main class="main-content">
     <div class="container">
         <!-- Welcome Card -->
@@ -470,7 +595,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Projects Section -->
         <div class="card border-0 shadow-lg">
             <div class="card-header border-0 py-4">
@@ -527,16 +651,15 @@
         </div>
     </div>
 </main>
-
 <!-- Footer Section -->
 <footer class="footer">
   <div class="container">
     <div class="row">
       <!-- Company Info -->
-      <div class="col-lg-4 col-md-6 mb-4">
+      <div class="col-lg-4 col-md-6 col-12 mb-4">
         <h5>NET IT TECHNOLOGY</h5>
         <p>
-          Leading provider of cutting-edge software solutions and digital transformation services. 
+          Leading provider of cutting-edge software solutions and digital transformation services.
           We empower businesses to thrive in the digital age.
         </p>
         <div class="social-links">
@@ -548,20 +671,20 @@
         </div>
       </div>
       
-      <!-- Quick Links -->
-      <div class="col-lg-2 col-md-6 mb-4">
+       <!-- Quick Links -->
+      <div class="col-lg-2 col-md-6 col-12 mb-4">
         <h5>Quick Links</h5>
         <ul class="footer-links">
-          <li><a href="{{ route('superadmin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
-          <li><a href="{{ route('superadmin.employee.index') }}"><i class="fas fa-users"></i> Employees</a></li>
-          <li><a href="{{ route('superadmin.tasks.index') }}"><i class="fas fa-tasks"></i> Tasks</a></li>
-          <li><a href="{{ route('superadmin.project.transactions') }}"><i class="fas fa-chart-line"></i> Finance</a></li>
-          <li><a href="{{ route('superadmin.clients.index') }}"><i class="fas fa-bullhorn"></i> Marketing</a></li>
+          <li><a href="{{ route('projectmanager.dashboard', $pm->id ?? 1) }}">
+                          <i class="fa fa-home me-1"></i> Dashboard</a></li>
+          <li><a href="{{ route('projectmanager.tasks.index', $pm->id ?? 1) }}">
+                          <i class="fa fa-tasks me-1"></i>Tasks</a></li>
+          <li><a href="{{ route('projectmanager.daily-tasks.index') }}"><i class="fas fa-clipboard-check"></i> Day Updates Tasks</a></li>
         </ul>
       </div>
       
       <!-- Services -->
-      <div class="col-lg-2 col-md-6 mb-4">
+      <div class="col-lg-2 col-md-6 col-12 mb-4">
         <h5>Our Services</h5>
         <ul class="footer-links">
           <li><a href="#"><i class="fas fa-code"></i> Web Development</a></li>
@@ -573,7 +696,7 @@
       </div>
       
       <!-- Contact Info -->
-      <div class="col-lg-4 col-md-6 mb-4">
+      <div class="col-lg-4 col-md-6 col-12 mb-4">
         <h5>Contact Us</h5>
         <ul class="contact-info">
           <li>
@@ -608,7 +731,7 @@
         </ul>
       </div>
     </div>
-    
+   
     <!-- Footer Bottom -->
     <div class="footer-bottom">
       <div class="row">
@@ -619,7 +742,6 @@
     </div>
   </div>
 </footer>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Update date and time
@@ -627,12 +749,12 @@
         const now = new Date();
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
-        document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', { 
-            hour: '2-digit', 
+        document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', {
+            hour: '2-digit',
             minute: '2-digit'
         });
     }
-    
+   
     updateDateTime();
     setInterval(updateDateTime, 1000);
 </script>

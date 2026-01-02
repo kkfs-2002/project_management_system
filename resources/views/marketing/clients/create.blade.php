@@ -19,6 +19,7 @@
         overflow: hidden;
         transition: transform 0.3s ease;
         border: 1px solid #e1e8ff;
+         margin-top: 50px;
     }
 
     .client-form-card:hover {
@@ -32,6 +33,7 @@
         padding: 30px;
         text-align: center;
         position: relative;
+       
     }
 
     .form-header h2 {
