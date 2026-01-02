@@ -6,7 +6,8 @@
 <div class="container-fluid px-4 py-4">
     <!-- Page Header with Stats -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-        <div class="mb-3 mb-md-0">
+     <div class="mb-0 mb-md-0" style="margin-top: 90px;">
+
             <nav aria-label="breadcrumb" class="d-none d-md-block">
                 <ol class="breadcrumb mb-2">
                     <li class="breadcrumb-item"><a href="{{ route('superadmin.dashboard') }}" class="text-muted text-decoration-none">Dashboard</a></li>
@@ -23,7 +24,8 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-wrap gap-2">
+      <div class="d-flex flex-wrap gap-2" style="margin-top: 20px;">
+
             <button type="button" class="btn btn-outline-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModal">
                 <i class="fas fa-filter me-2"></i>Advanced Filter
             </button>

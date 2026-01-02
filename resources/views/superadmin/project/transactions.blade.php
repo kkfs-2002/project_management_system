@@ -44,7 +44,7 @@
         border-left: 5px solid var(--primary);
         position: relative;
         overflow: hidden;
-        margin-top: 50px;
+        margin-top: 90px;
     }
     
     .page-header::before {

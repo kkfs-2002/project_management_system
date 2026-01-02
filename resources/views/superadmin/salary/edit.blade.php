@@ -6,13 +6,10 @@
 <div class="container-fluid px-4 py-4">
     <!-- Page Header -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-        <div class="mb-3 mb-md-0">
+        <div class="mb-3 mb-md-0 mt-5">
             <nav aria-label="breadcrumb" class="d-none d-md-block">
                 <ol class="breadcrumb mb-2">
-                    <li class="breadcrumb-item"><a href="{{ route('superadmin.dashboard') }}" class="text-muted text-decoration-none">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('superadmin.salary.index') }}" class="text-muted text-decoration-none">Salary Records</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('superadmin.salary.show', $salary->id) }}" class="text-muted text-decoration-none">Salary Details</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Edit Salary</li>
+                    
                 </ol>
             </nav>
             <div class="d-flex align-items-center">
@@ -25,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-wrap gap-2">
+        <div class="d-flex flex-wrap gap-2 mt-5">
             <a href="{{ route('superadmin.salary.show', $salary->id) }}" class="btn btn-outline-secondary d-flex align-items-center">
                 <i class="fas fa-arrow-left me-2"></i>Back to Details
             </a>

@@ -5,7 +5,7 @@
 @section('content')
 <div class="container mt-4">
     <!-- Page Header -->
-    <div class="page-header mb-4">
+    <div class="page-header mb-4" style="margin-top: 150px;">
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h2 class="mb-1">Add New Salary Record</h2>

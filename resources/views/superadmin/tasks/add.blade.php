@@ -31,7 +31,7 @@
     margin-bottom: 30px;
     position: relative;
     overflow: hidden;
-    margin-top: 60px; /* Fixed here */
+    margin-top: 100px; 
 }
 
     

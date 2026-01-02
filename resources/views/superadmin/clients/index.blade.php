@@ -6,7 +6,9 @@
 <div class="container-fluid py-4">
 
     {{-- Header Section with margin top --}}
-    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center mb-5 mt-5">
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center mb-5"
+     style="margin-top: 90px;">
+
         <div>
             <h2 class="h4 fw-bold text-dark mb-1">Client Management</h2>
             <p class="text-muted mb-0">Manage and monitor all client records</p>

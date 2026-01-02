@@ -33,7 +33,7 @@
         background: white;
         border-radius: var(--radius);
         box-shadow: var(--shadow);
-        margin-top: 60px;
+        margin-top: 90px;
     }
     
     .page-title {

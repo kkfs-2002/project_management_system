@@ -21,7 +21,7 @@
 
     <!-- Year Filter -->
     <div class="row mb-4">
-        <div class="col-md-6">
+        <div class="col-md-6 mt-5">
             <div class="card">
                 <div class="card-header">
                     <h5><i class="fas fa-filter"></i> Select Year</h5>
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mt-5">
             <div class="card bg-success text-white">
                 <div class="card-body text-center">
                     <h4>Year {{ $year }}</h4>

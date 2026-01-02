@@ -20,7 +20,7 @@
     
     .container {
         max-width: 1200px;
-        margin: 60px auto 20px;
+        margin: 90px auto 20px;
         padding: 20px;
     }
     

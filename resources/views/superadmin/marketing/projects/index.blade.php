@@ -45,7 +45,7 @@
         background: white;
         border-radius: 10px;
         box-shadow: var(--shadow);
-        margin-top: 60px;
+        margin-top: 90px;
     }
     
     .header h1 {

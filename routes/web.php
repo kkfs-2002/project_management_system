@@ -19,10 +19,7 @@ use App\Http\Controllers\SuperAdmin\PasswordAdminController;
 use App\Http\Controllers\SuperAdmin\ExpenseController;
 use App\Http\Controllers\SuperAdmin\SalaryController;
 use App\Http\Controllers\SuperAdmin\DailyTaskController;
-use App\Http\Controllers\SuperAdmin\KpiController;
 use App\Http\Controllers\Developer\DeveloperController;
-use App\Http\Controllers\SuperAdmin\WhatsAppController;
-use App\Http\Controllers\Marketing\MarketingWhatsAppController;
 use App\Http\Controllers\ProjectManager\ProjectManagerController;
 
 Route::get('/', function () {
@@ -56,7 +53,6 @@ Route::get('/admin/profiles/create', [ProfileController::class, 'create'])->name
 Route::post('/admin/profiles/store', [ProfileController::class, 'store'])->name('profile.store');
 Route::get('/admin/profile', [ProfileController::class, 'index'])->name('profiles.index');
 Route::get('/admin/profiles', [ProfileController::class, 'index'])->name('profile.index');
-
 Route::get('/admin/profiles/{id}', [ProfileController::class, 'show'])->name('profile.show');
 
 //Add employee
@@ -387,7 +383,7 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
     Route::post('/salaries', [SalaryController::class, 'store'])->name('salary.store');
     Route::get('/salaries/{id}', [SalaryController::class, 'show'])->name('salary.show');
     
-    // මේක ADD කරන්න ↓↓↓
+ 
     Route::delete('/salaries/{id}', [SalaryController::class, 'destroy'])->name('salary.destroy');
       Route::get('/salaries/{id}/edit', [SalaryController::class, 'edit'])->name('salary.edit');
     Route::put('/salaries/{id}', [SalaryController::class, 'update'])->name('salary.update');
@@ -517,35 +513,4 @@ Route::prefix('marketing/daily-tasks')->group(function () {
 // Common Employee routes (for all roles)
 Route::get('/daily-tasks/my-tasks', [DailyTaskController::class, 'employeeTasks'])->name('employee.daily-tasks.index');
 
-// ==================== KPI ROUTES - SEPARATED BY ROLE ====================
 
-// Super Admin KPI Routes
-Route::prefix('superadmin/kpi')->group(function () {
-    Route::get('/', [KpiController::class, 'index'])->name('superadmin.kpi.index');
-    Route::get('/create', [KpiController::class, 'create'])->name('superadmin.kpi.create');
-    Route::post('/', [KpiController::class, 'store'])->name('superadmin.kpi.store');
-    Route::post('/{kpi}/update-achievement', [KpiController::class, 'updateAchievement'])->name('superadmin.kpi.update-achievement');
-    Route::delete('/{kpi}', [KpiController::class, 'destroy'])->name('superadmin.kpi.destroy');
-});
-
-// Developer KPI Routes
-Route::prefix('developer/kpi')->group(function () {
-    Route::get('/', [KpiController::class, 'developerIndex'])->name('developer.kpi.index');
-    Route::get('/{kpi}', [KpiController::class, 'developerShow'])->name('developer.kpi.show');
-    Route::post('/{kpi}/update-achievement', [KpiController::class, 'developerUpdateAchievement'])->name('developer.kpi.update-achievement');
-});
-
-// Project Manager KPI Routes
-Route::prefix('projectmanager/kpi')->group(function () {
-    Route::get('/', [KpiController::class, 'projectManagerIndex'])->name('projectmanager.kpi.index');
-    Route::get('/create', [KpiController::class, 'projectManagerCreate'])->name('projectmanager.kpi.create');
-    Route::post('/', [KpiController::class, 'projectManagerStore'])->name('projectmanager.kpi.store');
-    Route::get('/{kpi}', [KpiController::class, 'projectManagerShow'])->name('projectmanager.kpi.show');
-});
-
-// Marketing KPI Routes
-Route::prefix('marketing/kpi')->group(function () {
-    Route::get('/', [KpiController::class, 'marketingIndex'])->name('marketing.kpi.index');
-    Route::get('/{kpi}', [KpiController::class, 'marketingShow'])->name('marketing.kpi.show');
-    Route::post('/{kpi}/update-achievement', [KpiController::class, 'marketingUpdateAchievement'])->name('marketing.kpi.update-achievement');
-});

@@ -33,7 +33,7 @@
         margin-bottom: 30px;
         position: relative;
         overflow: hidden;
-        margin-top: 60px;
+        margin-top: 100px;
     }
     
     .page-header::before {

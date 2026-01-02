@@ -6,12 +6,10 @@
 <div class="container-fluid px-4 py-4">
     <!-- Page Header -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-        <div class="mb-3 mb-md-0">
+        <div class="mb-3 mb-md-0" style="margin-top: 90px;">
             <nav aria-label="breadcrumb" class="d-none d-md-block">
                 <ol class="breadcrumb mb-2">
-                    <li class="breadcrumb-item"><a href="{{ route('superadmin.dashboard') }}" class="text-muted text-decoration-none">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('superadmin.salary.index') }}" class="text-muted text-decoration-none">Salary Records</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Salary Details</li>
+               
                 </ol>
             </nav>
             <div class="d-flex align-items-center">
@@ -24,16 +22,17 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-wrap gap-2">
+        <div class="d-flex flex-wrap gap-2"style="margin-top: 50px;">
             <a href="{{ route('superadmin.salary.index') }}" class="btn btn-outline-secondary d-flex align-items-center">
                 <i class="fas fa-arrow-left me-2"></i>Back to List
             </a>
-            <a href="#" class="btn btn-outline-primary d-flex align-items-center">
-                <i class="fas fa-print me-2"></i>Print
-            </a>
-            <a href="#" class="btn btn-primary d-flex align-items-center">
-                <i class="fas fa-edit me-2"></i>Edit
-            </a>
+            <a href="javascript:void(0)" 
+   class="btn btn-outline-primary d-flex align-items-center"
+   onclick="window.print()">
+    <i class="fas fa-print me-2"></i> Print
+</a>
+
+           
         </div>
     </div>
 

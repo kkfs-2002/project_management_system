@@ -5,7 +5,7 @@
 @section('content')
 <div class="container-fluid">
     <!-- Statistics Cards -->
-    <div class="row mb-4" style="margin-top: 90px;">
+    <div class="row mb-4" style="margin-top: 125px;">
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card stat-card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
@@ -825,21 +825,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-// Add CSS for slide in animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-`;
-document.head.appendChild(style);
+
 </script>
 @endsection
 
