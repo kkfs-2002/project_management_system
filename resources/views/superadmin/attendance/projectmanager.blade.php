@@ -11,10 +11,10 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <div class="text-xs text-primary text-uppercase mb-1">
                                 Total Project Managers
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $projectManagers->count() }}</div>
+                            <div class="h5 mb-0 text-gray-800">{{ $projectManagers->count() }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-users fa-2x text-primary"></i>
@@ -29,10 +29,10 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            <div class="text-xs text-success text-uppercase mb-1">
                                 Present Today
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <div class="h5 mb-0 text-gray-800">
                                 @php
                                     use App\Models\Attendance;
                                     $presentToday = Attendance::whereHas('profile', function($q) {
@@ -59,10 +59,10 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            <div class="text-xs text-warning text-uppercase mb-1">
                                 On Duty Now
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <div class="h5 mb-0 text-gray-800">
                                 @php
                                     $onDuty = Attendance::whereHas('profile', function($q) {
                                             $q->where('role', 'Project Manager')
@@ -89,10 +89,10 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                            <div class="text-xs text-danger text-uppercase mb-1">
                                 Absent Today
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <div class="h5 mb-0 text-gray-800">
                                 {{ $projectManagers->count() - $presentToday }}
                             </div>
                         </div>
@@ -111,12 +111,11 @@
             <div class="card shadow border-0">
                 <div class="card-header bg-white border-bottom-0 py-3">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0 fw-bold text-dark">
+                        <h6 class="mb-0 text-dark">
                             <i class="fas fa-clipboard-list me-2 text-primary"></i>
                             Project Manager Attendance Records
-                        </h5>
+                        </h6>
                         <div class="d-flex gap-2">
-                            <!-- Export Button -->
                             <a href="{{ route('superadmin.attendance.export') }}?type=projectmanager" 
                                class="btn btn-sm btn-success">
                                 <i class="fas fa-file-export me-1"></i> Export
@@ -131,7 +130,7 @@
                         <div class="col-md-12">
                             <form method="GET" action="{{ route('attendance.projectmanager') }}" class="row g-3">
                                 <div class="col-md-3">
-                                    <label class="form-label small fw-bold text-muted">Project Manager</label>
+                                    <label class="form-label small text-muted">Project Manager</label>
                                     <select name="profile_id" class="form-select form-select-sm">
                                         <option value="">All Project Managers</option>
                                         @foreach($projectManagers as $pm)
@@ -143,13 +142,13 @@
                                 </div>
                                 
                                 <div class="col-md-2">
-                                    <label class="form-label small fw-bold text-muted">Date</label>
+                                    <label class="form-label small text-muted">Date</label>
                                     <input type="date" name="date" class="form-control form-control-sm" 
                                            value="{{ request('date') }}">
                                 </div>
                                 
                                 <div class="col-md-2">
-                                    <label class="form-label small fw-bold text-muted">Month</label>
+                                    <label class="form-label small text-muted">Month</label>
                                     <select name="month" class="form-select form-select-sm">
                                         <option value="">All Months</option>
                                         @for($i = 1; $i <= 12; $i++)
@@ -161,7 +160,7 @@
                                 </div>
                                 
                                 <div class="col-md-2">
-                                    <label class="form-label small fw-bold text-muted">Year</label>
+                                    <label class="form-label small text-muted">Year</label>
                                     <select name="year" class="form-select form-select-sm">
                                         <option value="">All Years</option>
                                         @for($y = date('Y'); $y >= 2020; $y--)
@@ -174,7 +173,7 @@
                                 
                                 <div class="col-md-3 d-flex align-items-end gap-2">
                                     <button type="submit" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-filter me-1"></i> Apply Filters
+                                        <i class="fas fa-filter me-1"></i> Apply
                                     </button>
                                     
                                     <a href="{{ route('attendance.projectmanager') }}" class="btn btn-sm btn-outline-secondary">
@@ -190,7 +189,7 @@
                         <div class="text-center py-5">
                             <div class="empty-state">
                                 <i class="fas fa-clipboard-list fa-4x text-muted mb-4 opacity-25"></i>
-                                <h4 class="text-muted mb-3">No Attendance Records</h4>
+                                <h5 class="text-muted mb-3">No Attendance Records</h5>
                                 <p class="text-muted mb-4">No project managers have recorded attendance for the selected filters</p>
                                 <a href="{{ route('attendance.projectmanager') }}" class="btn btn-primary">
                                     <i class="fas fa-redo me-2"></i> Clear Filters
@@ -202,51 +201,31 @@
                             <table class="table table-hover mb-0" id="attendanceTable">
                                 <thead class="bg-light">
                                     <tr>
-                                        <th class="ps-4 text-uppercase text-secondary text-xs font-weight-bolder">
-                                            #
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Project Manager
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Date
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Check In
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Check Out
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Hours
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Status
-                                        </th>
-                                        <th class="text-end pe-4 text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Actions
-                                        </th>
+                                        <th class="ps-4 text-secondary text-xs">#</th>
+                                        <th class="text-secondary text-xs">Project Manager</th>
+                                        <th class="text-secondary text-xs">Date</th>
+                                        <th class="text-secondary text-xs">Check In</th>
+                                        <th class="text-secondary text-xs">Check Out</th>
+                                        <th class="text-secondary text-xs">Hours</th>
+                                        <th class="text-secondary text-xs">Status</th>
+                                        <th class="text-end pe-4 text-secondary text-xs">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="border-top-0">
                                   @foreach($attendances as $index => $attendance)
 <tr class="border-bottom" data-attendance-id="{{ $attendance->id }}">
     <td class="ps-4">
-        <span class="text-sm fw-semibold">
+        <span class="text-sm">
             {{ ($attendances->currentPage() - 1) * $attendances->perPage() + $index + 1 }}
         </span>
     </td>
     <td>
         <div class="d-flex align-items-center">
             <div class="me-3">
-                <div class="avatar-wrapper">
-                    <img src="{{ $attendance->profile->profile_picture ?? asset('assets/img/default-avatar.png') }}" 
-                         class="avatar rounded-circle" 
-                         alt="{{ $attendance->profile->full_name ?? 'N/A' }}">
-                </div>
+              
             </div>
             <div>
-                <h6 class="mb-0 text-sm fw-semibold">{{ $attendance->profile->full_name ?? 'N/A' }}</h6>
+                <div class="mb-0 text-sm">{{ $attendance->profile->full_name ?? 'N/A' }}</div>
                 <p class="text-xs text-muted mb-0">
                     <i class="fas fa-id-card me-1"></i>
                     {{ $attendance->profile->employee_id ?? 'N/A' }}
@@ -256,14 +235,14 @@
     </td>
     <td>
         <div class="text-sm">
-            <div class="fw-semibold">{{ $attendance->date->format('d M Y') }}</div>
+            <div>{{ $attendance->date->format('d M Y') }}</div>
             <div class="text-muted">{{ $attendance->date->format('l') }}</div>
         </div>
     </td>
     <td>
         @if($attendance->check_in)
             <div class="text-sm">
-                <div class="fw-semibold text-dark">
+                <div class="text-dark">
                     <i class="fas fa-sign-in-alt me-1"></i>
                     {{ \Carbon\Carbon::parse($attendance->check_in)->format('h:i A') }}
                 </div>
@@ -280,7 +259,7 @@
     <td class="check-out-cell">
         @if($attendance->check_out)
             <div class="text-sm">
-                <div class="fw-semibold text-dark">
+                <div class="text-dark">
                     <i class="fas fa-sign-out-alt me-1"></i>
                     {{ \Carbon\Carbon::parse($attendance->check_out)->format('h:i A') }}
                 </div>
@@ -303,7 +282,7 @@
     <td class="hours-cell">
         @if($attendance->total_hours)
             <div class="text-center">
-                <span class="fw-bold text-dark">{{ number_format($attendance->total_hours, 2) }}</span>
+                <span class="text-dark">{{ number_format($attendance->total_hours, 2) }}</span>
                 <div class="text-xs text-muted">hours</div>
             </div>
         @elseif($attendance->check_in && !$attendance->check_out)
@@ -360,9 +339,9 @@
                         <div class="card-footer bg-white border-top py-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="text-sm text-muted">
-                                    Showing <span class="fw-semibold">{{ $attendances->firstItem() }}</span> to 
-                                    <span class="fw-semibold">{{ $attendances->lastItem() }}</span> of 
-                                    <span class="fw-semibold">{{ $attendances->total() }}</span> records
+                                    Showing <span>{{ $attendances->firstItem() }}</span> to 
+                                    <span>{{ $attendances->lastItem() }}</span> of 
+                                    <span>{{ $attendances->total() }}</span> records
                                 </div>
                                 <div>
                                     {{ $attendances->links('vendor.pagination.bootstrap-5') }}
@@ -382,10 +361,10 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">
+                <h6 class="modal-title">
                     <i class="fas fa-clipboard-check me-2"></i>
                     Attendance Details
-                </h5>
+                </h6>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4" id="attendanceDetailsContent">
@@ -449,7 +428,7 @@ function viewAttendanceDetails(id) {
                                 </div>
                             </div>
                             <div class="col">
-                                <h4 class="mb-1">${data.full_name}</h4>
+                                <div class="mb-1">${data.full_name}</div>
                                 <p class="text-muted mb-1">
                                     <i class="fas fa-id-card me-1"></i>${data.employee_id}
                                     <span class="mx-2">•</span>
@@ -457,7 +436,7 @@ function viewAttendanceDetails(id) {
                                 </p>
                             </div>
                             <div class="col-auto">
-                                <span class="badge bg-${data.overall_status === 'Completed' ? 'success' : data.overall_status === 'Checked In' ? 'warning' : 'danger'} fs-6 p-2">
+                                <span class="badge bg-${data.overall_status === 'Completed' ? 'success' : data.overall_status === 'Checked In' ? 'warning' : 'danger'} p-2">
                                     ${data.overall_status}
                                 </span>
                             </div>
@@ -468,17 +447,17 @@ function viewAttendanceDetails(id) {
                     <div class="p-4 border-bottom">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <h6 class="text-muted mb-2">
+                                <div class="text-muted mb-2">
                                     <i class="fas fa-calendar me-2"></i>Date
-                                </h6>
-                                <h4 class="mb-0">${data.date_formatted}</h4>
+                                </div>
+                                <div class="mb-0">${data.date_formatted}</div>
                                 <p class="text-muted mb-0">${data.day}</p>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <h6 class="text-muted mb-2">
+                                <div class="text-muted mb-2">
                                     <i class="fas fa-clock me-2"></i>Working Hours
-                                </h6>
-                                <h4 class="mb-0 text-primary">${data.total_hours}</h4>
+                                </div>
+                                <div class="mb-0 text-primary">${data.total_hours}</div>
                             </div>
                         </div>
                     </div>
@@ -489,10 +468,10 @@ function viewAttendanceDetails(id) {
                             <div class="col-md-6 mb-4">
                                 <div class="card h-100 border-0 shadow-sm">
                                     <div class="card-body text-center">
-                                        <h6 class="text-muted mb-3">
+                                        <div class="text-muted mb-3">
                                             <i class="fas fa-sign-in-alt me-2"></i>Check In
-                                        </h6>
-                                        <div class="display-4 fw-bold ${data.check_in_status === 'Late' ? 'text-warning' : 'text-success'} mb-2">
+                                        </div>
+                                        <div class="${data.check_in_status === 'Late' ? 'text-warning' : 'text-success'} mb-2">
                                             ${data.check_in_time}
                                         </div>
                                         ${data.check_in_full ? `<p class="text-muted small">${data.check_in_full}</p>` : ''}
@@ -519,10 +498,10 @@ function viewAttendanceDetails(id) {
                             <div class="col-md-6 mb-4">
                                 <div class="card h-100 border-0 shadow-sm">
                                     <div class="card-body text-center">
-                                        <h6 class="text-muted mb-3">
+                                        <div class="text-muted mb-3">
                                             <i class="fas fa-sign-out-alt me-2"></i>Check Out
-                                        </h6>
-                                        <div class="display-4 fw-bold ${data.check_out_status === 'Early Leave' ? 'text-warning' : 'text-success'} mb-2">
+                                        </div>
+                                        <div class="${data.check_out_status === 'Early Leave' ? 'text-warning' : 'text-success'} mb-2">
                                             ${data.check_out_time}
                                         </div>
                                         ${data.check_out_full ? `<p class="text-muted small">${data.check_out_full}</p>` : ''}
@@ -556,7 +535,7 @@ function viewAttendanceDetails(id) {
                                             <i class="fas fa-${data.overall_status === 'Completed' ? 'check-circle' : data.overall_status === 'Checked In' ? 'clock' : 'exclamation-triangle'} fa-2x"></i>
                                         </div>
                                         <div class="flex-grow-1 ms-3">
-                                            <h5 class="alert-heading">${data.overall_status}</h5>
+                                            <div class="alert-heading">${data.overall_status}</div>
                                             <p class="mb-0">
                                                 ${data.full_name} ${data.overall_status === 'Completed' ?
                                                     'has completed their working day.' :
@@ -591,7 +570,7 @@ function viewAttendanceDetails(id) {
                 <div class="text-center py-5">
                     <div class="alert alert-danger mx-4">
                         <i class="fas fa-exclamation-triangle fa-2x mb-3 text-danger"></i>
-                        <h5 class="alert-heading">Error Loading Details</h5>
+                        <div class="alert-heading">Error Loading Details</div>
                         <p class="mb-3">${error.message || 'Please try again later'}</p>
                         <button type="button" class="btn btn-primary" onclick="viewAttendanceDetails(${id})">
                             <i class="fas fa-redo me-2"></i> Retry
@@ -724,7 +703,7 @@ function updateAttendanceRow(id, data) {
        
         checkOutCell.innerHTML = `
             <div class="text-sm">
-                <div class="fw-semibold text-dark">
+                <div class="text-dark">
                     <i class="fas fa-sign-out-alt me-1"></i>
                     ${checkOutTime}
                 </div>
@@ -741,7 +720,7 @@ function updateAttendanceRow(id, data) {
         const totalHours = data.total_hours || '0.00';
         hoursCell.innerHTML = `
             <div class="text-center">
-                <span class="fw-bold text-dark">${parseFloat(totalHours).toFixed(2)}</span>
+                <span class="text-dark">${parseFloat(totalHours).toFixed(2)}</span>
                 <div class="text-xs text-muted">hours</div>
             </div>
         `;
@@ -823,9 +802,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 300000);
 });
-</script>
-
-
 </script>
 @endsection
 
@@ -916,11 +892,11 @@ document.addEventListener('DOMContentLoaded', function() {
     border-bottom: 2px solid #e3e6f0;
     text-transform: uppercase;
     font-size: 0.75rem;
-    font-weight: 800;
     letter-spacing: 0.5px;
     color: var(--dark);
     padding: 1rem 1.25rem;
     background-color: var(--light);
+    font-weight: 600;
 }
 
 .table tbody td {
@@ -928,6 +904,7 @@ document.addEventListener('DOMContentLoaded', function() {
     vertical-align: middle;
     border-bottom: 1px solid #e3e6f0;
     font-size: 0.875rem;
+    font-weight: 400;
 }
 
 .table tbody tr:last-child td {
@@ -941,8 +918,9 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Badge Styling */
 .badge {
     padding: 0.35em 0.65em;
-    font-weight: 600;
+    font-weight: 400;
     border-radius: 0.375rem;
+    font-size: 0.75rem;
 }
 
 .bg-success-light {
@@ -1004,6 +982,7 @@ document.addEventListener('DOMContentLoaded', function() {
     border-radius: 0.375rem;
     padding: 0.375rem 0.75rem;
     font-size: 0.875rem;
+    font-weight: 400;
 }
 
 .form-control:focus, .form-select:focus {
@@ -1034,6 +1013,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .empty-state i {
     opacity: 0.5;
+}
+
+/* Typography Adjustments */
+h6 {
+    font-weight: 600;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.text-xs {
+    font-size: 0.75rem;
 }
 
 /* Responsive Adjustments */

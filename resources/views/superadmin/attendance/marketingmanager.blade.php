@@ -11,10 +11,10 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            <div class="text-xs text-info text-uppercase mb-1">
                                 Total Marketing Managers
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $marketingManagerProfiles->count() ?? 0 }}</div>
+                            <div class="h5 mb-0 text-gray-800">{{ $marketingManagerProfiles->count() ?? 0 }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-users fa-2x text-info"></i>
@@ -29,10 +29,10 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            <div class="text-xs text-success text-uppercase mb-1">
                                 Present Today
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalPresentToday ?? 0 }}</div>
+                            <div class="h5 mb-0 text-gray-800">{{ $totalPresentToday ?? 0 }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-user-check fa-2x text-success"></i>
@@ -47,10 +47,10 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            <div class="text-xs text-warning text-uppercase mb-1">
                                 Late Arrivals
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $lateArrivals ?? 0 }}</div>
+                            <div class="h5 mb-0 text-gray-800">{{ $lateArrivals ?? 0 }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-clock fa-2x text-warning"></i>
@@ -65,10 +65,10 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                            <div class="text-xs text-danger text-uppercase mb-1">
                                 Early Leaves
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $earlyLeaves ?? 0 }}</div>
+                            <div class="h5 mb-0 text-gray-800">{{ $earlyLeaves ?? 0 }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-sign-out-alt fa-2x text-danger"></i>
@@ -85,12 +85,11 @@
             <div class="card shadow border-0">
                 <div class="card-header bg-white border-bottom-0 py-3">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0 fw-bold text-dark">
+                        <h6 class="mb-0 text-dark">
                             <i class="fas fa-bullhorn me-2 text-primary"></i>
                             Marketing Managers Attendance Records
-                        </h5>
+                        </h6>
                         <div class="d-flex gap-2">
-                            <!-- Export Button -->
                             <a href="{{ route('superadmin.attendance.export') }}?type=marketingmanager{{ request('date') ? '&date=' . request('date') : '' }}" 
                                class="btn btn-sm btn-success">
                                 <i class="fas fa-file-export me-1"></i> Export
@@ -105,7 +104,7 @@
                         <div class="col-md-12">
                             <form method="GET" action="{{ route('attendance.marketingmanager') }}" class="row g-3">
                                 <div class="col-md-3">
-                                    <label class="form-label small fw-bold text-muted">Marketing Manager</label>
+                                    <label class="form-label small text-muted">Marketing Manager</label>
                                     <select name="profile_id" class="form-select form-select-sm">
                                         <option value="">All Marketing Managers</option>
                                         @foreach($marketingManagerProfiles as $mm)
@@ -117,13 +116,13 @@
                                 </div>
                                 
                                 <div class="col-md-2">
-                                    <label class="form-label small fw-bold text-muted">Date</label>
+                                    <label class="form-label small text-muted">Date</label>
                                     <input type="date" name="date" class="form-control form-control-sm" 
                                            value="{{ request('date', date('Y-m-d')) }}">
                                 </div>
                                 
                                 <div class="col-md-2">
-                                    <label class="form-label small fw-bold text-muted">Month</label>
+                                    <label class="form-label small text-muted">Month</label>
                                     <select name="month" class="form-select form-select-sm">
                                         <option value="">All Months</option>
                                         @for($i = 1; $i <= 12; $i++)
@@ -135,7 +134,7 @@
                                 </div>
                                 
                                 <div class="col-md-2">
-                                    <label class="form-label small fw-bold text-muted">Year</label>
+                                    <label class="form-label small text-muted">Year</label>
                                     <select name="year" class="form-select form-select-sm">
                                         <option value="">All Years</option>
                                         @for($y = date('Y'); $y >= 2020; $y--)
@@ -148,7 +147,7 @@
                                 
                                 <div class="col-md-3 d-flex align-items-end gap-2">
                                     <button type="submit" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-filter me-1"></i> Apply Filters
+                                        <i class="fas fa-filter me-1"></i> Apply
                                     </button>
                                     
                                     <a href="{{ route('attendance.marketingmanager') }}" class="btn btn-sm btn-outline-secondary">
@@ -164,7 +163,7 @@
                         <div class="text-center py-5">
                             <div class="empty-state">
                                 <i class="fas fa-clipboard-list fa-4x text-muted mb-4 opacity-25"></i>
-                                <h4 class="text-muted mb-3">No Attendance Records</h4>
+                                <h5 class="text-muted mb-3">No Attendance Records</h5>
                                 <p class="text-muted mb-4">No marketing managers have recorded attendance for the selected filters</p>
                                 <a href="{{ route('attendance.marketingmanager') }}" class="btn btn-primary">
                                     <i class="fas fa-redo me-2"></i> Clear Filters
@@ -176,30 +175,14 @@
                             <table class="table table-hover mb-0" id="attendanceTable">
                                 <thead class="bg-light">
                                     <tr>
-                                        <th class="ps-4 text-uppercase text-secondary text-xs font-weight-bolder">
-                                            #
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Marketing Manager
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Date
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Check In
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Check Out
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Hours
-                                        </th>
-                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Status
-                                        </th>
-                                        <th class="text-end pe-4 text-uppercase text-secondary text-xs font-weight-bolder">
-                                            Actions
-                                        </th>
+                                        <th class="ps-4 text-secondary text-xs">#</th>
+                                        <th class="text-secondary text-xs">Marketing Manager</th>
+                                        <th class="text-secondary text-xs">Date</th>
+                                        <th class="text-secondary text-xs">Check In</th>
+                                        <th class="text-secondary text-xs">Check Out</th>
+                                        <th class="text-secondary text-xs">Hours</th>
+                                        <th class="text-secondary text-xs">Status</th>
+                                        <th class="text-end pe-4 text-secondary text-xs">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="border-top-0">
@@ -212,7 +195,7 @@
                                     @endphp
                                     <tr class="border-bottom">
                                         <td class="ps-4">
-                                            <span class="text-sm fw-semibold">
+                                            <span class="text-sm">
                                                 {{ ($attendances->currentPage() - 1) * $attendances->perPage() + $index + 1 }}
                                             </span>
                                         </td>
@@ -220,13 +203,10 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="me-3">
                                                     <div class="avatar-wrapper">
-                                                        <img src="{{ $attendance->profile->profile_picture ?? asset('assets/img/default-avatar.png') }}" 
-                                                             class="avatar rounded-circle" 
-                                                             alt="{{ $attendance->profile->full_name ?? 'N/A' }}">
-                                                    </div>
+                                                       
                                                 </div>
                                                 <div>
-                                                    <h6 class="mb-0 text-sm fw-semibold">{{ $attendance->profile->full_name ?? 'N/A' }}</h6>
+                                                    <div class="mb-0 text-sm">{{ $attendance->profile->full_name ?? 'N/A' }}</div>
                                                     <p class="text-xs text-muted mb-0">
                                                         <i class="fas fa-id-card me-1"></i>
                                                         {{ $attendance->profile->employee_id ?? 'N/A' }}
@@ -236,14 +216,14 @@
                                         </td>
                                         <td>
                                             <div class="text-sm">
-                                                <div class="fw-semibold">{{ $attendance->date->format('d M Y') }}</div>
+                                                <div>{{ $attendance->date->format('d M Y') }}</div>
                                                 <div class="text-muted">{{ $attendance->date->format('l') }}</div>
                                             </div>
                                         </td>
                                         <td>
                                             @if($attendance->check_in)
                                                 <div class="text-sm">
-                                                    <div class="fw-semibold {{ $isLate ? 'text-warning' : 'text-success' }}">
+                                                    <div class="{{ $isLate ? 'text-warning' : 'text-success' }}">
                                                         <i class="fas fa-sign-in-alt me-1"></i>
                                                         {{ \Carbon\Carbon::parse($attendance->check_in)->format('h:i A') }}
                                                     </div>
@@ -264,7 +244,7 @@
                                         <td>
                                             @if($attendance->check_out)
                                                 <div class="text-sm">
-                                                    <div class="fw-semibold {{ $isEarly ? 'text-info' : 'text-success' }}">
+                                                    <div class="{{ $isEarly ? 'text-info' : 'text-success' }}">
                                                         <i class="fas fa-sign-out-alt me-1"></i>
                                                         {{ \Carbon\Carbon::parse($attendance->check_out)->format('h:i A') }}
                                                     </div>
@@ -291,7 +271,7 @@
                                         <td>
                                             @if($attendance->total_hours)
                                                 <div class="text-center">
-                                                    <span class="fw-bold text-dark">{{ number_format($attendance->total_hours, 2) }}</span>
+                                                    <span class="text-dark">{{ number_format($attendance->total_hours, 2) }}</span>
                                                     <div class="text-xs text-muted">hours</div>
                                                 </div>
                                             @elseif($attendance->check_in && !$attendance->check_out)
@@ -344,9 +324,9 @@
                         <div class="card-footer bg-white border-top py-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="text-sm text-muted">
-                                    Showing <span class="fw-semibold">{{ $attendances->firstItem() }}</span> to 
-                                    <span class="fw-semibold">{{ $attendances->lastItem() }}</span> of 
-                                    <span class="fw-semibold">{{ $attendances->total() }}</span> records
+                                    Showing <span>{{ $attendances->firstItem() }}</span> to 
+                                    <span>{{ $attendances->lastItem() }}</span> of 
+                                    <span>{{ $attendances->total() }}</span> records
                                 </div>
                                 <div>
                                     {{ $attendances->links('vendor.pagination.bootstrap-5') }}
@@ -368,10 +348,10 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        <div class="text-xs text-success text-uppercase mb-1">
                             Average Working Hours Today
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $averageHours ?? '0.00' }} hours</div>
+                        <div class="h5 mb-0 text-gray-800">{{ $averageHours ?? '0.00' }} hours</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-chart-line fa-2x text-success"></i>
@@ -387,10 +367,10 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content border-0 shadow">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">
+                <h6 class="modal-title">
                     <i class="fas fa-clipboard-check me-2"></i>
                     Attendance Details
-                </h5>
+                </h6>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4" id="attendanceDetailsContent">
@@ -428,7 +408,7 @@ function viewAttendanceDetails(id) {
                                  class="rounded-circle img-thumbnail" 
                                  style="width: 150px; height: 150px; object-fit: cover;">
                         </div>
-                        <h5 class="mb-1">${data.full_name}</h5>
+                        <div class="mb-1">${data.full_name}</div>
                         <p class="text-muted mb-0">
                             <i class="fas fa-id-card me-1"></i>${data.employee_id}
                         </p>
@@ -441,23 +421,23 @@ function viewAttendanceDetails(id) {
                             <div class="card-body">
                                 <div class="row g-3">
                                     <div class="col-12">
-                                        <h6 class="text-primary mb-3">
+                                        <div class="text-primary mb-3">
                                             <i class="fas fa-calendar-day me-2"></i>
                                             Attendance Information
-                                        </h6>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label text-muted mb-1">Date</label>
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-calendar text-primary me-2"></i>
-                                            <span class="fw-semibold">${data.date_formatted}</span>
+                                            <span>${data.date_formatted}</span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label text-muted mb-1">Day</label>
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-clock text-primary me-2"></i>
-                                            <span class="fw-semibold">${data.day}</span>
+                                            <span>${data.day}</span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -465,7 +445,7 @@ function viewAttendanceDetails(id) {
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-sign-in-alt ${data.check_in_status === 'Late' ? 'text-warning' : 'text-success'} me-2"></i>
                                             <div>
-                                                <div class="fw-semibold">${data.check_in_time}</div>
+                                                <div>${data.check_in_time}</div>
                                                 ${data.check_in_status ? `<div class="text-xs"><span class="badge ${data.check_in_status === 'Late' ? 'bg-warning' : 'bg-success'}">${data.check_in_status}</span></div>` : ''}
                                             </div>
                                         </div>
@@ -475,7 +455,7 @@ function viewAttendanceDetails(id) {
                                         <div class="d-flex align-items-center">
                                             <i class="fas fa-sign-out-alt ${data.check_out_status === 'Early Leave' ? 'text-info' : 'text-success'} me-2"></i>
                                             <div>
-                                                <div class="fw-semibold">${data.check_out_time}</div>
+                                                <div>${data.check_out_time}</div>
                                                 ${data.check_out_status ? `<div class="text-xs"><span class="badge ${data.check_out_status === 'Early Leave' ? 'bg-info' : 'bg-success'}">${data.check_out_status}</span></div>` : ''}
                                             </div>
                                         </div>
@@ -485,12 +465,12 @@ function viewAttendanceDetails(id) {
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div>
                                                     <label class="form-label text-muted mb-1">Total Working Hours</label>
-                                                    <h4 class="text-primary mb-0">${data.total_hours}</h4>
+                                                    <div class="text-primary mb-0">${data.total_hours}</div>
                                                 </div>
                                                 <div class="text-end">
                                                     <label class="form-label text-muted mb-1">Attendance Status</label>
                                                     <div>
-                                                        <span class="badge ${data.overall_status === 'Completed' ? 'bg-success' : data.overall_status === 'Checked In' ? 'bg-warning' : 'bg-secondary'} fs-6">
+                                                        <span class="badge ${data.overall_status === 'Completed' ? 'bg-success' : data.overall_status === 'Checked In' ? 'bg-warning' : 'bg-secondary'}">
                                                             ${data.overall_status}
                                                         </span>
                                                     </div>
@@ -512,7 +492,7 @@ function viewAttendanceDetails(id) {
             document.getElementById('attendanceDetailsContent').innerHTML = `
                 <div class="text-center py-4">
                     <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
-                    <h5 class="text-danger">Error Loading Details</h5>
+                    <div class="text-danger">Error Loading Details</div>
                     <p class="text-muted">Please try again later</p>
                 </div>`;
         });
@@ -556,264 +536,6 @@ document.addEventListener('DOMContentLoaded', function() {
             location.reload();
         }
     }, 300000);
-});
-function viewAttendanceDetails(id) {
-    console.log('Loading attendance details for ID:', id);
-    
-    const modalContent = document.getElementById('attendanceDetailsContent');
-    modalContent.innerHTML = `
-        <div class="text-center py-5">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="mt-3 text-muted">Loading attendance details...</p>
-        </div>`;
-    
-    // Show modal first
-    const modal = new bootstrap.Modal(document.getElementById('attendanceDetailsModal'));
-    modal.show();
-    
-    // Fetch data
-    fetch(`/superadmin/attendance/${id}/details`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(result => {
-            console.log('API Response:', result);
-            
-            if (!result.success) {
-                throw new Error(result.message || 'Failed to load details');
-            }
-            
-            const data = result.data;
-            
-            const modalContentHTML = `
-                <div class="attendance-details">
-                    <!-- Header -->
-                    <div class="bg-light p-4 border-bottom">
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="avatar-lg">
-                                    <img src="${data.profile_picture}" 
-                                         class="rounded-circle border border-3 border-primary" 
-                                         style="width: 80px; height: 80px; object-fit: cover;">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <h4 class="mb-1">${data.full_name}</h4>
-                                <p class="text-muted mb-1">
-                                    <i class="fas fa-id-card me-1"></i>${data.employee_id}
-                                    <span class="mx-2">•</span>
-                                    <i class="fas fa-briefcase me-1"></i>${data.role}
-                                </p>
-                            </div>
-                            <div class="col-auto">
-                                <span class="badge bg-${data.overall_status === 'Completed' ? 'success' : data.overall_status === 'Checked In' ? 'warning' : 'danger'} fs-6 p-2">
-                                    ${data.overall_status}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Date Info -->
-                    <div class="p-4 border-bottom">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <h6 class="text-muted mb-2">
-                                    <i class="fas fa-calendar me-2"></i>Date
-                                </h6>
-                                <h4 class="mb-0">${data.date_formatted}</h4>
-                                <p class="text-muted mb-0">${data.day}</p>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <h6 class="text-muted mb-2">
-                                    <i class="fas fa-clock me-2"></i>Working Hours
-                                </h6>
-                                <h4 class="mb-0 text-primary">${data.total_hours}</h4>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Time Details -->
-                    <div class="p-4">
-                        <div class="row">
-                            <div class="col-md-6 mb-4">
-                                <div class="card h-100 border-0 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <h6 class="text-muted mb-3">
-                                            <i class="fas fa-sign-in-alt me-2"></i>Check In
-                                        </h6>
-                                        <div class="display-4 fw-bold ${data.check_in_status === 'Late' ? 'text-warning' : 'text-success'} mb-2">
-                                            ${data.check_in_time}
-                                        </div>
-                                        ${data.check_in_full ? `<p class="text-muted small">${data.check_in_full}</p>` : ''}
-                                        
-                                        ${data.check_in_status ? `
-                                            <div class="mt-3">
-                                                <span class="badge bg-${data.check_in_status === 'Late' ? 'warning' : 'success'}">
-                                                    <i class="fas fa-${data.check_in_status === 'Late' ? 'exclamation-triangle' : 'check-circle'} me-1"></i>
-                                                    ${data.check_in_status}
-                                                </span>
-                                            </div>
-                                        ` : `
-                                            <div class="mt-3">
-                                                <span class="badge bg-danger">
-                                                    <i class="fas fa-times-circle me-1"></i>
-                                                    Not Checked In
-                                                </span>
-                                            </div>
-                                        `}
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6 mb-4">
-                                <div class="card h-100 border-0 shadow-sm">
-                                    <div class="card-body text-center">
-                                        <h6 class="text-muted mb-3">
-                                            <i class="fas fa-sign-out-alt me-2"></i>Check Out
-                                        </h6>
-                                        <div class="display-4 fw-bold ${data.check_out_status === 'Early Leave' ? 'text-warning' : 'text-success'} mb-2">
-                                            ${data.check_out_time}
-                                        </div>
-                                        ${data.check_out_full ? `<p class="text-muted small">${data.check_out_full}</p>` : ''}
-                                        
-                                        ${data.check_out_status ? `
-                                            <div class="mt-3">
-                                                <span class="badge bg-${data.check_out_status === 'Early Leave' ? 'warning' : 'success'}">
-                                                    <i class="fas fa-${data.check_out_status === 'Early Leave' ? 'exclamation-triangle' : 'check-circle'} me-1"></i>
-                                                    ${data.check_out_status}
-                                                </span>
-                                            </div>
-                                        ` : `
-                                            <div class="mt-3">
-                                                <span class="badge bg-${data.check_in_time !== 'Not Checked In' ? 'warning' : 'danger'}">
-                                                    <i class="fas fa-${data.check_in_time !== 'Not Checked In' ? 'clock' : 'user-slash'} me-1"></i>
-                                                    ${data.check_in_time !== 'Not Checked In' ? 'Still Working' : 'Not Checked In'}
-                                                </span>
-                                            </div>
-                                        `}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Summary -->
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <div class="alert ${data.overall_status === 'Completed' ? 'alert-success' : data.overall_status === 'Checked In' ? 'alert-warning' : 'alert-danger'}">
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-shrink-0">
-                                            <i class="fas fa-${data.overall_status === 'Completed' ? 'check-circle' : data.overall_status === 'Checked In' ? 'clock' : 'exclamation-triangle'} fa-2x"></i>
-                                        </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <h5 class="alert-heading">${data.overall_status}</h5>
-                                            <p class="mb-0">
-                                                ${data.full_name} ${data.overall_status === 'Completed' ? 
-                                                    'has completed their working day.' : 
-                                                    data.overall_status === 'Checked In' ? 
-                                                    'is currently working.' : 
-                                                    'was absent today.'}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Footer -->
-                    <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-2"></i> Close
-                        </button>
-                        <button type="button" class="btn btn-primary" onclick="printAttendanceDetails(${data.attendance_id})">
-                            <i class="fas fa-print me-2"></i> Print
-                        </button>
-                    </div>
-                </div>`;
-            
-            document.getElementById('attendanceDetailsContent').innerHTML = modalContentHTML;
-            
-        })
-        .catch(error => {
-            console.error('Error loading attendance details:', error);
-            document.getElementById('attendanceDetailsContent').innerHTML = `
-                <div class="text-center py-5">
-                    <div class="alert alert-danger mx-4">
-                        <i class="fas fa-exclamation-triangle fa-2x mb-3 text-danger"></i>
-                        <h5 class="alert-heading">Error Loading Details</h5>
-                        <p class="mb-3">${error.message || 'Please try again later'}</p>
-                        <button type="button" class="btn btn-primary" onclick="viewAttendanceDetails(${id})">
-                            <i class="fas fa-redo me-2"></i> Retry
-                        </button>
-                        <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-2"></i> Close
-                        </button>
-                    </div>
-                </div>`;
-        });
-}
-
-function printAttendanceDetails(id) {
-    // Simple print functionality
-    const printContent = document.getElementById('attendanceDetailsContent').innerHTML;
-    const originalContent = document.body.innerHTML;
-    
-    document.body.innerHTML = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Attendance Details</title>
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-            <style>
-                @media print {
-                    body { padding: 20px; }
-                    .no-print { display: none !important; }
-                }
-                .print-header {
-                    border-bottom: 2px solid #333;
-                    margin-bottom: 20px;
-                    padding-bottom: 10px;
-                }
-                .print-footer {
-                    border-top: 1px solid #ccc;
-                    margin-top: 30px;
-                    padding-top: 10px;
-                    font-size: 12px;
-                    color: #666;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <div class="print-header">
-                    <h3>Attendance Details</h3>
-                    <p class="text-muted">Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
-                </div>
-                ${printContent}
-                <div class="print-footer text-center">
-                    © ${new Date().getFullYear()} - Attendance Management System
-                </div>
-            </div>
-        </body>
-        </html>
-    `;
-    
-    window.print();
-    document.body.innerHTML = originalContent;
-    location.reload(); // Reload to restore original state
-}
-
-// Initialize Bootstrap tooltips
-document.addEventListener('DOMContentLoaded', function() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
 });
 </script>
 @endsection
@@ -906,11 +628,11 @@ document.addEventListener('DOMContentLoaded', function() {
     border-bottom: 2px solid #e3e6f0;
     text-transform: uppercase;
     font-size: 0.75rem;
-    font-weight: 800;
     letter-spacing: 0.5px;
     color: var(--dark);
     padding: 1rem 1.25rem;
     background-color: var(--light);
+    font-weight: 600;
 }
 
 .table tbody td {
@@ -918,6 +640,7 @@ document.addEventListener('DOMContentLoaded', function() {
     vertical-align: middle;
     border-bottom: 1px solid #e3e6f0;
     font-size: 0.875rem;
+    font-weight: 400;
 }
 
 .table tbody tr:last-child td {
@@ -931,8 +654,9 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Badge Styling */
 .badge {
     padding: 0.35em 0.65em;
-    font-weight: 600;
+    font-weight: 400;
     border-radius: 0.375rem;
+    font-size: 0.75rem;
 }
 
 .bg-success-light {
@@ -994,6 +718,7 @@ document.addEventListener('DOMContentLoaded', function() {
     border-radius: 0.375rem;
     padding: 0.375rem 0.75rem;
     font-size: 0.875rem;
+    font-weight: 400;
 }
 
 .form-control:focus, .form-select:focus {
@@ -1024,6 +749,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .empty-state i {
     opacity: 0.5;
+}
+
+/* Typography Adjustments */
+h6 {
+    font-weight: 600;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.text-xs {
+    font-size: 0.75rem;
 }
 
 /* Responsive Adjustments */
