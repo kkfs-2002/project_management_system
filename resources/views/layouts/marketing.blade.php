@@ -408,7 +408,7 @@
 }
   /* Footer */
     .footer {
-      background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
+      background: #000000 ; 
       background-size: cover;
       color: #fff;
       padding: 50px 0 20px;

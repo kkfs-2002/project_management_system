@@ -179,7 +179,7 @@
 }
  /* Footer */
     .footer {
-      background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
+      background: #000000;
       background-size: cover;
       color: #fff;
       padding: 50px 0 20px;
@@ -551,6 +551,35 @@
                 text-align: center;
             }
         }
+        .welcome-section {
+    height: 650px;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    /* Optional solid color instead */
+    /* background-color: #111827; */
+}
+.stat-card {
+    background: linear-gradient(135deg, #1e293b, #0f172a); /* Dark gradient background */
+    color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
     </style>
 </head>
 <body>
@@ -610,22 +639,23 @@
    
    
    
- <!-- Welcome Section -->
+<!-- Welcome Section -->
 @if(!isset($hideWelcome) || $hideWelcome === false)
-<div class="mb-5 position-relative">
-    <img src="{{ asset('images/po.avif') }}" class="img-fluid w-100" style="height: 650px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
-    <div class="position-absolute top-50 start-50 translate-middle bg-dark bg-opacity-75 p-4 rounded shadow welcome-overlay">
+<div class="mb-5 position-relative welcome-section d-flex align-items-center justify-content-center">
+    <div class="bg-dark bg-opacity-75 p-4 rounded shadow welcome-overlay text-center">
         <!-- MAIN TITLE -->
         <h3 id="typingText" class="fw-bold mb-2 text-white">
             Project Manager Dashboard
         </h3>
+
         <!-- DESCRIPTION TEXT -->
         <p class="mb-0 text-white">
             Track tasks, monitor progress, and manage your team's workflow seamlessly.
             Your Project Manager Dashboard keeps everything organized in one place.
         </p>
-</div>
     </div>
+</div>
+
     <!-- Attendance Section -->
     @if(\Route::currentRouteName() === 'projectmanager.dashboard')
    <div class="row mb-5 mt-5 d-flex align-items-center justify-content-center">
@@ -731,39 +761,40 @@
     </div>
     @endif
    
-    <!-- Dashboard Statistics -->
-    <div class="dashboard-stats">
-        <div class="row">
-            <div class="col-md-3 mb-3">
-                <div class="stat-card stat-total">
-                    <p class="stat-number text-primary">{{ $totalTasks ?? 0 }}</p>
-                    <p class="stat-label">Total Tasks</p>
-                    <i class="fas fa-tasks fa-2x text-primary"></i>
-                </div>
+<!-- Dashboard Statistics -->
+<div class="dashboard-stats">
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <div class="stat-card stat-total text-center">
+                <p class="stat-number text-primary">{{ $totalTasks ?? 0 }}</p>
+                <p class="stat-label">Total Tasks</p>
+                <i class="fas fa-tasks fa-2x text-primary"></i>
             </div>
-            <div class="col-md-3 mb-3">
-                <div class="stat-card stat-completed">
-                    <p class="stat-number text-success">{{ $completedTasks ?? 0 }}</p>
-                    <p class="stat-label">Completed</p>
-                    <i class="fas fa-check-circle fa-2x text-success"></i>
-                </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-card stat-completed text-center">
+                <p class="stat-number text-success">{{ $completedTasks ?? 0 }}</p>
+                <p class="stat-label">Completed</p>
+                <i class="fas fa-check-circle fa-2x text-success"></i>
             </div>
-            <div class="col-md-3 mb-3">
-                <div class="stat-card stat-in-progress">
-                    <p class="stat-number text-info">{{ $inProgressTasks ?? 0 }}</p>
-                    <p class="stat-label">In Progress</p>
-                    <i class="fas fa-spinner fa-2x text-info"></i>
-                </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-card stat-in-progress text-center">
+                <p class="stat-number text-info">{{ $inProgressTasks ?? 0 }}</p>
+                <p class="stat-label">In Progress</p>
+                <i class="fas fa-spinner fa-2x text-info"></i>
             </div>
-            <div class="col-md-3 mb-3">
-                <div class="stat-card stat-pending">
-                    <p class="stat-number text-secondary">{{ $pendingTasks ?? 0 }}</p>
-                    <p class="stat-label">Pending</p>
-                    <i class="fas fa-clock fa-2x text-secondary"></i>
-                </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="stat-card stat-pending text-center">
+                <p class="stat-number text-secondary">{{ $pendingTasks ?? 0 }}</p>
+                <p class="stat-label">Pending</p>
+                <i class="fas fa-clock fa-2x text-secondary"></i>
             </div>
         </div>
     </div>
+</div>
+
     <!-- Recent Tasks Section -->
  <div class="row mt-4">
     <div class="col-12">

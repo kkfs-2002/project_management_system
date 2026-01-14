@@ -76,11 +76,6 @@
     width: 90%;
 }
 
-/* Image zoom */
-.banner-img {
-    animation: zoomIn 8s ease-in-out forwards;
-}
-
 /* H3 animation */
 .banner-title {
     opacity: 0;
@@ -93,6 +88,47 @@
     animation: fadeUp 1.2s ease-out forwards;
     animation-delay: 0.4s;
 }
+.banner-wrapper {
+    width: 100%;
+    height: 300px; /* adjust as needed */
+}
+
+.bg-banner {
+    background-color: #0f172a; /* dark professional */
+}
+.stat-img-card {
+    position: relative;
+    min-height: 220px;
+    border-radius: 16px;
+    padding: 25px;
+    color: #fff;
+    overflow: hidden;
+}
+
+/* Clients card */
+.bg-clients {
+    background: linear-gradient(#0f172a);
+}
+
+/* Reminders card */
+.bg-reminders {
+    background: linear-gradient( #0f172a);
+}
+
+/* Soft overlay for depth */
+.stat-img-card .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+/* Content on top */
+.stat-img-card .text-block {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
 
 /* Keyframes */
 @keyframes zoomIn {
@@ -127,10 +163,7 @@
 
 <!-- ===================== BANNER ===================== -->
 
-<div class="position-relative banner-wrapper overflow-hidden">
-    <img src="{{ asset('images/ma1.avif') }}"
-         class="img-fluid w-100 h-100 banner-img"
-         style="object-fit: cover; filter: brightness(0.5);">
+<div class="position-relative banner-wrapper overflow-hidden bg-banner">
 
     <div class="position-absolute top-50 start-50 translate-middle bg-opacity-75 p-4 rounded text-center">
         <h3 class="fw-bold text-white banner-title">
@@ -140,7 +173,9 @@
             Manage campaigns, track performance, and discover actionable insights.
         </p>
     </div>
+
 </div>
+
 
 
 <!-- ===================== MAIN DASHBOARD SECTION ===================== -->
@@ -165,26 +200,34 @@
             <div class="col-md-8 p-0">
                 <div class="row g-0">
 
-                    <!-- Clients -->
-                    <div class="col-md-6 stat-img-card"
-                         style="background-image: url('{{ asset('images/tt.avif') }}')">
-                        <div class="overlay"></div>
-                        <div class="text-block">
-                            <i class="fas fa-users fa-3x mb-3"></i>
-                        <h2>{{ $totalClients ?? 0 }}</h2>
-                        <p>Total Clients</p>
-                        <a href="{{ route('marketing.clients.index') }}" class="btn btn-light mt-3 w-100"> View Clients </a>
-                        </div>
-                    </div>
+                   <!-- Clients -->
+<div class="col-md-6 stat-img-card bg-clients">
+    <div class="overlay"></div>
+    <div class="text-block">
+        <i class="fas fa-users fa-3x mb-3"></i>
+        <h2>{{ $totalClients ?? 0 }}</h2>
+        <p>Total Clients</p>
+        <a href="{{ route('marketing.clients.index') }}"
+           class="btn btn-light mt-3 w-100">
+            View Clients
+        </a>
+    </div>
+</div>
 
-                    <!-- Reminders -->
-                    <div class="col-md-6 stat-img-card"
-                         style="background-image: url('{{ asset('images/re.jpeg') }}')">
-                        <div class="overlay"></div>
-                        <div class="text-block">
-                           <i class="fas fa-bell fa-3x mb-3"></i> <h2>{{ $totalReminders ?? 0 }}</h2> <p>Total Reminders</p> <a href="{{ route('marketing.clients.reminders') }}" class="btn btn-light mt-3 w-100"> View Reminders </a>
-                        </div>
-                    </div>
+<!-- Reminders -->
+<div class="col-md-6 stat-img-card bg-reminders">
+    <div class="overlay"></div>
+    <div class="text-block">
+        <i class="fas fa-bell fa-3x mb-3"></i>
+        <h2>{{ $totalReminders ?? 0 }}</h2>
+        <p>Total Reminders</p>
+        <a href="{{ route('marketing.clients.reminders') }}"
+           class="btn btn-light mt-3 w-100">
+            View Reminders
+        </a>
+    </div>
+</div>
+
 
                 </div>
             </div>

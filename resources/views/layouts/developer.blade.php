@@ -185,7 +185,7 @@
 }
 /* Footer */
     .footer {
-      background: #000000 url('{{ asset("images/fo.jpg") }}') no-repeat center center;
+      background: #000000;
       background-size: cover;
       color: #fff;
       padding: 50px 0 20px;
@@ -320,6 +320,12 @@
       max-width: 150px;
       margin-bottom: 20px;
     }
+.welcome-section {
+    height: 650px;
+    background: linear-gradient(135deg, #0f172a, #1e293b); /* Dark gradient background */
+    /* Or solid color if you prefer */
+    /* background-color: #111827; */
+}
 
     </style>
 </head>
@@ -381,26 +387,25 @@
 <div class="mt-3">
     @yield('content')
 
-    <!-- Welcome Section - Only show on dashboard -->
-    @if(!isset($hideWelcome) || $hideWelcome === false)
-    <div class="mb-5 position-relative">
-        <img src="{{ asset('images/de.jpg') }}" class="img-fluid w-100" style="max-height:650px; object-fit: cover; filter: brightness(0.5);" alt="Company Background">
-       <div class="position-absolute top-50 start-50 translate-middle bg-opacity-75 p-4 rounded shadow" style="max-width: 700px;">
+  <!-- Welcome Section - Only show on dashboard -->
+@if(!isset($hideWelcome) || $hideWelcome === false)
+<div class="mb-5 position-relative welcome-section d-flex align-items-center justify-content-center">
+    <div class="bg-dark bg-opacity-75 p-4 rounded shadow text-center" style="max-width: 700px;">
 
-    <!-- MAIN TITLE -->
-    <h3 id="typingText" class="fw-bold mb-2 text-white">
-        Developer Dashboard
-    </h3>
+        <!-- MAIN TITLE -->
+        <h3 id="typingText" class="fw-bold mb-2 text-white">
+            Developer Dashboard
+        </h3>
 
-    <!-- DESCRIPTION TEXT -->
-    <p class="mb-0 text-white">
-      Track tasks, monitor progress, and manage your team's workflow seamlessly. 
-        Your Developer Dashboard keeps everything organized in one place
-  </p>
-
-</div>
+        <!-- DESCRIPTION TEXT -->
+        <p class="mb-0 text-white">
+            Track tasks, monitor progress, and manage your team's workflow seamlessly.
+            Your Developer Dashboard keeps everything organized in one place.
+        </p>
 
     </div>
+</div>
+
 
      <!-- Attendance Section -->
     @if(request()->routeIs('developer.dashboard'))
