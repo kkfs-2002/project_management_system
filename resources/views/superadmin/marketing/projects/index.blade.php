@@ -233,19 +233,85 @@
         background: rgba(255,255,255,0.3);
     }
     
-    /* Compact view for multiple alerts */
-    .reminder-alert.compact {
-        padding: 12px 15px;
+    /* Auto-Removal Panel */
+    .auto-removal-panel {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid var(--info);
+    }
+    
+    .auto-removal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .auto-removal-header h4 {
+        color: var(--info);
+        margin: 0;
+    }
+    
+    .auto-removal-toggle {
+        padding: 5px 15px;
+        background: var(--info);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s;
+    }
+    
+    .auto-removal-toggle.on {
+        background: var(--success);
+    }
+    
+    .auto-removal-info {
+        margin: 0;
         font-size: 13px;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 5px;
     }
     
-    .reminder-alert.compact i {
-        font-size: 18px;
+    /* Demo Controls */
+    .demo-controls {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
     }
     
-    .reminder-alert.compact .reminder-week {
-        font-size: 11px;
-        padding: 3px 8px;
+    .demo-btn {
+        padding: 8px 15px;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.3s;
+    }
+    
+    .demo-btn.add {
+        background: var(--primary);
+    }
+    
+    .demo-btn.remove {
+        background: var(--danger);
+    }
+    
+    .demo-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
 
     .filters-card {
@@ -657,6 +723,49 @@
         color: #856404;
     }
 
+    /* Notification Styles */
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        color: white;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 9999;
+        animation: slideInRight 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .notification.success {
+        background: var(--success);
+    }
+
+    .notification.warning {
+        background: var(--warning);
+        color: #000;
+    }
+
+    .notification.info {
+        background: var(--info);
+    }
+
+    .notification.error {
+        background: var(--danger);
+    }
+
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+
     @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
@@ -871,6 +980,8 @@
             
             // Create array of alerts to display
             $alerts = [];
+            
+            // Always show overdue reminders
             if($overdueReminders > 0) {
                 $alerts[] = [
                     'week' => 'overdue',
@@ -881,6 +992,8 @@
                     'viewAllText' => 'View Overdue'
                 ];
             }
+            
+            // Show all week alerts
             if($week1Reminders > 0) {
                 $alerts[] = [
                     'week' => 'week-1',
@@ -891,6 +1004,7 @@
                     'viewAllText' => 'View This Week'
                 ];
             }
+            
             if($week2Reminders > 0) {
                 $alerts[] = [
                     'week' => 'week-2',
@@ -901,6 +1015,7 @@
                     'viewAllText' => 'View Next Week'
                 ];
             }
+            
             if($week3Reminders > 0) {
                 $alerts[] = [
                     'week' => 'week-3',
@@ -911,22 +1026,23 @@
                     'viewAllText' => 'View Week 3'
                 ];
             }
+            
             if($week4Reminders > 0) {
                 $alerts[] = [
                     'week' => 'week-4',
                     'count' => $week4Reminders,
-                    'title' => 'Week 4 Reminders',
+                    'title' => 'Final Week Reminders',
                     'message' => 'Project reminder(s) are due in three weeks or more',
                     'icon' => 'fas fa-calendar-times',
-                    'viewAllText' => 'View Week 4'
+                    'viewAllText' => 'View Final Week'
                 ];
             }
         @endphp
 
-        <!-- Display Multiple Alerts -->
+        <!-- Display All Alerts -->
         @foreach($alerts as $index => $alert)
         <div id="reminderAlert-{{ $alert['week'] }}" 
-             class="reminder-alert {{ $alert['week'] }} {{ $index > 2 ? 'compact' : '' }}"
+             class="reminder-alert {{ $alert['week'] }}"
              data-week="{{ $alert['week'] }}">
             <i class="{{ $alert['icon'] }}"></i>
             <div class="reminder-alert-content">
@@ -945,7 +1061,7 @@
                 @elseif($alert['week'] == 'week-3')
                     <div class="reminder-week">In Two Weeks</div>
                 @elseif($alert['week'] == 'week-4')
-                    <div class="reminder-week">Final Week</div>
+                    <div class="reminder-week">Final Week (3+ weeks)</div>
                 @elseif($alert['week'] == 'overdue')
                     <div class="reminder-week">Urgent Attention Needed</div>
                 @endif
@@ -962,6 +1078,27 @@
             </div>
         </div>
         @endforeach
+
+        <!-- Auto-Removal Panel -->
+        <div class="auto-removal-panel" id="autoRemovalPanel">
+            <div class="auto-removal-header">
+                <h4><i class="fas fa-robot"></i> Auto-Removal Settings</h4>
+                <button onclick="toggleAutoRemoval()" id="autoRemovalToggle" class="auto-removal-toggle">
+                    <i class="fas fa-toggle-off"></i> Auto-Removal: OFF
+                </button>
+            </div>
+            <p class="auto-removal-info">
+                <i class="fas fa-info-circle"></i> When enabled: Adding Week 4 alerts will automatically hide Week 1 alerts
+            </p>
+            <div class="demo-controls">
+                <button onclick="simulateAddWeek4Alert()" class="demo-btn add">
+                    <i class="fas fa-plus"></i> Simulate Add Week 4 Alert
+                </button>
+                <button onclick="simulateRemoveWeek4Alert()" class="demo-btn remove">
+                    <i class="fas fa-minus"></i> Simulate Remove Week 4 Alert
+                </button>
+            </div>
+        </div>
 
         <!-- Show All Reminders Button -->
         @if(count($alerts) > 0)
@@ -1182,6 +1319,9 @@
 <script>
     const projects = @json($projects);
     
+    // Auto-removal settings
+    let autoRemovalEnabled = false;
+    
     // Get reminder counts from server
     const reminderCounts = {
         overdue: {{ $overdueReminders }},
@@ -1190,7 +1330,436 @@
         week3: {{ $week3Reminders }},
         week4: {{ $week4Reminders }}
     };
-
+    
+    // Show notification function
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+            ${message}
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease-out';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+    
+    // Initialize auto-removal state
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load auto-removal setting from localStorage
+        const savedSetting = localStorage.getItem('autoRemovalEnabled');
+        if (savedSetting === 'true') {
+            autoRemovalEnabled = true;
+            updateAutoRemovalToggle();
+        }
+        
+        // Check and apply auto-removal logic
+        checkAutoRemoval();
+        
+        // Load dismissed alerts
+        const dismissedAlerts = JSON.parse(localStorage.getItem('dismissedAlerts') || '[]');
+        dismissedAlerts.forEach(week => {
+            const alert = document.getElementById(`reminderAlert-${week}`);
+            if (alert) {
+                alert.classList.add('hidden');
+            }
+        });
+        
+        // Load snoozed alerts
+        const snoozedAlerts = JSON.parse(localStorage.getItem('snoozedAlerts') || '{}');
+        Object.keys(snoozedAlerts).forEach(week => {
+            if (snoozedAlerts[week] > Date.now()) {
+                const alert = document.getElementById(`reminderAlert-${week}`);
+                if (alert) {
+                    alert.style.opacity = '0.5';
+                }
+            }
+        });
+        
+        // Auto-hide success message
+        setTimeout(() => {
+            const alert = document.querySelector('.alert-success.show');
+            if (alert) {
+                alert.classList.remove('show');
+            }
+        }, 5000);
+    });
+    
+    // Toggle auto-removal setting
+    function toggleAutoRemoval() {
+        autoRemovalEnabled = !autoRemovalEnabled;
+        localStorage.setItem('autoRemovalEnabled', autoRemovalEnabled);
+        updateAutoRemovalToggle();
+        
+        if (autoRemovalEnabled) {
+            checkAutoRemoval();
+            showNotification('Auto-removal enabled: Week 4 alerts will hide Week 1 alerts', 'success');
+        } else {
+            // Show Week 1 alert if it was hidden
+            const week1Alert = document.getElementById('reminderAlert-week-1');
+            if (week1Alert && week1Alert.style.display === 'none') {
+                week1Alert.style.display = 'flex';
+                localStorage.removeItem('week1AutoHidden');
+            }
+            showNotification('Auto-removal disabled', 'warning');
+        }
+    }
+    
+    // Update toggle button appearance
+    function updateAutoRemovalToggle() {
+        const toggleBtn = document.getElementById('autoRemovalToggle');
+        if (toggleBtn) {
+            if (autoRemovalEnabled) {
+                toggleBtn.innerHTML = '<i class="fas fa-toggle-on"></i> Auto-Removal: ON';
+                toggleBtn.classList.add('on');
+            } else {
+                toggleBtn.innerHTML = '<i class="fas fa-toggle-off"></i> Auto-Removal: OFF';
+                toggleBtn.classList.remove('on');
+            }
+        }
+    }
+    
+    // Check and apply auto-removal logic
+    function checkAutoRemoval() {
+        if (!autoRemovalEnabled) return;
+        
+        const week4Alert = document.getElementById('reminderAlert-week-4');
+        const week1Alert = document.getElementById('reminderAlert-week-1');
+        
+        // If Week 4 alert exists and Week 1 alert exists, hide Week 1
+        if (week4Alert && week1Alert) {
+            week1Alert.style.display = 'none';
+            localStorage.setItem('week1AutoHidden', 'true');
+            
+            // Show notification only if not already hidden
+            if (!localStorage.getItem('week1HideNotified')) {
+                showNotification('Week 1 alerts hidden automatically because Week 4 alerts exist', 'info');
+                localStorage.setItem('week1HideNotified', 'true');
+            }
+        } else if (week1Alert && localStorage.getItem('week1AutoHidden') === 'true') {
+            // If Week 4 is removed, show Week 1 again
+            week1Alert.style.display = 'flex';
+            localStorage.removeItem('week1AutoHidden');
+            localStorage.removeItem('week1HideNotified');
+        }
+    }
+    
+    // Function to add a new Week 4 alert (simulate)
+    function simulateAddWeek4Alert() {
+        // Check if Week 4 alert already exists
+        let week4Alert = document.getElementById('reminderAlert-week-4');
+        
+        if (week4Alert) {
+            // Update count
+            reminderCounts.week4++;
+            const countElement = week4Alert.querySelector('.reminder-count');
+            if (countElement) {
+                countElement.textContent = reminderCounts.week4;
+            }
+        } else {
+            // Create new Week 4 alert
+            const container = document.querySelector('.reminder-alerts-container');
+            const autoRemovalPanel = document.getElementById('autoRemovalPanel');
+            
+            const newAlert = document.createElement('div');
+            newAlert.id = 'reminderAlert-week-4';
+            newAlert.className = 'reminder-alert week-4';
+            newAlert.innerHTML = `
+                <i class="fas fa-calendar-times"></i>
+                <div class="reminder-alert-content">
+                    <h4>
+                        Final Week Reminders
+                        <span class="reminder-count">1</span>
+                        <button onclick="showWeekReminders('week-4')" class="view-all-reminders">
+                            <i class="fas fa-eye"></i> View Final Week
+                        </button>
+                    </h4>
+                    <p>Project reminder(s) are due in three weeks or more</p>
+                    <div class="reminder-week">Final Week (3+ weeks)</div>
+                </div>
+                <div class="alert-controls">
+                    <button onclick="snoozeReminder('week-4')" class="snooze-btn" title="Snooze for 1 day">
+                        <i class="fas fa-clock"></i> Snooze
+                    </button>
+                    <button onclick="dismissReminderAlert('week-4')" class="dismiss-btn" title="Dismiss">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Insert before auto-removal panel
+            container.insertBefore(newAlert, autoRemovalPanel);
+            reminderCounts.week4 = 1;
+        }
+        
+        // Check auto-removal
+        checkAutoRemoval();
+        
+        showNotification('Week 4 alert added successfully', 'success');
+    }
+    
+    // Function to remove Week 4 alert (simulate)
+    function simulateRemoveWeek4Alert() {
+        const week4Alert = document.getElementById('reminderAlert-week-4');
+        if (week4Alert) {
+            week4Alert.remove();
+            reminderCounts.week4 = 0;
+            
+            // Check if Week 1 should be shown again
+            checkAutoRemoval();
+            
+            showNotification('Week 4 alert removed', 'warning');
+        } else {
+            showNotification('No Week 4 alert to remove', 'info');
+        }
+    }
+    
+    // Original reminder alert functions
+    function dismissReminderAlert(week) {
+        const alert = document.getElementById(`reminderAlert-${week}`);
+        if (alert) {
+            alert.classList.add('hidden');
+            
+            // Store dismissal in localStorage
+            const dismissedAlerts = JSON.parse(localStorage.getItem('dismissedAlerts') || '[]');
+            if (!dismissedAlerts.includes(week)) {
+                dismissedAlerts.push(week);
+                localStorage.setItem('dismissedAlerts', JSON.stringify(dismissedAlerts));
+            }
+            
+            showNotification(`Reminder alert for ${week} dismissed`, 'info');
+        }
+    }
+    
+    function snoozeReminder(week) {
+        const alert = document.getElementById(`reminderAlert-${week}`);
+        if (alert) {
+            alert.style.opacity = '0.5';
+            
+            // Store snooze in localStorage for 1 day
+            const snoozedAlerts = JSON.parse(localStorage.getItem('snoozedAlerts') || '{}');
+            snoozedAlerts[week] = Date.now() + (24 * 60 * 60 * 1000);
+            localStorage.setItem('snoozedAlerts', JSON.stringify(snoozedAlerts));
+            
+            showNotification(`Reminder for ${week} snoozed for 24 hours`, 'info');
+            
+            // Hide for 1 day
+            setTimeout(() => {
+                if (alert) {
+                    alert.style.opacity = '1';
+                    delete snoozedAlerts[week];
+                    localStorage.setItem('snoozedAlerts', JSON.stringify(snoozedAlerts));
+                }
+            }, 24 * 60 * 60 * 1000);
+        }
+    }
+    
+    function showWeekReminders(week) {
+        const today = new Date();
+        const projectsWithReminders = projects.filter(p => p.reminder_date);
+        
+        let filteredProjects = [];
+        let title = '';
+        let icon = '';
+        let color = '';
+        
+        switch(week) {
+            case 'overdue':
+                filteredProjects = projectsWithReminders.filter(p => new Date(p.reminder_date) < today);
+                title = 'Overdue Reminders';
+                icon = 'fas fa-exclamation-triangle';
+                color = '#dc3545';
+                break;
+            case 'week-1':
+                filteredProjects = projectsWithReminders.filter(p => {
+                    const reminderDate = new Date(p.reminder_date);
+                    const diffDays = Math.ceil((reminderDate - today) / (1000 * 60 * 60 * 24));
+                    return diffDays >= 0 && diffDays < 7;
+                });
+                title = 'This Week Reminders';
+                icon = 'fas fa-calendar-week';
+                color = '#2575fc';
+                break;
+            case 'week-2':
+                filteredProjects = projectsWithReminders.filter(p => {
+                    const reminderDate = new Date(p.reminder_date);
+                    const diffDays = Math.ceil((reminderDate - today) / (1000 * 60 * 60 * 24));
+                    return diffDays >= 7 && diffDays < 14;
+                });
+                title = 'Next Week Reminders';
+                icon = 'fas fa-calendar-alt';
+                color = '#38ef7d';
+                break;
+            case 'week-3':
+                filteredProjects = projectsWithReminders.filter(p => {
+                    const reminderDate = new Date(p.reminder_date);
+                    const diffDays = Math.ceil((reminderDate - today) / (1000 * 60 * 60 * 24));
+                    return diffDays >= 14 && diffDays < 21;
+                });
+                title = 'Week 3 Reminders';
+                icon = 'fas fa-calendar-check';
+                color = '#ff9966';
+                break;
+            case 'week-4':
+                filteredProjects = projectsWithReminders.filter(p => {
+                    const reminderDate = new Date(p.reminder_date);
+                    const diffDays = Math.ceil((reminderDate - today) / (1000 * 60 * 60 * 24));
+                    return diffDays >= 21;
+                });
+                title = 'Final Week Reminders';
+                icon = 'fas fa-calendar-times';
+                color = '#ff5e62';
+                break;
+        }
+        
+        if (filteredProjects.length === 0) {
+            showNotification('No projects found for this category.', 'info');
+            return;
+        }
+        
+        let modalContent = `
+            <div class="modal-header">
+                <h2 class="modal-title" style="color: ${color};">
+                    <i class="${icon}"></i> ${title} (${filteredProjects.length})
+                </h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div style="padding: 20px; max-height: 400px; overflow-y: auto;">
+                <div style="display: grid; gap: 10px;">
+        `;
+        
+        filteredProjects.forEach(project => {
+            const reminderDate = new Date(project.reminder_date);
+            const isOverdue = reminderDate < today;
+            
+            modalContent += `
+                <div style="padding: 12px; border-radius: 8px; background: ${isOverdue ? '#fff5f5' : '#f8f9fa'}; border-left: 4px solid ${color};">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <strong style="color: ${isOverdue ? '#dc3545' : '#333'};">${project.client_name}</strong>
+                            <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                                <div><i class="fas fa-project-diagram"></i> ${project.project_type.replace(/_/g, ' ')}</div>
+                                <div><i class="fas fa-calendar-day"></i> ${reminderDate.toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}</div>
+                                ${isOverdue ? '<div style="color: #dc3545;"><i class="fas fa-exclamation-circle"></i> Overdue</div>' : ''}
+                            </div>
+                        </div>
+                        <button onclick="viewProject(${project.id}); closeModal();" 
+                                style="padding: 5px 10px; background: ${color}; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer;">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        modalContent += `
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('modalBody').innerHTML = modalContent;
+        document.getElementById('projectModal').classList.add('active');
+    }
+    
+    function showAllReminders() {
+        const projectsWithReminders = projects.filter(p => p.reminder_date);
+        
+        if (projectsWithReminders.length === 0) {
+            showNotification('No projects with reminders found.', 'info');
+            return;
+        }
+        
+        // Sort by reminder date
+        projectsWithReminders.sort((a, b) => new Date(a.reminder_date) - new Date(b.reminder_date));
+        
+        const today = new Date();
+        
+        let modalContent = `
+            <div class="modal-header">
+                <h2 class="modal-title">
+                    <i class="fas fa-bell"></i> All Reminders (${projectsWithReminders.length})
+                </h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div style="padding: 20px; max-height: 400px; overflow-y: auto;">
+                <div style="display: grid; gap: 12px;">
+        `;
+        
+        projectsWithReminders.forEach(project => {
+            const reminderDate = new Date(project.reminder_date);
+            const isOverdue = reminderDate < today;
+            const isToday = reminderDate.toDateString() === today.toDateString();
+            
+            let weekClass = '';
+            let borderColor = '#6c757d';
+            
+            if (isOverdue) {
+                weekClass = 'Overdue';
+                borderColor = '#dc3545';
+            } else {
+                const diffDays = Math.ceil((reminderDate - today) / (1000 * 60 * 60 * 24));
+                if (diffDays < 7) {
+                    weekClass = 'Week 1';
+                    borderColor = '#2575fc';
+                } else if (diffDays < 14) {
+                    weekClass = 'Week 2';
+                    borderColor = '#38ef7d';
+                } else if (diffDays < 21) {
+                    weekClass = 'Week 3';
+                    borderColor = '#ff9966';
+                } else {
+                    weekClass = 'Week 4';
+                    borderColor = '#ff5e62';
+                }
+            }
+            
+            modalContent += `
+                <div style="padding: 12px; border-radius: 8px; background: #f8f9fa; border-left: 4px solid ${borderColor};">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                <strong style="color: #333;">${project.client_name}</strong>
+                                <span style="font-size: 11px; padding: 2px 8px; border-radius: 10px; background: ${borderColor}; color: white;">
+                                    ${weekClass}
+                                </span>
+                                ${isToday ? '<span style="font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #ffc107; color: #000;"><i class="fas fa-bell"></i> Today</span>' : ''}
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; font-size: 12px; color: #666;">
+                                <div><i class="fas fa-project-diagram"></i> ${project.project_type.replace(/_/g, ' ')}</div>
+                                <div><i class="fas fa-calendar-day"></i> ${reminderDate.toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}</div>
+                                <div><i class="fas fa-user-tie"></i> ${project.marketing_manager?.user?.name || project.marketing_manager?.full_name || 'N/A'}</div>
+                                <div><i class="fas fa-phone"></i> ${project.phone_number}</div>
+                            </div>
+                        </div>
+                        <button onclick="viewProject(${project.id}); closeModal();" 
+                                style="padding: 6px 12px; background: ${borderColor}; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; margin-left: 10px;">
+                            View
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+        
+        modalContent += `
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('modalBody').innerHTML = modalContent;
+        document.getElementById('projectModal').classList.add('active');
+    }
+    
+    // Original project view function
     function viewProject(id) {
         const project = projects.find(p => p.id === id);
         if (!project) return;
@@ -1303,288 +1872,11 @@
 
         document.getElementById('projectModal').classList.add('active');
     }
-
+    
     function closeModal() {
         document.getElementById('projectModal').classList.remove('active');
     }
-
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-        const modal = document.getElementById('projectModal');
-        if (event.target == modal) {
-            closeModal();
-        }
-    }
-
-    // Auto-hide success message
-    setTimeout(() => {
-        const alert = document.querySelector('.alert-success.show');
-        if (alert) {
-            alert.classList.remove('show');
-        }
-    }, 5000);
-
-    // Reminder Alert Functions
-    function dismissReminderAlert(week) {
-        const alert = document.getElementById(`reminderAlert-${week}`);
-        if (alert) {
-            alert.classList.add('hidden');
-            
-            // Store dismissal in localStorage
-            const dismissedAlerts = JSON.parse(localStorage.getItem('dismissedAlerts') || '[]');
-            if (!dismissedAlerts.includes(week)) {
-                dismissedAlerts.push(week);
-                localStorage.setItem('dismissedAlerts', JSON.stringify(dismissedAlerts));
-            }
-            
-            // Check if all alerts are dismissed
-            checkAllAlertsDismissed();
-        }
-    }
     
-    function snoozeReminder(week) {
-        const alert = document.getElementById(`reminderAlert-${week}`);
-        if (alert) {
-            alert.style.opacity = '0.5';
-            
-            // Store snooze in localStorage for 1 day
-            const snoozedAlerts = JSON.parse(localStorage.getItem('snoozedAlerts') || '{}');
-            snoozedAlerts[week] = Date.now() + (24 * 60 * 60 * 1000); // 24 hours from now
-            localStorage.setItem('snoozedAlerts', JSON.stringify(snoozedAlerts));
-            
-            // Hide for 1 day
-            setTimeout(() => {
-                if (alert) {
-                    alert.style.opacity = '1';
-                    delete snoozedAlerts[week];
-                    localStorage.setItem('snoozedAlerts', JSON.stringify(snoozedAlerts));
-                }
-            }, 24 * 60 * 60 * 1000);
-        }
-    }
-    
-    function checkAllAlertsDismissed() {
-        const allAlerts = document.querySelectorAll('.reminder-alert:not(.hidden)');
-        if (allAlerts.length === 0) {
-            // Show message when all alerts are dismissed
-            const container = document.querySelector('.reminder-alerts-container');
-            if (container) {
-                container.innerHTML += `
-                    <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px; color: #6c757d;">
-                        <i class="fas fa-check-circle"></i> All reminders have been dismissed
-                        <button onclick="resetAllAlerts()" style="margin-left: 10px; padding: 5px 10px; background: var(--primary); color: white; border: none; border-radius: 4px; cursor: pointer;">
-                            Reset Alerts
-                        </button>
-                    </div>
-                `;
-            }
-        }
-    }
-    
-    function resetAllAlerts() {
-        // Clear localStorage
-        localStorage.removeItem('dismissedAlerts');
-        localStorage.removeItem('snoozedAlerts');
-        
-        // Reload page to show all alerts
-        location.reload();
-    }
-    
-    function showWeekReminders(week) {
-        const today = new Date();
-        const projectsWithReminders = projects.filter(p => p.reminder_date);
-        
-        let filteredProjects = [];
-        let title = '';
-        let icon = '';
-        let color = '';
-        
-        switch(week) {
-            case 'overdue':
-                filteredProjects = projectsWithReminders.filter(p => new Date(p.reminder_date) < today);
-                title = 'Overdue Reminders';
-                icon = 'fas fa-exclamation-triangle';
-                color = '#dc3545';
-                break;
-            case 'week-1':
-                filteredProjects = projectsWithReminders.filter(p => {
-                    const reminderDate = new Date(p.reminder_date);
-                    const diffDays = Math.ceil((reminderDate - today) / (1000 * 60 * 60 * 24));
-                    return diffDays >= 0 && diffDays < 7;
-                });
-                title = 'This Week Reminders';
-                icon = 'fas fa-calendar-week';
-                color = '#2575fc';
-                break;
-            case 'week-2':
-                filteredProjects = projectsWithReminders.filter(p => {
-                    const reminderDate = new Date(p.reminder_date);
-                    const diffDays = Math.ceil((reminderDate - today) / (1000 * 60 * 60 * 24));
-                    return diffDays >= 7 && diffDays < 14;
-                });
-                title = 'Next Week Reminders';
-                icon = 'fas fa-calendar-alt';
-                color = '#38ef7d';
-                break;
-            case 'week-3':
-                filteredProjects = projectsWithReminders.filter(p => {
-                    const reminderDate = new Date(p.reminder_date);
-                    const diffDays = Math.ceil((reminderDate - today) / (1000 * 60 * 60 * 24));
-                    return diffDays >= 14 && diffDays < 21;
-                });
-                title = 'Week 3 Reminders';
-                icon = 'fas fa-calendar-check';
-                color = '#ff9966';
-                break;
-            case 'week-4':
-                filteredProjects = projectsWithReminders.filter(p => {
-                    const reminderDate = new Date(p.reminder_date);
-                    const diffDays = Math.ceil((reminderDate - today) / (1000 * 60 * 60 * 24));
-                    return diffDays >= 21;
-                });
-                title = 'Week 4 Reminders';
-                icon = 'fas fa-calendar-times';
-                color = '#ff5e62';
-                break;
-        }
-        
-        if (filteredProjects.length === 0) {
-            alert('No projects found for this category.');
-            return;
-        }
-        
-        let modalContent = `
-            <div class="modal-header">
-                <h2 class="modal-title" style="color: ${color};">
-                    <i class="${icon}"></i> ${title} (${filteredProjects.length})
-                </h2>
-                <button class="close-modal" onclick="closeModal()">&times;</button>
-            </div>
-            <div style="padding: 20px; max-height: 400px; overflow-y: auto;">
-                <div style="display: grid; gap: 10px;">
-        `;
-        
-        filteredProjects.forEach(project => {
-            const reminderDate = new Date(project.reminder_date);
-            const isOverdue = reminderDate < today;
-            
-            modalContent += `
-                <div style="padding: 12px; border-radius: 8px; background: ${isOverdue ? '#fff5f5' : '#f8f9fa'}; border-left: 4px solid ${color};">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                        <div>
-                            <strong style="color: ${isOverdue ? '#dc3545' : '#333'};">${project.client_name}</strong>
-                            <div style="font-size: 12px; color: #666; margin-top: 5px;">
-                                <div><i class="fas fa-project-diagram"></i> ${project.project_type.replace(/_/g, ' ')}</div>
-                                <div><i class="fas fa-calendar-day"></i> ${reminderDate.toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}</div>
-                                ${isOverdue ? '<div style="color: #dc3545;"><i class="fas fa-exclamation-circle"></i> Overdue</div>' : ''}
-                            </div>
-                        </div>
-                        <button onclick="viewProject(${project.id}); closeModal();" 
-                                style="padding: 5px 10px; background: ${color}; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer;">
-                            View Details
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
-        
-        modalContent += `
-                </div>
-            </div>
-        `;
-        
-        document.getElementById('modalBody').innerHTML = modalContent;
-        document.getElementById('projectModal').classList.add('active');
-    }
-    
-    function showAllReminders() {
-        const projectsWithReminders = projects.filter(p => p.reminder_date);
-        
-        if (projectsWithReminders.length === 0) {
-            alert('No projects with reminders found.');
-            return;
-        }
-        
-        // Sort by reminder date
-        projectsWithReminders.sort((a, b) => new Date(a.reminder_date) - new Date(b.reminder_date));
-        
-        const today = new Date();
-        
-        let modalContent = `
-            <div class="modal-header">
-                <h2 class="modal-title">
-                    <i class="fas fa-bell"></i> All Reminders (${projectsWithReminders.length})
-                </h2>
-                <button class="close-modal" onclick="closeModal()">&times;</button>
-            </div>
-            <div style="padding: 20px; max-height: 400px; overflow-y: auto;">
-                <div style="display: grid; gap: 12px;">
-        `;
-        
-        projectsWithReminders.forEach(project => {
-            const reminderDate = new Date(project.reminder_date);
-            const isOverdue = reminderDate < today;
-            const isToday = reminderDate.toDateString() === today.toDateString();
-            
-            let weekClass = '';
-            let borderColor = '#6c757d';
-            
-            if (isOverdue) {
-                weekClass = 'Overdue';
-                borderColor = '#dc3545';
-            } else {
-                const diffDays = Math.ceil((reminderDate - today) / (1000 * 60 * 60 * 24));
-                if (diffDays < 7) {
-                    weekClass = 'Week 1';
-                    borderColor = '#2575fc';
-                } else if (diffDays < 14) {
-                    weekClass = 'Week 2';
-                    borderColor = '#38ef7d';
-                } else if (diffDays < 21) {
-                    weekClass = 'Week 3';
-                    borderColor = '#ff9966';
-                } else {
-                    weekClass = 'Week 4';
-                    borderColor = '#ff5e62';
-                }
-            }
-            
-            modalContent += `
-                <div style="padding: 12px; border-radius: 8px; background: #f8f9fa; border-left: 4px solid ${borderColor};">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                        <div style="flex: 1;">
-                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                                <strong style="color: #333;">${project.client_name}</strong>
-                                <span style="font-size: 11px; padding: 2px 8px; border-radius: 10px; background: ${borderColor}; color: white;">
-                                    ${weekClass}
-                                </span>
-                                ${isToday ? '<span style="font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #ffc107; color: #000;"><i class="fas fa-bell"></i> Today</span>' : ''}
-                            </div>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; font-size: 12px; color: #666;">
-                                <div><i class="fas fa-project-diagram"></i> ${project.project_type.replace(/_/g, ' ')}</div>
-                                <div><i class="fas fa-calendar-day"></i> ${reminderDate.toLocaleDateString('en-GB', {day: '2-digit', month: 'short', year: 'numeric'})}</div>
-                                <div><i class="fas fa-user-tie"></i> ${project.marketing_manager?.user?.name || project.marketing_manager?.full_name || 'N/A'}</div>
-                                <div><i class="fas fa-phone"></i> ${project.phone_number}</div>
-                            </div>
-                        </div>
-                        <button onclick="viewProject(${project.id}); closeModal();" 
-                                style="padding: 6px 12px; background: ${borderColor}; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; margin-left: 10px;">
-                            View
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
-        
-        modalContent += `
-                </div>
-            </div>
-        `;
-        
-        document.getElementById('modalBody').innerHTML = modalContent;
-        document.getElementById('projectModal').classList.add('active');
-    }
-
     // Delete Confirmation
     function confirmDelete(id) {
         const project = projects.find(p => p.id === id);
@@ -1618,68 +1910,23 @@
         
         modal.classList.add('active');
     }
-
+    
     function closeConfirmModal() {
         document.getElementById('confirmDeleteModal').classList.remove('active');
     }
-
-    // Close confirm modal when clicking outside
-    document.addEventListener('click', function(event) {
-        const modal = document.getElementById('confirmDeleteModal');
-        if (event.target === modal) {
+    
+    // Close modals when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('projectModal');
+        if (event.target == modal) {
+            closeModal();
+        }
+        
+        const confirmModal = document.getElementById('confirmDeleteModal');
+        if (event.target == confirmModal) {
             closeConfirmModal();
         }
-    });
-
-    // Check dismissed alerts on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        const dismissedAlerts = JSON.parse(localStorage.getItem('dismissedAlerts') || '[]');
-        const snoozedAlerts = JSON.parse(localStorage.getItem('snoozedAlerts') || '{}');
-        
-        // Hide dismissed alerts
-        dismissedAlerts.forEach(week => {
-            const alert = document.getElementById(`reminderAlert-${week}`);
-            if (alert) {
-                alert.classList.add('hidden');
-            }
-        });
-        
-        // Hide snoozed alerts if still valid
-        Object.keys(snoozedAlerts).forEach(week => {
-            if (snoozedAlerts[week] > Date.now()) {
-                const alert = document.getElementById(`reminderAlert-${week}`);
-                if (alert) {
-                    alert.style.opacity = '0.5';
-                    // Remove after expiry
-                    setTimeout(() => {
-                        if (alert) {
-                            alert.style.opacity = '1';
-                            delete snoozedAlerts[week];
-                            localStorage.setItem('snoozedAlerts', JSON.stringify(snoozedAlerts));
-                        }
-                    }, snoozedAlerts[week] - Date.now());
-                }
-            } else {
-                // Remove expired snooze
-                delete snoozedAlerts[week];
-                localStorage.setItem('snoozedAlerts', JSON.stringify(snoozedAlerts));
-            }
-        });
-        
-        // Check if any alerts should be shown
-        const visibleAlerts = document.querySelectorAll('.reminder-alert:not(.hidden)');
-        if (visibleAlerts.length === 0) {
-            checkAllAlertsDismissed();
-        }
-        
-        // Auto-collapse after 4 alerts
-        const alerts = document.querySelectorAll('.reminder-alert');
-        alerts.forEach((alert, index) => {
-            if (index > 2) {
-                alert.classList.add('compact');
-            }
-        });
-    });
+    };
 </script>
 
 @endsection
