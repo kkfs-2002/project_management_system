@@ -131,7 +131,7 @@
 }
 /* Hover effect: show background image and change text color */
 .task-card:hover {
-    background-image: url('/images/po.jpg'); /* your image path */
+    background-image: url(''); /* your image path */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -165,7 +165,7 @@
     border-radius: 10px;
     padding: 25px;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(193, 187, 187, 0.1);
     border-left: 4px solid;
     color: white; /* Make all text inside white */
 }
@@ -331,7 +331,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.4); /* semi-transparent overlay */
+    background-color: rgba(216, 208, 208, 0.4); /* semi-transparent overlay */
     z-index: 0;
 }
 .stat-card p,
@@ -551,12 +551,7 @@
                 text-align: center;
             }
         }
-        .welcome-section {
-    height: 650px;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    /* Optional solid color instead */
-    /* background-color: #111827; */
-}
+        
 .stat-card {
     background: linear-gradient(135deg, #1e293b, #0f172a); /* Dark gradient background */
     color: #fff;
@@ -578,6 +573,62 @@
 .stat-label {
     font-size: 1rem;
     margin-bottom: 10px;
+}
+/* Welcome Section Background */
+.welcome-wrapper {
+    min-height: 250px;
+    margin-top: 66px;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    padding: 40px 20px;
+}
+
+/* Glass Card */
+.welcome-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px 50px;
+    max-width: 700px;
+    color: #ffffff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    animation: fadeUp 0.8s ease-in-out;
+}
+
+/* Title */
+.welcome-card h2 {
+    font-size: 2.5rem;
+    letter-spacing: 0.5px;
+}
+
+/* Description */
+.welcome-text {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+}
+
+/* Animation */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .welcome-card {
+        padding: 30px 25px;
+    }
+
+    .welcome-card h2 {
+        font-size: 2rem;
+    }
 }
 
     </style>
@@ -641,20 +692,25 @@
    
 <!-- Welcome Section -->
 @if(!isset($hideWelcome) || $hideWelcome === false)
-<div class="mb-5 position-relative welcome-section d-flex align-items-center justify-content-center">
-    <div class="bg-dark bg-opacity-75 p-4 rounded shadow welcome-overlay text-center">
-        <!-- MAIN TITLE -->
-        <h3 id="typingText" class="fw-bold mb-2 text-white">
-            Project Manager Dashboard
-        </h3>
+<div class="welcome-wrapper d-flex align-items-center justify-content-center mb-5">
+    <div class="welcome-card text-center">
+        <span class="badge bg-primary mb-3 px-3 py-2">Welcome Back</span>
 
-        <!-- DESCRIPTION TEXT -->
-        <p class="mb-0 text-white">
-            Track tasks, monitor progress, and manage your team's workflow seamlessly.
-            Your Project Manager Dashboard keeps everything organized in one place.
+        <!-- MAIN TITLE -->
+        <h2 id="typingText" class="fw-bold mb-3">
+            Project Manager Dashboard
+        </h2>
+
+        <!-- DESCRIPTION -->
+        <p class="welcome-text">
+            Track tasks, monitor progress, and manage your team efficiently.
+            Stay focused and deliver projects on time with ease.
         </p>
     </div>
 </div>
+
+
+
 
     <!-- Attendance Section -->
     @if(\Route::currentRouteName() === 'projectmanager.dashboard')
@@ -766,28 +822,28 @@
     <div class="row">
         <div class="col-md-3 mb-3">
             <div class="stat-card stat-total text-center">
-                <p class="stat-number text-primary">{{ $totalTasks ?? 0 }}</p>
+                <p class="stat-number" style="color: #000000 !important;">{{ $totalTasks ?? 0 }}</p>
                 <p class="stat-label">Total Tasks</p>
                 <i class="fas fa-tasks fa-2x text-primary"></i>
             </div>
         </div>
         <div class="col-md-3 mb-3">
             <div class="stat-card stat-completed text-center">
-                <p class="stat-number text-success">{{ $completedTasks ?? 0 }}</p>
+                <p class="stat-number" style="color: #000000 !important;">{{ $completedTasks ?? 0 }}</p>
                 <p class="stat-label">Completed</p>
                 <i class="fas fa-check-circle fa-2x text-success"></i>
             </div>
         </div>
         <div class="col-md-3 mb-3">
             <div class="stat-card stat-in-progress text-center">
-                <p class="stat-number text-info">{{ $inProgressTasks ?? 0 }}</p>
+                <p class="stat-number" style="color: #000000 !important;">{{ $inProgressTasks ?? 0 }}</p>
                 <p class="stat-label">In Progress</p>
                 <i class="fas fa-spinner fa-2x text-info"></i>
             </div>
         </div>
         <div class="col-md-3 mb-3">
             <div class="stat-card stat-pending text-center">
-                <p class="stat-number text-secondary">{{ $pendingTasks ?? 0 }}</p>
+                <p class="stat-number" style="color: #000000 !important;">{{ $pendingTasks ?? 0 }}</p>
                 <p class="stat-label">Pending</p>
                 <i class="fas fa-clock fa-2x text-secondary"></i>
             </div>

@@ -3,179 +3,152 @@
 @section('title', 'Marketing Dashboard')
 
 @section('content')
-
 <style>
-    
-/* ========= Overall Section Styling ========= */
-
+/* ================= GENERAL ================= */
 .stats-section {
     width: 100%;
+    min-height: 350px;
     margin-top: 20px;
-    
 }
 
-/* Left Panel */
+/* ================= LEFT PANEL ================= */
 .left-panel {
-    background-color: #000015ff;
-    min-height: 250px;
+    background: linear-gradient(135deg, #1d2671, #c33764);
+    min-height: 350px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
+    align-items: center;
 }
 
-/* Right Grid Cards */
+.left-panel h1 {
+    font-size: 2.5rem;
+}
+
+/* ================= DASHBOARD CARDS ================= */
 .stat-img-card {
-    height: 280px;
     position: relative;
-    background-size: cover;
-    background-position: center;
+    min-height: 175px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
     overflow: hidden;
     transition: transform 0.35s ease;
 }
 
 .stat-img-card:hover {
-    transform: scale(1.03);
+    transform: scale(1.04);
+}
+
+/* Background images */
+.bg-clients {
+    background: url('/images/clients.jpg') center/cover no-repeat;
+}
+
+.bg-reminders {
+    background: url('/images/reminders.jpg') center/cover no-repeat;
 }
 
 /* Overlay */
 .stat-img-card .overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.7));
+    background: rgba(0, 0, 0, 0.6);
 }
 
-/* Text inside cards */
+/* Text */
 .stat-img-card .text-block {
-    position: absolute;
-    bottom: 30px;
-    left: 30px;
-    color: #fff;
-    z-index: 5;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 25px;
 }
 
 .stat-img-card h2 {
-    font-size: 2.4rem;
+    font-size: 2.3rem;
     font-weight: bold;
-    margin: 0;
 }
 
 .stat-img-card p {
     font-size: 1.1rem;
     opacity: 0.9;
 }
-
-/* Banner */
-.banner-wrapper {
-    height: 450px;
-    overflow: hidden;
+/* Welcome Section Background */
+.welcome-section {
+    min-height: 650px;
+    background: linear-gradient(135deg, #000000 0%, #888888 100%); /* black → gray gradient */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
 }
 
-.banner-text {
+/* Glass Card Overlay */
+.welcome-card {
+    background: rgba(255, 255, 255, 0.05); /* subtle glass effect */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 40px 50px;
     max-width: 700px;
-    width: 90%;
+    color: #ffffff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    animation: fadeUp 0.8s ease-in-out;
 }
 
-/* H3 animation */
-.banner-title {
-    opacity: 0;
-    animation: fadeDown 1.2s ease-out forwards;
+/* Title */
+.welcome-card h2 {
+    font-size: 2.5rem;
+    letter-spacing: 0.5px;
 }
 
-/* P animation (delay) */
-.banner-desc {
-    opacity: 0;
-    animation: fadeUp 1.2s ease-out forwards;
-    animation-delay: 0.4s;
-}
-.banner-wrapper {
-    width: 100%;
-    height: 300px; /* adjust as needed */
+/* Description */
+.welcome-text {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
 }
 
-.bg-banner {
-    background-color: #0f172a; /* dark professional */
-}
-.stat-img-card {
-    position: relative;
-    min-height: 220px;
-    border-radius: 16px;
-    padding: 25px;
-    color: #fff;
-    overflow: hidden;
-}
-
-/* Clients card */
-.bg-clients {
-    background: linear-gradient(#0f172a);
-}
-
-/* Reminders card */
-.bg-reminders {
-    background: linear-gradient( #0f172a);
-}
-
-/* Soft overlay for depth */
-.stat-img-card .overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.25);
-}
-
-/* Content on top */
-.stat-img-card .text-block {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-}
-
-
-/* Keyframes */
-@keyframes zoomIn {
-    from { transform: scale(1); }
-    to   { transform: scale(1.1); }
-}
-
-@keyframes fadeDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+/* Animation */
 @keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .welcome-card { padding: 30px 25px; }
+    .welcome-card h2 { font-size: 2rem; }
+    .welcome-text { font-size: 0.95rem; }
+}
+
+@media (max-width: 576px) {
+    .welcome-card { padding: 20px 15px; }
+    .welcome-card h2 { font-size: 1.5rem; }
+    .welcome-text { font-size: 0.9rem; }
+}
+
 
 </style>
 
 
+
 <!-- ===================== BANNER ===================== -->
+<!-- Banner Section -->
+<div class="welcome-section d-flex align-items-center justify-content-center mb-5">
+    <div class="welcome-card text-center">
 
-<div class="position-relative banner-wrapper overflow-hidden bg-banner">
-
-    <div class="position-absolute top-50 start-50 translate-middle bg-opacity-75 p-4 rounded text-center">
-        <h3 class="fw-bold text-white banner-title">
+        <!-- MAIN TITLE -->
+        <h2 id="typingText" class="fw-bold mb-3">
             Marketing Manager Dashboard
-        </h3>
-        <p class="text-white mb-0 banner-desc">
+        </h2>
+
+        <!-- DESCRIPTION TEXT -->
+        <p class="welcome-text mb-0">
             Manage campaigns, track performance, and discover actionable insights.
         </p>
+
     </div>
-
 </div>
-
 
 
 <!-- ===================== MAIN DASHBOARD SECTION ===================== -->
@@ -187,53 +160,56 @@
                     
 <section class="stats-section">
     <div class="container-fluid">
-      <div class="row" style="margin-top: 0px;">
-
+        <div class="row g-0">
 
             <!-- LEFT SIDE -->
-            <div class="col-md-4 left-panel text-white p-5">
-                <h1 class="fw-bold mb-4">Dashboard Overview</h1>
-             
+            <div class="col-md-4 left-panel d-flex align-items-center">
+                <div class="left-content text-white p-5">
+                    <h1 class="fw-bold">Dashboard Overview</h1>
+                    <p class="mt-3 opacity-75">
+                        Quick summary of your marketing performance
+                    </p>
+                </div>
             </div>
 
-            <!-- RIGHT SIDE (ONLY 2 CARDS) -->
-            <div class="col-md-8 p-0">
-                <div class="row g-0">
+            <!-- RIGHT SIDE -->
+            <div class="col-md-8">
+                <div class="row g-0 h-100">
 
-                   <!-- Clients -->
-<div class="col-md-6 stat-img-card bg-clients">
-    <div class="overlay"></div>
-    <div class="text-block">
-        <i class="fas fa-users fa-3x mb-3"></i>
-        <h2>{{ $totalClients ?? 0 }}</h2>
-        <p>Total Clients</p>
-        <a href="{{ route('marketing.clients.index') }}"
-           class="btn btn-light mt-3 w-100">
-            View Clients
-        </a>
-    </div>
-</div>
+                    <!-- Clients -->
+                    <div class="col-md-6 stat-img-card bg-clients">
+                        <div class="overlay"></div>
+                        <div class="text-block">
+                            <i class="fas fa-users fa-3x mb-3"></i>
+                            <h2>{{ $totalClients ?? 0 }}</h2>
+                            <p>Total Clients</p>
+                            <a href="{{ route('marketing.clients.index') }}"
+                               class="btn btn-outline-light mt-3 w-100">
+                                View Clients
+                            </a>
+                        </div>
+                    </div>
 
-<!-- Reminders -->
-<div class="col-md-6 stat-img-card bg-reminders">
-    <div class="overlay"></div>
-    <div class="text-block">
-        <i class="fas fa-bell fa-3x mb-3"></i>
-        <h2>{{ $totalReminders ?? 0 }}</h2>
-        <p>Total Reminders</p>
-        <a href="{{ route('marketing.clients.reminders') }}"
-           class="btn btn-light mt-3 w-100">
-            View Reminders
-        </a>
-    </div>
-</div>
-
+                    <!-- Reminders -->
+                    <div class="col-md-6 stat-img-card bg-reminders">
+                        <div class="overlay"></div>
+                        <div class="text-block">
+                            <i class="fas fa-bell fa-3x mb-3"></i>
+                            <h2>{{ $totalReminders ?? 0 }}</h2>
+                            <p>Total Reminders</p>
+                            <a href="{{ route('marketing.clients.reminders') }}"
+                               class="btn btn-outline-light mt-3 w-100">
+                                View Reminders
+                            </a>
+                        </div>
+                    </div>
 
                 </div>
             </div>
 
         </div>
-    
+    </div>
 </section>
+
 </form>
 @endsection

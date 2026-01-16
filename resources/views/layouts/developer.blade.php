@@ -320,11 +320,59 @@
       max-width: 150px;
       margin-bottom: 20px;
     }
+/* Welcome Section Background */
 .welcome-section {
-    height: 650px;
-    background: linear-gradient(135deg, #0f172a, #1e293b); /* Dark gradient background */
-    /* Or solid color if you prefer */
-    /* background-color: #111827; */
+    min-height: 650px;
+    background: linear-gradient(135deg, #000000 0%, #888888 100%); /* black → gray gradient */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+/* Glass Card Overlay */
+.welcome-card {
+    background: rgba(255, 255, 255, 0.05); /* subtle glass effect */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 40px 50px;
+    max-width: 700px;
+    color: #ffffff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    animation: fadeUp 0.8s ease-in-out;
+}
+
+/* Title */
+.welcome-card h2 {
+    font-size: 2.5rem;
+    letter-spacing: 0.5px;
+}
+
+/* Description */
+.welcome-text {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+}
+
+/* Animation */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .welcome-card { padding: 30px 25px; }
+    .welcome-card h2 { font-size: 2rem; }
+    .welcome-text { font-size: 0.95rem; }
+}
+
+@media (max-width: 576px) {
+    .welcome-card { padding: 20px 15px; }
+    .welcome-card h2 { font-size: 1.5rem; }
+    .welcome-text { font-size: 0.9rem; }
 }
 
     </style>
@@ -389,22 +437,24 @@
 
   <!-- Welcome Section - Only show on dashboard -->
 @if(!isset($hideWelcome) || $hideWelcome === false)
-<div class="mb-5 position-relative welcome-section d-flex align-items-center justify-content-center">
-    <div class="bg-dark bg-opacity-75 p-4 rounded shadow text-center" style="max-width: 700px;">
+<div class="welcome-section d-flex align-items-center justify-content-center mb-5">
+    <div class="welcome-card text-center">
 
         <!-- MAIN TITLE -->
-        <h3 id="typingText" class="fw-bold mb-2 text-white">
+        <h2 id="typingText" class="fw-bold mb-3">
             Developer Dashboard
-        </h3>
+        </h2>
 
         <!-- DESCRIPTION TEXT -->
-        <p class="mb-0 text-white">
+        <p class="welcome-text mb-0">
             Track tasks, monitor progress, and manage your team's workflow seamlessly.
             Your Developer Dashboard keeps everything organized in one place.
         </p>
 
     </div>
 </div>
+
+
 
 
      <!-- Attendance Section -->
