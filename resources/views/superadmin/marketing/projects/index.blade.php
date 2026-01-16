@@ -16,26 +16,26 @@
         --border: #dee2e6;
         --shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
-   
+  
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-   
+  
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #f5f7fa;
         color: #333;
         line-height: 1.6;
     }
-   
+  
     .container {
         max-width: 1400px;
         margin: 0 auto;
         padding: 20px;
     }
-   
+  
     .header {
         text-align: center;
         margin-bottom: 30px;
@@ -45,13 +45,13 @@
         box-shadow: var(--shadow);
         margin-top: 90px;
     }
-   
+  
     .header h1 {
         color: var(--primary);
         margin-bottom: 10px;
         font-weight: 600;
     }
-   
+  
     .header p {
         color: var(--secondary);
         font-size: 16px;
@@ -72,7 +72,7 @@
         transition: all 0.3s ease;
         animation: slideIn 0.5s ease-out;
     }
-   
+  
     @keyframes slideIn {
         from {
             transform: translateX(-20px);
@@ -83,20 +83,16 @@
             opacity: 1;
         }
     }
-   
-    .reminder-alert.hidden {
-        display: none;
-    }
-   
+  
     .reminder-alert i {
         font-size: 24px;
         margin-right: 15px;
     }
-   
+  
     .reminder-alert-content {
         flex: 1;
     }
-   
+  
     .reminder-alert h4 {
         margin-bottom: 5px;
         font-weight: 600;
@@ -104,12 +100,12 @@
         align-items: center;
         gap: 8px;
     }
-   
+  
     .reminder-alert p {
         margin-bottom: 0;
         font-size: 14px;
     }
-   
+  
     .reminder-count {
         display: inline-block;
         background: rgba(0,0,0,0.1);
@@ -119,7 +115,7 @@
         font-weight: bold;
         font-size: 12px;
     }
-   
+  
     /* Week indicator */
     .reminder-week {
         margin-top: 8px;
@@ -130,132 +126,40 @@
         display: inline-block;
         font-weight: 500;
     }
-   
+  
     /* Light Colors for Week Styles */
     .reminder-alert.week-1 {
         background: linear-gradient(135deg, #87CEEB, #B0E0E6);
         border-left-color: #4682B4;
     }
-   
+  
     .reminder-alert.week-2 {
         background: linear-gradient(135deg, #98FB98, #90EE90);
         border-left-color: #32CD32;
     }
-   
+  
     .reminder-alert.week-3 {
         background: linear-gradient(135deg, #FFDAB9, #FFE4B5);
         border-left-color: #FFA500;
     }
-   
+  
     .reminder-alert.week-4 {
         background: linear-gradient(135deg, #FFB6C1, #FFC0CB);
         border-left-color: #FF69B4;
     }
-   
+  
     .reminder-alert.overdue {
         background: linear-gradient(135deg, #FF7F7F, #FF9999);
         border-left-color: #FF4500;
         animation: pulse 2s infinite;
     }
-   
+  
     @keyframes pulse {
         0% { opacity: 1; }
         50% { opacity: 0.8; }
         100% { opacity: 1; }
     }
-   
-    /* Alert Controls */
-    .alert-controls {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
-   
-    .dismiss-btn {
-        background: rgba(0,0,0,0.1);
-        border: 1px solid rgba(0,0,0,0.2);
-        color: #2c3e50;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-   
-    .dismiss-btn:hover {
-        background: rgba(0,0,0,0.2);
-        transform: rotate(90deg);
-    }
-   
-    .snooze-btn {
-        background: rgba(0,0,0,0.1);
-        border: 1px solid rgba(0,0,0,0.2);
-        color: #2c3e50;
-        padding: 5px 12px;
-        border-radius: 15px;
-        font-size: 12px;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-   
-    .snooze-btn:hover {
-        background: rgba(0,0,0,0.2);
-    }
-   
-    /* Auto-Removal Panel */
-    .auto-removal-panel {
-        margin-top: 20px;
-        padding: 15px;
-        background: #f8f9fa;
-        border-radius: 8px;
-        border-left: 4px solid var(--info);
-    }
-   
-    .auto-removal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-   
-    .auto-removal-header h4 {
-        color: var(--info);
-        margin: 0;
-    }
-   
-    .auto-removal-toggle {
-        padding: 5px 15px;
-        background: var(--info);
-        color: white;
-        border: none;
-        border-radius: 4px;
-        font-size: 12px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        transition: all 0.3s;
-    }
-   
-    .auto-removal-toggle.on {
-        background: var(--success);
-    }
-   
-    .auto-removal-info {
-        margin: 0;
-        font-size: 13px;
-        color: #666;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-   
+  
     .filters-card {
         background: white;
         border-radius: 10px;
@@ -794,25 +698,25 @@
         @php
             use Carbon\Carbon;
             $today = Carbon::today();
-         
+          
             // Count reminders by status
             $overdueReminders = 0;
             $week1Reminders = 0;
             $week2Reminders = 0;
             $week3Reminders = 0;
             $week4Reminders = 0;
-         
+          
             foreach($projects as $project) {
                 if($project->reminder_date) {
                     $reminderDate = Carbon::parse($project->reminder_date);
-                 
+                  
                     // Check if overdue
                     if($reminderDate->lt($today)) {
                         $overdueReminders++;
                     } else {
                         // Calculate week difference from today
                         $weekDifference = floor($today->diffInDays($reminderDate) / 7);
-                     
+                      
                         if($weekDifference == 0) {
                             $week1Reminders++;
                         } elseif($weekDifference == 1) {
@@ -826,9 +730,9 @@
                 }
             }
         @endphp
-        <!-- Week 1 Alert - Auto-hidden if Week 4 exists -->
-        @if($week1Reminders > 0 && $week4Reminders == 0)
-        <div id="reminderAlert-week-1" class="reminder-alert week-1">
+        <!-- Week 1 Alert -->
+        @if($week1Reminders > 0)
+        <div class="reminder-alert week-1" data-count="{{ $week1Reminders }}">
             <i class="fas fa-calendar-week"></i>
             <div class="reminder-alert-content">
                 <h4>
@@ -838,19 +742,11 @@
                 <p>Project reminder(s) are due this week</p>
                 <div class="reminder-week">Due within 7 days</div>
             </div>
-            <div class="alert-controls">
-                <button onclick="snoozeReminder('week-1')" class="snooze-btn" title="Snooze for 1 day">
-                    <i class="fas fa-clock"></i> Snooze
-                </button>
-                <button onclick="dismissReminderAlert('week-1')" class="dismiss-btn" title="Dismiss">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
         </div>
         @endif
         <!-- Week 2 Alert -->
         @if($week2Reminders > 0)
-        <div id="reminderAlert-week-2" class="reminder-alert week-2">
+        <div class="reminder-alert week-2" data-count="{{ $week2Reminders }}">
             <i class="fas fa-calendar-alt"></i>
             <div class="reminder-alert-content">
                 <h4>
@@ -860,19 +756,11 @@
                 <p>Project reminder(s) are due next week</p>
                 <div class="reminder-week">Due within 8-14 days</div>
             </div>
-            <div class="alert-controls">
-                <button onclick="snoozeReminder('week-2')" class="snooze-btn" title="Snooze for 1 day">
-                    <i class="fas fa-clock"></i> Snooze
-                </button>
-                <button onclick="dismissReminderAlert('week-2')" class="dismiss-btn" title="Dismiss">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
         </div>
         @endif
         <!-- Week 3 Alert -->
         @if($week3Reminders > 0)
-        <div id="reminderAlert-week-3" class="reminder-alert week-3">
+        <div class="reminder-alert week-3" data-count="{{ $week3Reminders }}">
             <i class="fas fa-calendar-check"></i>
             <div class="reminder-alert-content">
                 <h4>
@@ -882,19 +770,11 @@
                 <p>Project reminder(s) are due in two weeks</p>
                 <div class="reminder-week">Due within 15-21 days</div>
             </div>
-            <div class="alert-controls">
-                <button onclick="snoozeReminder('week-3')" class="snooze-btn" title="Snooze for 1 day">
-                    <i class="fas fa-clock"></i> Snooze
-                </button>
-                <button onclick="dismissReminderAlert('week-3')" class="dismiss-btn" title="Dismiss">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
         </div>
         @endif
         <!-- Week 4 Alert -->
         @if($week4Reminders > 0)
-        <div id="reminderAlert-week-4" class="reminder-alert week-4">
+        <div class="reminder-alert week-4" data-count="{{ $week4Reminders }}">
             <i class="fas fa-calendar-times"></i>
             <div class="reminder-alert-content">
                 <h4>
@@ -904,19 +784,11 @@
                 <p>Project reminder(s) are due in three weeks or more</p>
                 <div class="reminder-week">Due after 21+ days</div>
             </div>
-            <div class="alert-controls">
-                <button onclick="snoozeReminder('week-4')" class="snooze-btn" title="Snooze for 1 day">
-                    <i class="fas fa-clock"></i> Snooze
-                </button>
-                <button onclick="dismissReminderAlert('week-4')" class="dismiss-btn" title="Dismiss">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
         </div>
         @endif
         <!-- Overdue Alerts -->
         @if($overdueReminders > 0)
-        <div id="reminderAlert-overdue" class="reminder-alert overdue">
+        <div class="reminder-alert overdue" data-count="{{ $overdueReminders }}">
             <i class="fas fa-exclamation-triangle"></i>
             <div class="reminder-alert-content">
                 <h4>
@@ -926,25 +798,6 @@
                 <p>Project reminder(s) have passed their due date</p>
                 <div class="reminder-week">Urgent attention needed</div>
             </div>
-            <div class="alert-controls">
-                <button onclick="snoozeReminder('overdue')" class="snooze-btn" title="Snooze for 1 day">
-                    <i class="fas fa-clock"></i> Snooze
-                </button>
-                <button onclick="dismissReminderAlert('overdue')" class="dismiss-btn" title="Dismiss">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-        @endif
-        <!-- Auto-Removal Info Panel (informational only, since auto-hiding is now server-side) -->
-        @if($week4Reminders > 0 && $week1Reminders > 0)
-        <div class="auto-removal-panel">
-            <div class="auto-removal-header">
-                <h4><i class="fas fa-robot"></i> Auto-Hide Active</h4>
-            </div>
-            <p class="auto-removal-info">
-                <i class="fas fa-info-circle"></i> Week 1 reminders automatically hidden due to presence of Week 4 reminders.
-            </p>
         </div>
         @endif
     </div>
@@ -1067,7 +920,7 @@
                                     $reminderDate = \Carbon\Carbon::parse($project->reminder_date);
                                     $today = \Carbon\Carbon::today();
                                 @endphp
-                               
+                              
                                 @if($reminderDate->lt($today))
                                     <span style="color: #dc3545; font-size: 11px; background: #f8d7da; padding: 3px 8px; border-radius: 10px;">
                                         <i class="fas fa-exclamation-circle"></i> {{ $reminderDate->format('d M') }}
@@ -1137,7 +990,6 @@
   
     // Show notification function
     function showNotification(message, type = 'info') {
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.innerHTML = `
@@ -1147,7 +999,6 @@
        
         document.body.appendChild(notification);
        
-        // Remove after 3 seconds
         setTimeout(() => {
             notification.style.animation = 'slideOutRight 0.3s ease-out';
             setTimeout(() => {
@@ -1158,28 +1009,8 @@
         }, 3000);
     }
   
-    // Initialize
+    // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
-        // Load dismissed alerts
-        const dismissedAlerts = JSON.parse(localStorage.getItem('dismissedAlerts') || '[]');
-        dismissedAlerts.forEach(week => {
-            const alert = document.getElementById(`reminderAlert-${week}`);
-            if (alert) {
-                alert.classList.add('hidden');
-            }
-        });
-       
-        // Load snoozed alerts
-        const snoozedAlerts = JSON.parse(localStorage.getItem('snoozedAlerts') || '{}');
-        Object.keys(snoozedAlerts).forEach(week => {
-            if (snoozedAlerts[week] > Date.now()) {
-                const alert = document.getElementById(`reminderAlert-${week}`);
-                if (alert) {
-                    alert.style.opacity = '0.5';
-                }
-            }
-        });
-       
         // Auto-hide success message
         setTimeout(() => {
             const alert = document.querySelector('.alert-success.show');
@@ -1188,47 +1019,6 @@
             }
         }, 5000);
     });
-  
-    // Dismiss reminder alert
-    function dismissReminderAlert(week) {
-        const alert = document.getElementById(`reminderAlert-${week}`);
-        if (alert) {
-            alert.classList.add('hidden');
-           
-            // Store dismissal in localStorage
-            const dismissedAlerts = JSON.parse(localStorage.getItem('dismissedAlerts') || '[]');
-            if (!dismissedAlerts.includes(week)) {
-                dismissedAlerts.push(week);
-                localStorage.setItem('dismissedAlerts', JSON.stringify(dismissedAlerts));
-            }
-           
-            showNotification(`Reminder alert for ${week} dismissed`, 'info');
-        }
-    }
-  
-    // Snooze reminder alert
-    function snoozeReminder(week) {
-        const alert = document.getElementById(`reminderAlert-${week}`);
-        if (alert) {
-            alert.style.opacity = '0.5';
-           
-            // Store snooze in localStorage for 1 day
-            const snoozedAlerts = JSON.parse(localStorage.getItem('snoozedAlerts') || '{}');
-            snoozedAlerts[week] = Date.now() + (24 * 60 * 60 * 1000);
-            localStorage.setItem('snoozedAlerts', JSON.stringify(snoozedAlerts));
-           
-            showNotification(`Reminder for ${week} snoozed for 24 hours`, 'info');
-           
-            // Hide for 1 day
-            setTimeout(() => {
-                if (alert) {
-                    alert.style.opacity = '1';
-                    delete snoozedAlerts[week];
-                    localStorage.setItem('snoozedAlerts', JSON.stringify(snoozedAlerts));
-                }
-            }, 24 * 60 * 60 * 1000);
-        }
-    }
   
     // Original project view function
     function viewProject(id) {
@@ -1292,7 +1082,7 @@
                             : new Date(project.reminder_date).toDateString() === new Date().toDateString()
                                 ? '<br><span style="color: #ffc107; font-size: 12px;"><i class="fas fa-bell"></i> Reminder is today!</span>'
                                 : '<br><span style="color: #17a2b8; font-size: 12px;"><i class="fas fa-clock"></i> Reminder pending</span>'
-                        )
+                          )
                         : ''}
                 </div>
             </div>
@@ -1348,10 +1138,10 @@
     function confirmDelete(id) {
         const project = projects.find(p => p.id === id);
         if (!project) return;
-       
+      
         const modal = document.getElementById('confirmDeleteModal');
         const modalBody = document.getElementById('confirmModalBody');
-       
+      
         modalBody.innerHTML = `
             <div class="confirm-modal-header">
                 <i class="fas fa-exclamation-triangle"></i>
@@ -1374,7 +1164,7 @@
                 </form>
             </div>
         `;
-       
+      
         modal.classList.add('active');
     }
   
@@ -1388,7 +1178,7 @@
         if (event.target == modal) {
             closeModal();
         }
-       
+      
         const confirmModal = document.getElementById('confirmDeleteModal');
         if (event.target == confirmModal) {
             closeConfirmModal();
